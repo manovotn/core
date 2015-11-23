@@ -17,10 +17,14 @@
 package org.jboss.weld.probe.ftest;
 
 import static junit.framework.Assert.assertTrue;
+
 import static org.jboss.arquillian.graphene.Graphene.guardAjax;
 import static org.jboss.arquillian.graphene.Graphene.guardNoRequest;
 import static org.jboss.arquillian.graphene.Graphene.waitModel;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -32,6 +36,7 @@ import javax.enterprise.event.Reception;
 import javax.enterprise.inject.Default;
 import javax.enterprise.inject.Model;
 
+import org.apache.commons.io.FileUtils;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.drone.api.annotation.Drone;
@@ -53,6 +58,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -89,18 +96,33 @@ public class ProbeFunctionalTest {
     @Deployment(testable = false)
     public static WebArchive createTestDeployment1() {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class, ARCHIVE_NAME + ".war")
-                .addAsWebInfResource(ProbeBeansTest.class.getPackage(), "web.xml", "web.xml")
-                .addAsWebInfResource(ProbeBeansTest.class.getPackage(), "beans.xml", "beans.xml")
-                .addPackage(ModelBean.class.getPackage())
-                .addPackage(Collector.class.getPackage())
-                .addClass(InvokingServlet.class);
+            .addAsWebInfResource(ProbeBeansTest.class.getPackage(), "web.xml", "web.xml")
+            .addAsWebInfResource(ProbeBeansTest.class.getPackage(), "beans.xml", "beans.xml")
+            .addPackage(ModelBean.class.getPackage())
+            .addPackage(Collector.class.getPackage())
+            .addClass(InvokingServlet.class);
         return webArchive;
     }
 
     @Before
-    public void openStartUrl() throws MalformedURLException {
+    public void openStartUrl() throws MalformedURLException, IOException {
         driver.navigate().to(new URL(contextPath.toString() + PROBE));
         waitModel().until().element(BEAN_ARCHIVES).is().present();
+        //screen and source dump
+
+        File dir = new File("tmp/test");
+        dir.mkdirs();
+        File tmp = new File(dir, "tmp.txt");
+        tmp.createNewFile();
+        
+        File scrFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        FileUtils.copyFileToDirectory(scrFile, dir);
+        
+        FileOutputStream fop = new FileOutputStream(tmp);
+        byte[] contentInBytes = driver.getPageSource().getBytes();
+        fop.write(contentInBytes);
+        fop.flush();
+        fop.close();
     }
 
     @Test
