@@ -21,8 +21,10 @@ import static org.jboss.weld.tests.builtinBeans.ee.Checker.checkEntityManagerFac
 import static org.jboss.weld.tests.builtinBeans.ee.Checker.checkRemoteEjb;
 import static org.jboss.weld.tests.builtinBeans.ee.Checker.checkUserTransaction;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -33,6 +35,8 @@ import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.category.Integration;
+import org.jboss.weld.tests.event.observer.transactional.Pomeranian;
+import org.jboss.weld.tests.event.observer.transactional.PomeranianInterface;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -42,47 +46,55 @@ import org.junit.runner.RunWith;
 @Category(Integration.class)
 @RunWith(Arquillian.class)
 public class EEResourceProducerFieldPassivationCapableTest {
+
     @Deployment // changed to .war, from .jar
     public static Archive<?> deploy() {
         return ShrinkWrap.create(WebArchive.class, Utils.getDeploymentNameAsHash(EEResourceProducerFieldPassivationCapableTest.class, Utils.ARCHIVE_TYPE.WAR))
-                .addPackage(EEResourceProducerFieldPassivationCapableTest.class.getPackage())
-                .addClass(Utils.class)
-                .addAsResource(
-                        EEResourceProducerFieldPassivationCapableTest.class.getPackage(),
-                        "persistence.xml", "META-INF/persistence.xml")
-                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
+            .addPackage(EEResourceProducerFieldPassivationCapableTest.class.getPackage())
+            .addClass(Utils.class)
+            .addAsResource(
+                EEResourceProducerFieldPassivationCapableTest.class.getPackage(),
+                "persistence.xml", "META-INF/persistence.xml")
+            .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
-
+    
+    @Inject
+    private EjbBean ejb;
+    
     @Test
     @Ignore("WFLY-835")
     public void testResource(@Produced UserTransaction userTransaction) throws Throwable {
         UserTransaction userTransaction1 = Utils.deserialize(Utils.serialize(userTransaction));
         Assert.assertTrue(checkUserTransaction(userTransaction1));
     }
-
+    
     @Test
     public void testEntityManager(@Produced EntityManager entityManager) throws Throwable {
         EntityManager entityManager1 = Utils.deserialize(Utils.serialize(entityManager));
         Assert.assertTrue(checkEntityManager(entityManager1));
     }
-
+    
     @Test
     public void testEntityManagerFactory(@Produced EntityManagerFactory entityManagerFactory) throws Throwable {
         EntityManagerFactory entityManagerFactory1 = Utils.deserialize(Utils.serialize(entityManagerFactory));
         Assert.assertTrue(checkEntityManagerFactory(entityManagerFactory1));
     }
-
+    
     @Test
     public void testRemoteEjb(@Produced HorseRemote horse) throws Throwable {
         HorseRemote horse1 = Utils.deserialize(Utils.serialize(horse));
         Assert.assertTrue(checkRemoteEjb(horse1));
     }
-
+    
     @Test
     public void testAllOnBean(EEResourceConsumer consumer) throws Throwable {
         consumer.check();
         EEResourceConsumer consumer1 = Utils.deserialize(Utils.serialize(consumer));
         consumer1.check();
     }
-
+    
+    @Test
+    public void testEventFiredAfterContainerManagedTransactionRollbacked() throws SystemException {
+        ejb.initTransaction(new Bark());
+    }
 }
