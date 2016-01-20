@@ -28,4 +28,5 @@ public interface Agent {
 
     void sendInTransactionAndFail(Object event) throws Exception;
 
+    abstract void sendAfterTransactionRollback(Object event) throws Exception;
 }

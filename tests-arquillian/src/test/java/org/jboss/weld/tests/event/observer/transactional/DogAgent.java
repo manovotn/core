@@ -69,4 +69,12 @@ public class DogAgent implements Agent {
         jsr299Manager.fireEvent(event);
         Actions.add(EVENT_FIRED);
     }
+    
+    @Override
+    public void sendAfterTransactionRollback (Object event) throws Exception {
+        userTransaction.begin();
+        userTransaction.rollback();
+        jsr299Manager.fireEvent(event);
+        Actions.add(EVENT_FIRED);        
+    }
 }

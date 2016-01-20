@@ -92,4 +92,11 @@ public class TransactionalObserversTest {
         assertTrue(Actions.precedes(BEFORE_COMPLETION, AFTER_SUCCESS, AFTER_COMPLETION));
         assertFalse(Actions.contains(AFTER_FAILURE));
     }
+    
+    @Test
+    public void testEventCalledAfterRollback() throws Exception {
+        dogAgent.sendAfterTransactionRollback(new Bark());
+        assertTrue(Actions.startsWith(IN_PROGRESS, AFTER_COMPLETION, AFTER_FAILURE));
+        assertTrue(Actions.precedes(AFTER_FAILURE, BEFORE_COMPLETION, AFTER_SUCCESS));
+    }
 }
