@@ -16,6 +16,8 @@
  */
 package org.jboss.weld.config;
 
+import static org.jboss.weld.util.reflection.Formats.formatIterable;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -44,6 +46,7 @@ import org.jboss.weld.resources.spi.ResourceLoadingException;
 import org.jboss.weld.security.GetSystemPropertyAction;
 import org.jboss.weld.util.Preconditions;
 import org.jboss.weld.util.collections.ImmutableMap;
+import org.jboss.weld.util.reflection.Formats;
 import org.jboss.weld.util.reflection.Reflections;
 
 /**
@@ -119,15 +122,17 @@ public class WeldConfiguration implements Service {
         this.properties = init(services, deployment);
         this.proxyDumpFilePath = initProxyDumpFilePath();
         this.proxyIgnoreFinalMethodsPattern = initProxyIgnoreFinalMethodsPattern();
-        StringBuilder logOuputBuilder = new StringBuilder("{");
-        String prefix = "";
-        for (ConfigurationKey key : properties.keySet()) {
-            logOuputBuilder.append(prefix);
-            prefix = ", ";
-            logOuputBuilder.append(key.get() + "=" + properties.get(key));
-        }
-        logOuputBuilder.append("}");
-        ConfigurationLogger.LOG.configurationInitialized(logOuputBuilder.toString());
+        ConfigurationLogger.LOG.configurationInitialized("{" + formatIterable(properties.entrySet(), new Formats.Function<Entry<ConfigurationKey, Object>>() {
+
+            @Override
+            public String apply(Entry<ConfigurationKey, Object> from, int position) {
+                if (position > 0) {
+                    return ", " + (from == null ? "" : from.getKey().get() + "=" + from.getValue());
+                } else {
+                    return from == null ? "" : from.getKey().get() + "=" + from.getValue();
+                }
+            }
+        }) + "}");
     }
 
     /**

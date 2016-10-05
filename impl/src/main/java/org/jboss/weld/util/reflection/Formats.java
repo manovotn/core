@@ -231,7 +231,7 @@ public class Formats {
      *
      * @param <F> the type of the function input
      */
-    private interface Function<F> {
+    public interface Function<F> {
         /**
          * Applies the function to an object of type {@code F}, resulting in an
          * object of type String.
@@ -393,7 +393,7 @@ public class Formats {
         return formatIterable(parseModifiers(modifiers), spaceDelimiterFunction());
     }
 
-    private static <F> String formatIterable(Iterable<? extends F> items, Function<F> function) {
+    public static <F> String formatIterable(Iterable<? extends F> items, Function<F> function) {
         if (items == null) {
             return "";
         }
