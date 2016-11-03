@@ -16,12 +16,18 @@
  */
 package org.jboss.weld.tests.resources;
 
+import java.io.IOException;
+import java.io.Serializable;
+
+import javax.transaction.UserTransaction;
+
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.category.Integration;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,7 +40,7 @@ public class ResourceTest {
     @Deployment // changed to .war, from .jar
     public static Archive<?> deploy() {
         return ShrinkWrap.create(WebArchive.class)
-                .addClasses(ResourceTest.class, UTConsumer.class)
+                .addClasses(ResourceTest.class, UTConsumer.class, Utils.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -42,7 +48,10 @@ public class ResourceTest {
     * description = "WELD-385"
     */
     @Test
-    public void testUTInjectedByResource(UTConsumer consumer) {
+    public void testUTInjectedByResource(UTConsumer consumer) throws IOException, ClassNotFoundException {
         Assert.assertNotNull(consumer.getUserTransaction());
+        Assert.assertTrue(consumer.getUserTransaction() instanceof Serializable);
+        UserTransaction userTransaction1 = Utils.deserialize(Utils.serialize(consumer.getUserTransaction()));
+        Assert.assertNotNull(userTransaction1);
     }
 }
