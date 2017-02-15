@@ -87,6 +87,20 @@ public class Producer {
         }).findFirst().get().add(Monitor.Literal.INSTANCE);
         return interceptionFactory.createInterceptedInstance(new HashMap<>());
     }
+    
+    @Produced
+    @Dependent
+    @Produces
+    public List<Object> produceList(InterceptionFactory<List<Object>> interceptionFactory) {
+        interceptionFactory.ignoreFinalMethods().configure().filterMethods((m) -> {
+            if (m.getJavaMember().getDeclaringClass().equals(List.class) && m.getJavaMember().getName().equals("add")
+                    && m.getJavaMember().getParameterCount() == 1) {
+                return true;
+            }
+            return false;
+        }).findFirst().get().add(Monitor.Literal.INSTANCE);
+        return interceptionFactory.createInterceptedInstance(new ArrayList<>());
+    }
 
     static class Foo {
 

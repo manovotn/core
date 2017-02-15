@@ -20,9 +20,12 @@ package org.jboss.weld.tests.interceptors.producer;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.enterprise.inject.Instance;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.enterprise.util.TypeLiteral;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
@@ -87,5 +90,16 @@ public class InterceptionFactoryTest {
         map.put(params[0], params[1]);
         assertEquals(1, Producer.INVOCATIONS.size());
         assertEquals(Arrays.toString(params), Producer.INVOCATIONS.get(0));
+    }
+    
+    @Test
+    public void testListAdd(BeanManager bm) {
+        // resolving via Instance just to make the NPE exception human-readable (direct method injection will blow up with Arq. stack)
+        List<Object> list = bm.createInstance().select(new TypeLiteral<List<Object>>() {}, Produced.Literal.INSTANCE).get();
+        Producer.reset();
+        String toAdd = "bar";
+        list.add(toAdd);
+        assertEquals(1, Producer.INVOCATIONS.size());
+        assertEquals(toAdd, Producer.INVOCATIONS.get(0));
     }
 }
