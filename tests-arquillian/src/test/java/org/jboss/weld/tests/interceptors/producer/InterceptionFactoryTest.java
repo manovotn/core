@@ -94,13 +94,19 @@ public class InterceptionFactoryTest {
     
     @Test(expected = IllegalStateException.class)
     public void testListAdd(BeanManager bm) {
-        // resolving via Instance just to make the NPE exception human-readable (direct method injection will blow up with Arq. stack)
-        // Invalid producer using an InterceptionFactory for List (interface) and applying it to ArrayList
         List<Object> list = bm.createInstance().select(new TypeLiteral<List<Object>>() {}, Produced.Literal.INSTANCE).get();
         Producer.reset();
         String toAdd = "bar";
         list.add(toAdd);
         assertEquals(1, Producer.INVOCATIONS.size());
         assertEquals(toAdd, Producer.INVOCATIONS.get(0));
+    }
+
+    @Test
+    public void testInterceptionFactoryOnBeanInterface(BeanManager bm) {
+        FooFace foo = bm.createInstance().select(FooFace.class, Produced.Literal.INSTANCE).get();
+        Producer.reset();
+        foo.ping();
+        assertEquals(1, Producer.INVOCATIONS.size());
     }
 }

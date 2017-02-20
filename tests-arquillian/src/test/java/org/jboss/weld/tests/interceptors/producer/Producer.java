@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jboss.weld.tests.interceptors.producer;
 
 import java.util.ArrayList;
@@ -37,8 +36,8 @@ public class Producer {
     @Produces
     public Foo produceFoo(InterceptionFactory<Foo> interceptionFactory) {
         interceptionFactory.configure()
-                .filterMethods((m) -> m.getJavaMember().getName().equals("ping") && m.getJavaMember().getParameterCount() == 0)
-                .findFirst().get().add(Hello.Literal.INSTANCE);
+            .filterMethods((m) -> m.getJavaMember().getName().equals("ping") && m.getJavaMember().getParameterCount() == 0)
+            .findFirst().get().add(Hello.Literal.INSTANCE);
         return interceptionFactory.createInterceptedInstance(new Foo());
     }
 
@@ -55,8 +54,8 @@ public class Producer {
     @Produces
     public Foo produceFooWithEjbInterceptors(InterceptionFactory<Foo> interceptionFactory) {
         interceptionFactory.configure()
-                .filterMethods((m) -> m.getJavaMember().getName().equals("ping") && m.getJavaMember().getParameterCount() == 0)
-                .findFirst().get().add(new InterceptorsLiteral(HelloInterceptor.class));
+            .filterMethods((m) -> m.getJavaMember().getName().equals("ping") && m.getJavaMember().getParameterCount() == 0)
+            .findFirst().get().add(new InterceptorsLiteral(HelloInterceptor.class));
         return interceptionFactory.createInterceptedInstance(new Foo());
     }
 
@@ -80,21 +79,34 @@ public class Producer {
     public Map<String, Object> produceMap(InterceptionFactory<HashMap<String, Object>> interceptionFactory) {
         interceptionFactory.ignoreFinalMethods().configure().filterMethods((m) -> {
             if (m.getJavaMember().getDeclaringClass().equals(HashMap.class) && m.getJavaMember().getName().equals("put")
-                    && m.getJavaMember().getParameterCount() == 2) {
+                && m.getJavaMember().getParameterCount() == 2) {
                 return true;
             }
             return false;
         }).findFirst().get().add(Monitor.Literal.INSTANCE);
         return interceptionFactory.createInterceptedInstance(new HashMap<>());
     }
-    
+
+    @Produced
+    @Dependent
+    @Produces
+    public FooFace produceFooFace(InterceptionFactory<FooFace> interceptionFactory) {
+        interceptionFactory.configure().filterMethods((m) -> {
+            if (m.getJavaMember().getDeclaringClass().equals(Foo.class) && m.getJavaMember().getName().equals("ping")) {
+                return true;
+            }
+            return false;
+        }).findFirst().get().add(Monitor.Literal.INSTANCE);
+        return interceptionFactory.createInterceptedInstance(new FooImpl());
+    }
+
     @Produced
     @Dependent
     @Produces
     public List<Object> produceList(InterceptionFactory<List<Object>> interceptionFactory) {
         interceptionFactory.ignoreFinalMethods().configure().filterMethods((m) -> {
             if (m.getJavaMember().getDeclaringClass().equals(List.class) && m.getJavaMember().getName().equals("add")
-                    && m.getJavaMember().getParameterCount() == 1) {
+                && m.getJavaMember().getParameterCount() == 1) {
                 return true;
             }
             return false;
@@ -102,24 +114,24 @@ public class Producer {
         return interceptionFactory.createInterceptedInstance(new ArrayList<>());
     }
 
-    static class Foo {
+static class Foo {
 
-        String ping() {
-            return "pong";
-        }
-
+    String ping() {
+        return "pong";
     }
 
-    @ApplicationScoped
-    static class Bar {
+}
 
-        String pong() {
-            return "ping";
-        }
+@ApplicationScoped
+static class Bar {
 
+    String pong() {
+        return "ping";
     }
 
-    static void reset() {
+}
+
+static void reset() {
         INVOCATIONS.clear();
     }
 }
