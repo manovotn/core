@@ -112,6 +112,10 @@ public class InterceptionFactoryImpl<T> implements InterceptionFactory<T> {
         }
         used = true;
 
+        if (!instance.getClass().equals(annotatedType.getJavaClass())) {
+            throw InterceptorLogger.LOG.interceptionFactoryInstanceHasWrongType(annotatedType.getJavaClass(), instance.getClass());
+        }
+
         Optional<InterceptionFactoryData<T>> cached = beanManager.getServices().get(InterceptionFactoryDataCache.class)
                 .getInterceptionFactoryData(configurator != null ? configurator.complete() : annotatedType);
 

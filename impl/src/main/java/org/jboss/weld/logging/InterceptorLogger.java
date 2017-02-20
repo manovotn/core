@@ -78,4 +78,7 @@ public interface InterceptorLogger extends WeldLogger {
     @Message(id = 1710, value = "InterceptionFactory skipped wrapper creation for an internal container construct of type {0}", format = Format.MESSAGE_FORMAT)
     void interceptionFactoryInternalContainerConstruct(Object type);
 
+    @Message(id = 1711, value = "InterceptionFactory for type {0} cannot be applied on instance of type {1}", format= Format.MESSAGE_FORMAT)
+    IllegalStateException interceptionFactoryInstanceHasWrongType(Object param1, Object param2);
+
 }
