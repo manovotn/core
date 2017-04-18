@@ -54,6 +54,7 @@ import org.jboss.classfilewriter.util.DescriptorUtils;
 import org.jboss.weld.Container;
 import org.jboss.weld.bean.builtin.AbstractBuiltInBean;
 import org.jboss.weld.config.WeldConfiguration;
+import org.jboss.weld.dummy.DummyClass;
 import org.jboss.weld.exceptions.DefinitionException;
 import org.jboss.weld.exceptions.WeldException;
 import org.jboss.weld.interceptor.proxy.LifecycleMixin;
@@ -132,6 +133,7 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
     // with older versions we silently fall back - no default method interception support
     private static final Constructor<ClassFile> CONFIGURABLE_CLASSLOADER_CONSTRUCTOR;
 
+    private Set<? extends Type> typeClosures;
     static {
         Constructor<ClassFile> temp = null;
         try {
@@ -193,6 +195,7 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
         this.contextId = contextId;
         this.proxiedBeanType = proxiedBeanType;
         this.configuration = Container.instance(contextId).deploymentManager().getServices().get(WeldConfiguration.class);
+        this.typeClosures = typeClosure;
         addInterfacesFromTypeClosure(typeClosure, proxiedBeanType);
         TypeInfo typeInfo = TypeInfo.of(typeClosure);
         Class<?> superClass = typeInfo.getSuperClass();
@@ -235,14 +238,19 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
                 if (superInterface.getPackage() == null) {
                     proxyPackage = DEFAULT_PROXY_PACKAGE;
                 } else {
-                    proxyPackage = DEFAULT_PROXY_PACKAGE;//superInterface.getPackage().getName();
+                    proxyPackage = superInterface.getPackage().getName();
                 }
             }
         } else {
             if (proxiedBeanType.getPackage() == null) {
                 proxyPackage = DEFAULT_PROXY_PACKAGE;
             } else {
-                proxyPackage = DEFAULT_PROXY_PACKAGE;//proxiedBeanType.getPackage().getName();
+                if (proxiedBeanType.getPackageName().startsWith(JAVA)) {
+                    proxyPackage = DEFAULT_PROXY_PACKAGE;
+                } else {
+                    proxyPackage = proxiedBeanType.getPackageName();
+                }
+                //proxyPackage = proxiedBeanType.getPackageName();//proxiedBeanType.getPackage().getName();
             }
         }
         final String className;
@@ -360,8 +368,22 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
         if (!proxyClassName.endsWith(suffix)) {
             proxyClassName = proxyClassName + suffix;
         }
+        // in JDK 9 this means we will be creating everything in a non-existing package
+        // javax.* will be org.jboss.weldx* which is different package -> BOOOOOM!
+        // the lookup class is built on top of the ORIGINAL package therefore has no right to create class in a different one
+        // we need to change it somehow
+        // original code starts here
+//        if (proxyClassName.startsWith(JAVA)) {
+//            System.out.println("**************** package name starts with java -> " + proxyClassName);
+//            proxyClassName = proxyClassName.replaceFirst(JAVA, "org.jboss.weld");
+//            System.out.println("**************** result will be -> " + proxyClassName);
+//        }
+        // new code starts here
         if (proxyClassName.startsWith(JAVA)) {
-            proxyClassName = proxyClassName.replaceFirst(JAVA, "org.jboss.weld");
+            System.out.println("**************** package name starts with java -> " + proxyClassName);
+            // try to replace the package with the dummy one we used
+            proxyClassName = DEFAULT_PROXY_PACKAGE + proxyClassName.substring(proxyClassName.lastIndexOf("."));
+            System.out.println("**************** result will be -> " + proxyClassName);
         }
         Class<T> proxyClass = null;
         BeanLogger.LOG.generatingProxyClass(proxyClassName);
@@ -476,8 +498,17 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
             ProtectionDomainCache cache = Container.instance(contextId).services().get(ProtectionDomainCache.class);
             domain = cache.getProtectionDomainForProxy(domain);
         }
+        //  proxyclassname has already bad data in implicit stuff - org.jboss.weldx.enterprise.event
         System.out.println(" ------------------- PROXY CLASS NAME " + proxyClassName);
-        Class<T> proxyClass = cast(ClassFileUtils.toClass(proxyClassType, classLoader, proxiedBeanType));
+        System.out.println(" ------------------- PROXIED BEAN TYPE " + proxiedBeanType);
+        Class<?> lookupClass;
+        if (proxyClassName.startsWith("org.jboss.weld.dummy")) {
+            lookupClass = DummyClass.class;
+        } else {
+            lookupClass = getActualProxyClassType(proxiedBeanType, typeClosures);
+        }
+        System.out.println(" ------------------- ACTUAL LOOKUP CLASS USED " + lookupClass);
+        Class<T> proxyClass = cast(ClassFileUtils.toClass(proxyClassType, classLoader, lookupClass));
         BeanLogger.LOG.createdProxyClass(proxyClass, Arrays.toString(proxyClass.getInterfaces()));
         return proxyClass;
     }
@@ -496,6 +527,27 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
         }
     }
 
+    private Class<?> getActualProxyClassType(Class<?> proxiedBeanType, Set<? extends Type> typeClosure) {
+        TypeInfo typeInfo = TypeInfo.of(typeClosure);
+        if (proxiedBeanType.equals(Object.class)) {
+            Class<?> superInterface = typeInfo.getSuperInterface();
+            if (superInterface == null) {
+                throw new IllegalArgumentException("Proxied bean type cannot be java.lang.Object without an interface");
+            } else {
+                if (superInterface.getPackage() == null) {
+                    return Object.class;
+                } else {
+                    return superInterface;
+                }
+            }
+        } else {
+            if (proxiedBeanType.getPackage() == null) {
+                return Object.class;
+            } else {
+                return proxiedBeanType;
+            }
+        }
+    }
     private void dumpToFile(String fileName, byte[] data) {
         File proxyDumpFilePath = configuration.getProxyDumpFilePath();
         if (proxyDumpFilePath == null) {

@@ -96,14 +96,16 @@ public class ClassFileUtils {
             //                method = defineClass2;
             //                args = new Object[]{ct.getName(), b, 0, b.length, domain};
             //            }
+            
+            // NOTE!!! We entirely IGNORE given classloader - we are not supposed to make use of it, instead we go via MethodHandles.Lookup
             System.out.println("BEAN TYPE CLASS " + beanType.getPackageName() + " " + ct.getName());
 
-            MethodHandles.Lookup in = MethodHandles.privateLookupIn(DummyClass.class, MethodHandles.lookup()).dropLookupMode(MethodHandles.Lookup.PRIVATE);
+            MethodHandles.Lookup in = MethodHandles.privateLookupIn(beanType, MethodHandles.lookup()).dropLookupMode(MethodHandles.Lookup.PRIVATE);
 
             return in.defineClass(b);
         } catch (IllegalAccessException e) {
-            new RuntimeException(e);
-            return null;
+            throw new RuntimeException(e);
+//            return null;
         }
     }
 
