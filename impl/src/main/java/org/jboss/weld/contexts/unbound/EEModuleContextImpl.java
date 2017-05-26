@@ -22,9 +22,11 @@ import java.util.Map;
 
 import javax.enterprise.context.spi.Contextual;
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.jboss.weld.bean.RIBean;
 import org.jboss.weld.bootstrap.BeanDeploymentModules;
+import org.jboss.weld.injection.CurrentInjectionPoint;
 import org.jboss.weld.manager.BeanManagerImpl;
 
 /**
@@ -37,7 +39,8 @@ public class EEModuleContextImpl implements EEModuleContext {
     // String is a BeanManager's ID which them maps to instances created by that module
     private Map<String, Map<Contextual<?>, ContextualInstance<?>>> contextMap = new HashMap<>();
 
-    private BeanDeploymentModules bdms;
+    private BeanDeploymentModules bdmService;
+    private CurrentInjectionPoint currentIPService;
 
     @Override
     public void destroy(Contextual<?> contextual) {
@@ -105,10 +108,11 @@ public class EEModuleContextImpl implements EEModuleContext {
 
     private String contextualToModuleId(Contextual contextual) {
         BeanManagerImpl bmImpl = ((RIBean) contextual).getBeanManager();
-        if (bdms == null) {
-            bdms = bmImpl.getServices().get(BeanDeploymentModules.class);
+        BeanManagerImpl bmImplOfIp = ((RIBean) bmImpl.getServices().get(CurrentInjectionPoint.class).peek().getBean()).getBeanManager();
+        if (bdmService == null) {
+            bdmService = bmImpl.getServices().get(BeanDeploymentModules.class);
         }
-        return bdms.getModule(bmImpl).getId();
+        return bdmService.getModule(bmImplOfIp).getId();
     }
 
     static final class ContextualInstance<T> {
