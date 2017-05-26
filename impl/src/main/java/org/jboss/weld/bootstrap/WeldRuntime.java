@@ -29,6 +29,7 @@ import org.jboss.weld.bootstrap.events.BeforeShutdownImpl;
 import org.jboss.weld.bootstrap.spi.BeanDeploymentArchive;
 import org.jboss.weld.context.ApplicationContext;
 import org.jboss.weld.context.SingletonContext;
+import org.jboss.weld.contexts.unbound.EEModuleContext;
 import org.jboss.weld.event.ContextEvent;
 import org.jboss.weld.manager.BeanManagerImpl;
 
@@ -60,6 +61,10 @@ public class WeldRuntime {
             fireEventForNonWebModules(Object.class, ContextEvent.APPLICATION_BEFORE_DESTROYED, BeforeDestroyed.Literal.APPLICATION);
             deploymentManager.instance().select(ApplicationContext.class).get().invalidate();
             deploymentManager.instance().select(SingletonContext.class).get().invalidate();
+
+            // do the same for EEScoped
+            System.out.println("Trying to invalidate the scope!");
+            deploymentManager.instance().select(EEModuleContext.class).get().invalidate();
 
         } finally {
             // fire @Destroyed(ApplicationScope.class) for non-web modules

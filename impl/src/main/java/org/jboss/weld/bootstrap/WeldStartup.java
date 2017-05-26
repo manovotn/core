@@ -89,6 +89,8 @@ import org.jboss.weld.contexts.bound.BoundRequestContextImpl;
 import org.jboss.weld.contexts.bound.BoundSessionContextImpl;
 import org.jboss.weld.contexts.unbound.ApplicationContextImpl;
 import org.jboss.weld.contexts.unbound.DependentContextImpl;
+import org.jboss.weld.contexts.unbound.EEModuleContext;
+import org.jboss.weld.contexts.unbound.EEModuleContextImpl;
 import org.jboss.weld.contexts.unbound.RequestContextImpl;
 import org.jboss.weld.contexts.unbound.SingletonContextImpl;
 import org.jboss.weld.event.ContextEvent;
@@ -600,6 +602,7 @@ public class WeldStartup {
         contexts.add(new ContextHolder<BoundRequestContext>(new BoundRequestContextImpl(contextId), BoundRequestContext.class, boundQualifires));
         contexts.add(new ContextHolder<RequestContext>(new RequestContextImpl(contextId), RequestContext.class, unboundQualifiers));
         contexts.add(new ContextHolder<DependentContext>(new DependentContextImpl(services.get(ContextualStore.class)), DependentContext.class, unboundQualifiers));
+        contexts.add(new ContextHolder<EEModuleContext>(new EEModuleContextImpl(), EEModuleContext.class, unboundQualifiers));
 
         services.get(WeldModules.class).postContextRegistration(contextId, services, contexts);
 
