@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package org.jboss.weld.bean.proxy;
 
 import java.io.ObjectStreamException;
@@ -36,6 +35,8 @@ import org.jboss.classfilewriter.code.BranchEnd;
 import org.jboss.classfilewriter.code.CodeAttribute;
 import org.jboss.weld.Container;
 import org.jboss.weld.bean.proxy.util.SerializableClientProxy;
+import org.jboss.weld.exceptions.WeldException;
+import org.jboss.weld.proxy.WeldClientProxy;
 import org.jboss.weld.security.GetDeclaredFieldAction;
 import org.jboss.weld.security.SetAccessibleAction;
 import org.jboss.weld.serialization.spi.BeanIdentifier;
@@ -45,8 +46,7 @@ import org.jboss.weld.util.bytecode.DeferredBytecode;
 import org.jboss.weld.util.bytecode.MethodInformation;
 
 /**
- * Proxy factory that generates client proxies, it uses optimizations that
- * are not valid for other proxy types.
+ * Proxy factory that generates client proxies, it uses optimizations that are not valid for other proxy types.
  *
  * @author Stuart Douglas
  * @author Marius Bogoevici
@@ -59,14 +59,15 @@ public class ClientProxyFactory<T> extends ProxyFactory<T> {
     private static final String EMPTY_PARENTHESES = "()";
 
     /**
-     * It is possible although very unlikely that two different beans will end up with the same proxy class
-     * (generally this will only happen in test situations where weld is being started/stopped multiple times
-     * in the same class loader, such as during unit tests)
+     * It is possible although very unlikely that two different beans will end up with the same proxy class (generally this will
+     * only happen in test situations where weld is being started/stopped multiple times in the same class loader, such as
+     * during unit tests)
      * <p/>
-     * To avoid this causing serialization problems we explicitly set the bean id on creation, and store it in this
-     * field.
+     * To avoid this causing serialization problems we explicitly set the bean id on creation, and store it in this field.
      */
     private static final String BEAN_ID_FIELD = "BEAN_ID_FIELD";
+    private final String GET_BEAN_METHOD_NAME = "getBean";
+    private final String GET_INSTANCE_METHOD_NAME = "getInstance";
 
     private final BeanIdentifier beanId;
 
@@ -96,6 +97,40 @@ public class ClientProxyFactory<T> extends ProxyFactory<T> {
     }
 
     @Override
+    protected void addAdditionalInterfaces(Set<Class<?>> interfaces) {
+        // add marker interface for client proxy, this also requires adding interface methods implementations
+        interfaces.add(WeldClientProxy.class);
+    }
+
+    @Override
+    protected void addMethods(ClassFile proxyClassType, ClassMethod staticConstructor) {
+        // add methods from WeldClientProxy
+        generateWeldClientProxyMethods(proxyClassType);
+        // delegate to ProxyFactory#addMethods
+        super.addMethods(proxyClassType, staticConstructor);
+    }
+
+    private void generateWeldClientProxyMethods(ClassFile proxyClassType) {
+        try {
+            Method getBeanMethod = WeldClientProxy.class.getMethod(GET_BEAN_METHOD_NAME);
+            Method getContextualInstanceMethod = WeldClientProxy.class.getMethod("getContextualInstance");
+
+            generateBodyForWeldClientProxyMethod(proxyClassType.addMethod(getBeanMethod), ProxyMethodHandler.class.getMethod(GET_BEAN_METHOD_NAME));
+            generateBodyForWeldClientProxyMethod(proxyClassType.addMethod(getContextualInstanceMethod), ProxyMethodHandler.class.getMethod(GET_INSTANCE_METHOD_NAME));
+        } catch (Exception e) {
+            throw new WeldException(e);
+        }
+    }
+
+    private void generateBodyForWeldClientProxyMethod(ClassMethod method, Method generateForMethod) throws Exception {
+        final CodeAttribute b = method.getCodeAttribute();
+        b.aload(0);
+        getMethodHandlerField(method.getClassFile(), b);
+        b.invokevirtual(generateForMethod);
+        b.returnInstruction();
+    }
+
+    @Override
     protected void addFields(final ClassFile proxyClassType, List<DeferredBytecode> initialValueBytecode) {
         super.addFields(proxyClassType, initialValueBytecode);
         proxyClassType.addField(AccessFlag.VOLATILE | AccessFlag.PRIVATE, BEAN_ID_FIELD, BeanIdentifier.class);
@@ -108,7 +143,7 @@ public class ClientProxyFactory<T> extends ProxyFactory<T> {
 
     @Override
     protected void addSerializationSupport(ClassFile proxyClassType) {
-        final Class<Exception>[] exceptions = new Class[]{ObjectStreamException.class};
+        final Class<Exception>[] exceptions = new Class[] { ObjectStreamException.class };
         final ClassMethod writeReplace = proxyClassType.addMethod(AccessFlag.PRIVATE, "writeReplace", LJAVA_LANG_OBJECT);
         writeReplace.addCheckedExceptions(exceptions);
 
@@ -122,11 +157,9 @@ public class ClientProxyFactory<T> extends ProxyFactory<T> {
         b.returnInstruction();
     }
 
-
     /**
-     * Calls methodHandler.invoke with a null method parameter in order to
-     * get the underlying instance. The invocation is then forwarded to
-     * this instance with generated bytecode.
+     * Calls methodHandler.invoke with a null method parameter in order to get the underlying instance. The invocation is then
+     * forwarded to this instance with generated bytecode.
      */
     @Override
     protected void createForwardingMethodBody(ClassMethod classMethod, final MethodInformation methodInfo, ClassMethod staticConstructor) {
@@ -149,7 +182,6 @@ public class ClientProxyFactory<T> extends ProxyFactory<T> {
         // create a new interceptor invocation context whenever we invoke a method on a client proxy
         // we use a try-catch block in order to make sure that endInterceptorContext() is invoked regardless whether
         // the method has succeeded or not
-
         new RunWithinInterceptionDecorationContextGenerator(classMethod, this) {
 
             @Override
@@ -205,13 +237,12 @@ public class ClientProxyFactory<T> extends ProxyFactory<T> {
         b.aload(0);
         getMethodHandlerField(file, b);
         // lets invoke the method
-        b.invokevirtual(ProxyMethodHandler.class.getName(), "getInstance", EMPTY_PARENTHESES + LJAVA_LANG_OBJECT);
+        b.invokevirtual(ProxyMethodHandler.class.getName(), GET_INSTANCE_METHOD_NAME, EMPTY_PARENTHESES + LJAVA_LANG_OBJECT);
         b.checkcast(methodInfo.getDeclaringClass());
     }
 
     /**
-     * Client proxies use the following hashCode:
-     * <code>MyProxyName.class.hashCode()</code>
+     * Client proxies use the following hashCode: <code>MyProxyName.class.hashCode()</code>
      */
     @Override
     protected void generateHashCodeMethod(ClassFile proxyClassType) {
