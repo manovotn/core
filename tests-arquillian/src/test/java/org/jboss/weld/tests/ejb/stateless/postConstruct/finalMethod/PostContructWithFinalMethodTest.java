@@ -14,18 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.tests.ejb.stateless.noInterfaceNonPublic;
+package org.jboss.weld.tests.ejb.stateless.postConstruct.finalMethod;
 
 import javax.ejb.EJBException;
 import javax.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.ShouldThrowException;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.weld.exceptions.WeldException;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.category.Integration;
 import org.junit.Assert;
@@ -34,30 +32,44 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 /**
- * Test trying to invoke non-public method in no-interface view EJB - illegal according to EJB spec.
- * Weld should throw EJB exception.
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
 @RunWith(Arquillian.class)
 @Category(Integration.class)
-public class NoInterfaceNonPublicMethodTest {
+public class PostContructWithFinalMethodTest {
 
     @Deployment
     public static Archive<?> getDeployment() {
-        return ShrinkWrap.create(BeanArchive.class, Utils.getDeploymentNameAsHash(NoInterfaceNonPublicMethodTest.class))
-            .addPackage(NoInterfaceNonPublicMethodTest.class.getPackage());
+        return ShrinkWrap.create(BeanArchive.class, Utils.getDeploymentNameAsHash(PostContructWithFinalMethodTest.class))
+            .addPackage(PostContructWithFinalMethodTest.class.getPackage());
     }
 
     @Inject
     SomeOtherBean bean;
 
+//    @Test
+    public void testPostConstructInvokedWithNonFinal() {
+        resetCounter();
+        bean.getBean().pingNonFinal();
+        Assert.assertEquals(1, SomeOtherBean.timesInvoked);
+    }
+
+//    @Test
+    public void testPostConstructInvokedWithFinal() {
+        resetCounter();
+        bean.getBean().pingFinal();
+        Assert.assertEquals(1, SomeOtherBean.timesInvoked);
+    }
+
     @Test
-    public void testExceptionThrown() {
-        try {
-            bean.doSomething();
-            Assert.fail("EJBException should be thrown!");
-        } catch (EJBException e) {
-            // expected
-        }
+    public void testPostConstructInvokedWithFinalThenNonFinal() {
+        resetCounter();
+        bean.getBean().pingFinal(); // this will NOT trigger post construct call
+        bean.getBean().pingNonFinal(); // this WILL trigger post construct
+        Assert.assertEquals(1, SomeOtherBean.timesInvoked);
+    }
+    
+    private void resetCounter() {
+        SomeOtherBean.timesInvoked = 0;
     }
 }

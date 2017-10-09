@@ -14,18 +14,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.tests.ejb.stateless.noInterfaceNonPublic;
+package org.jboss.weld.tests.ejb.stateless.postConstruct.finalMethod;
 
-import javax.ejb.Stateless;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 /**
- * This is no interface view EJB bean. Only public methods are allowed to be invoked (by spec).
+ *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@Stateless
-public class ProblematicBean {
-    
-    String ping(){
-        return ProblematicBean.class.getSimpleName();
+@ApplicationScoped
+public class SomeOtherBean {
+
+    public static int timesInvoked = 0;
+
+    @Inject
+    private ProblematicBean theBean;
+
+    public ProblematicBean getBean() {
+        return theBean;
     }
 }

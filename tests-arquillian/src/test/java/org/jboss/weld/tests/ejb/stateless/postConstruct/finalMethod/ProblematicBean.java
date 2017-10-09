@@ -14,23 +14,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.weld.tests.ejb.stateless.noInterfaceNonPublic;
+package org.jboss.weld.tests.ejb.stateless.postConstruct.finalMethod;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 
 /**
- *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@ApplicationScoped
-public class SomeOtherBean {
+@Stateless
+public class ProblematicBean {
+
+    @PostConstruct
+    public void something() {
+        System.err.println("PostConstruct invoked!");
+        System.err.println("PostConstruct invoked!");
+        System.err.println("PostConstruct invoked!");
+        SomeOtherBean.timesInvoked ++;
+    }
+
+    public final String pingFinal() {
+        System.err.println("Final ping");
+        return ProblematicBean.class.getSimpleName();
+    }
     
-    @Inject
-    ProblematicBean noIface;
-    
-    public void doSomething() {
-        noIface.ping();
+    public String pingNonFinal() {
+        System.err.println("Non final ping");
+        return ProblematicBean.class.getSimpleName();
     }
 }
