@@ -82,6 +82,11 @@
         <weld.api.version>3.0.SP1</weld.api.version>
         <weld.logging.tools.version>1.0.2.Final</weld.logging.tools.version>
         <wildfly.arquillian.version>1.0.1.Final</wildfly.arquillian.version>
+        
+        <!--Properties for JUnit 5-->
+        <junit.platform.version>1.0.1</junit.platform.version>
+        <junit.jupiter.version>5.0.1</junit.jupiter.version>
+        <junit.vintage.version>4.12.1</junit.vintage.version>
     </properties>
 
     <modules>
@@ -126,8 +131,8 @@
             </dependency>
 
             <dependency>
-               <groupId>org.jboss.spec.javax.el</groupId>
-               <artifactId>jboss-el-api_3.0_spec</artifactId>
+                <groupId>org.jboss.spec.javax.el</groupId>
+                <artifactId>jboss-el-api_3.0_spec</artifactId>
                 <version>${jboss.spec.el-api.version}</version>
             </dependency>
 
@@ -144,22 +149,22 @@
             </dependency>
 
             <dependency>
-              <groupId>org.jboss.logging</groupId>
-              <artifactId>jboss-logging-processor</artifactId>
-              <version>${jboss.logging.processor.version}</version>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging-processor</artifactId>
+                <version>${jboss.logging.processor.version}</version>
             </dependency>
 
             <dependency>
-              <groupId>org.jboss.logging</groupId>
-              <artifactId>jboss-logging</artifactId>
-              <version>${jboss.logging.version}</version>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>${jboss.logging.version}</version>
             </dependency>
 
             <dependency>
-              <groupId>org.jboss.logmanager</groupId>
-              <artifactId>jboss-logmanager</artifactId>
-              <version>${jboss.logmanager.version}</version>
-              <scope>test</scope>
+                <groupId>org.jboss.logmanager</groupId>
+                <artifactId>jboss-logmanager</artifactId>
+                <version>${jboss.logmanager.version}</version>
+                <scope>test</scope>
             </dependency>
 
             <dependency>
@@ -491,11 +496,53 @@
         </dependencies>
 
     </dependencyManagement>
+    
+    <dependencies>
+        <!-- API for JUNIt 5 tests -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- API for JUnit 4 tests -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!-- Engine to execute Jupiter tests (JUnit 5 tests) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Engine to execute older tests (JUnit 4 and 3) -->
+        <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.vintage.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <build>
         <pluginManagement>
             <plugins>
 
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <dependencies>
+                        <!-- Surefire doesn't know JUnit 5 provider yet, we need to add it here -->
+                        <dependency>
+                            <groupId>org.junit.platform</groupId>
+                            <artifactId>junit-platform-surefire-provider</artifactId>
+                            <version>${junit.platform.version}</version>
+                        </dependency>
+                    </dependencies>
+                </plugin>
                 <plugin>
                     <groupId>org.codehaus.cargo</groupId>
                     <artifactId>cargo-maven2-plugin</artifactId>
@@ -518,7 +565,7 @@
                     <version>${selenium.maven.plugin.version}</version>
                 </plugin>
                 <!-- So m2e doesn't throw errors for features it doesn't
-                    support in the POM -->
+                support in the POM -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
                     <artifactId>lifecycle-mapping</artifactId>
@@ -566,8 +613,8 @@
         <connection>scm:git:git@github.com:weld/core.git</connection>
         <developerConnection>scm:git:git@github.com:weld/core.git</developerConnection>
         <url>scm:git:git@github.com:weld/core.git</url>
-      <tag>3.0.0-SNAPSHOT</tag>
-  </scm>
+        <tag>3.0.0-SNAPSHOT</tag>
+    </scm>
 
 
     <profiles>
