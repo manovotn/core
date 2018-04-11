@@ -54,6 +54,7 @@ import org.jboss.classfilewriter.util.DescriptorUtils;
 import org.jboss.weld.Container;
 import org.jboss.weld.bean.builtin.AbstractBuiltInBean;
 import org.jboss.weld.config.WeldConfiguration;
+import org.jboss.weld.dummy.DummyClass;
 import org.jboss.weld.exceptions.DefinitionException;
 import org.jboss.weld.exceptions.WeldException;
 import org.jboss.weld.interceptor.proxy.LifecycleMixin;
@@ -93,7 +94,8 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
 
     // Default proxy class name suffix
     public static final String PROXY_SUFFIX = "$Proxy$";
-    public static final String DEFAULT_PROXY_PACKAGE = "org.jboss.weld.proxies";
+    public static final String DEFAULT_PROXY_PACKAGE = "org.jboss.weld.dummy";
+    public static final String ERROR_MSG = "Proxied bean type cannot be java.lang.Object without an interface";
 
     private final Class<?> beanType;
     private final Set<Class<?>> additionalInterfaces = new LinkedHashSet<Class<?>>();
@@ -136,6 +138,7 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
     // with older versions we silently fall back - no default method interception support
     private static final Constructor<ClassFile> CONFIGURABLE_CLASSLOADER_CONSTRUCTOR;
 
+    private Set<? extends Type> typeClosures;
     static {
         Constructor<ClassFile> temp = null;
         try {
@@ -197,6 +200,7 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
         this.contextId = contextId;
         this.proxiedBeanType = proxiedBeanType;
         this.configuration = Container.instance(contextId).deploymentManager().getServices().get(WeldConfiguration.class);
+        this.typeClosures = typeClosure;
         addInterfacesFromTypeClosure(typeClosure, proxiedBeanType);
         TypeInfo typeInfo = TypeInfo.of(typeClosure);
         Class<?> superClass = typeInfo.getSuperClass();
@@ -234,7 +238,7 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
         if (proxiedBeanType.equals(Object.class)) {
             Class<?> superInterface = typeInfo.getSuperInterface();
             if (superInterface == null) {
-                throw new IllegalArgumentException("Proxied bean type cannot be java.lang.Object without an interface");
+                throw new IllegalArgumentException(ERROR_MSG);
             } else {
                 String reason = getDefaultPackageReason(superInterface);
                 if (reason != null) {
@@ -250,7 +254,11 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
                 proxyPackage = DEFAULT_PROXY_PACKAGE;
                 BeanLogger.LOG.generatingProxyToDefaultPackage(proxiedBeanType, DEFAULT_PROXY_PACKAGE, reason);
             } else {
-                proxyPackage = proxiedBeanType.getPackage().getName();
+                if (proxiedBeanType.getPackageName().startsWith(JAVA)) {
+                    proxyPackage = DEFAULT_PROXY_PACKAGE;
+                } else {
+                    proxyPackage = proxiedBeanType.getPackageName();
+                }
             }
         }
         final String className;
@@ -377,7 +385,8 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
             proxyClassName = proxyClassName + suffix;
         }
         if (proxyClassName.startsWith(JAVA)) {
-            proxyClassName = proxyClassName.replaceFirst(JAVA, "org.jboss.weld");
+            // try to replace the package with the dummy one we used
+            proxyClassName = DEFAULT_PROXY_PACKAGE + proxyClassName.substring(proxyClassName.lastIndexOf("."));
         }
         Class<T> proxyClass = null;
         BeanLogger.LOG.generatingProxyClass(proxyClassName);
@@ -494,7 +503,13 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
             ProtectionDomainCache cache = Container.instance(contextId).services().get(ProtectionDomainCache.class);
             domain = cache.getProtectionDomainForProxy(domain);
         }
-        Class<T> proxyClass = cast(ClassFileUtils.toClass(proxyClassType, classLoader, domain));
+        Class<?> lookupClass;
+        if (proxyClassName.startsWith(DEFAULT_PROXY_PACKAGE)) {
+            lookupClass = DummyClass.class;
+        } else {
+            lookupClass = getActualProxyClassType(proxiedBeanType, typeClosures);
+        }
+        Class<T> proxyClass = cast(ClassFileUtils.toClass(proxyClassType, classLoader, lookupClass));
         BeanLogger.LOG.createdProxyClass(proxyClass, Arrays.toString(proxyClass.getInterfaces()));
         return proxyClass;
     }
@@ -510,6 +525,28 @@ public class ProxyFactory<T> implements PrivilegedAction<T> {
             }
         } catch (Exception e) {
             throw BeanLogger.LOG.unableToCreateClassFile(name, e.getCause());
+        }
+    }
+
+    private Class<?> getActualProxyClassType(Class<?> proxiedBeanType, Set<? extends Type> typeClosure) {
+        TypeInfo typeInfo = TypeInfo.of(typeClosure);
+        if (proxiedBeanType.equals(Object.class)) {
+            Class<?> superInterface = typeInfo.getSuperInterface();
+            if (superInterface == null) {
+                throw new IllegalArgumentException(ERROR_MSG);
+            } else {
+                if (superInterface.getPackage() == null) {
+                    return Object.class;
+                } else {
+                    return superInterface;
+                }
+            }
+        } else {
+            if (proxiedBeanType.getPackage() == null) {
+                return Object.class;
+            } else {
+                return proxiedBeanType;
+            }
         }
     }
 

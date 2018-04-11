@@ -16,97 +16,48 @@
  */
 package org.jboss.weld.util.bytecode;
 
-
-import java.lang.reflect.Method;
-import java.security.AccessController;
-import java.security.PrivilegedActionException;
-import java.security.PrivilegedExceptionAction;
-import java.security.ProtectionDomain;
+import java.lang.invoke.MethodHandles;
 
 import org.jboss.classfilewriter.ClassFile;
 
 /**
- * Utility class for loading a ClassFile into a classloader. This borrows
- * heavily from javassist
+ * Utility class for loading a ClassFile into a classloader. This borrows heavily from javassist
  *
  * @author Stuart Douglas
  */
 public class ClassFileUtils {
-    private static java.lang.reflect.Method defineClass1, defineClass2;
 
     private ClassFileUtils() {
     }
 
-    static {
-        try {
-            AccessController.doPrivileged(new PrivilegedExceptionAction<Object>() {
-                public Object run() throws Exception {
-                    Class<?> cl = Class.forName("java.lang.ClassLoader");
-                    final String name = "defineClass";
-                    defineClass1 = cl.getDeclaredMethod(name, new Class[]{String.class, byte[].class, int.class, int.class});
-                    defineClass1.setAccessible(true);
-
-                    defineClass2 = cl.getDeclaredMethod(name, new Class[]{String.class, byte[].class, int.class, int.class, ProtectionDomain.class});
-                    defineClass2.setAccessible(true);
-                    return null;
-                }
-            });
-        } catch (PrivilegedActionException pae) {
-            throw new RuntimeException("cannot initialize ClassPool", pae.getException());
-        }
-    }
-
     /**
-     * Converts the class to a <code>java.lang.Class</code> object. Once this
-     * method is called, further modifications are not allowed any more.
-     * <p/>
-     * <p/>
-     * The class file represented by the given <code>CtClass</code> is loaded by
-     * the given class loader to construct a <code>java.lang.Class</code> object.
-     * Since a private method on the class loader is invoked through the
-     * reflection API, the caller must have permissions to do that.
-     * <p/>
-     * <p/>
-     * An easy way to obtain <code>ProtectionDomain</code> object is to call
-     * <code>getProtectionDomain()</code> in <code>java.lang.Class</code>. It
-     * returns the domain that the class belongs to.
-     * <p/>
-     * <p/>
-     * This method is provided for convenience. If you need more complex
-     * functionality, you should write your own class loader.
+     * Converts the class to a <code>java.lang.Class</code> object. Once this method is called, further modifications are not
+     * allowed any more.
+     * <p>
+     * <p>
+     * The class file represented by the given <code>CtClass</code> is loaded by the given class loader to construct a
+     * <code>java.lang.Class</code> object. Since a private method on the class loader is invoked through the reflection API,
+     * the caller must have permissions to do that.
+     * <p>
+     * <p>
+     * An easy way to obtain <code>ProtectionDomain</code> object is to call <code>getProtectionDomain()</code> in
+     * <code>java.lang.Class</code>. It returns the domain that the class belongs to.
+     * <p>
+     * <p>
+     * This method is provided for convenience. If you need more complex functionality, you should write your own class loader.
      *
-     * @param loader the class loader used to load this class. For example, the
-     *               loader returned by <code>getClassLoader()</code> can be used for
-     *               this parameter.
-     * @param domain the protection domain for the class. If it is null, the
-     *               default domain created by <code>java.lang.ClassLoader</code> is
+     * @param loader the class loader used to load this class. For example, the loader returned by <code>getClassLoader()</code>
+     *               can be used for this parameter.
+     * @param domain the protection domain for the class. If it is null, the default domain created by
+     *               <code>java.lang.ClassLoader</code> is
      */
-    public static Class<?> toClass(ClassFile ct, ClassLoader loader, ProtectionDomain domain) {
+    public static Class<?> toClass(ClassFile ct, ClassLoader loader, Class<?> beanType) {
         try {
             byte[] b = ct.toBytecode();
-            java.lang.reflect.Method method;
-            Object[] args;
-            if (domain == null) {
-                method = defineClass1;
-                args = new Object[]{ct.getName(), b, 0, b.length};
-            } else {
-                method = defineClass2;
-                args = new Object[]{ct.getName(), b, 0, b.length, domain};
-            }
-
-            return toClass2(method, loader, args);
-        } catch (RuntimeException e) {
-            throw e;
-        } catch (java.lang.reflect.InvocationTargetException e) {
-            throw new RuntimeException(e.getTargetException());
-        } catch (Exception e) {
+            MethodHandles.Lookup in = MethodHandles.privateLookupIn(beanType, MethodHandles.lookup());
+            return in.defineClass(b);
+        } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
-
-    private static synchronized Class<?> toClass2(Method method, ClassLoader loader, Object[] args) throws Exception {
-        Class<?> clazz = Class.class.cast(method.invoke(loader, args));
-        return clazz;
-    }
-
 }

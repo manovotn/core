@@ -27,7 +27,7 @@ public class ThreadLocalTestCase {
         throw new RuntimeException();
     }
 
-    @Test
+//    @Test
     public void ensureNoThreadLocalLeakOnContexts() throws Exception {
         TestContainer container = new TestContainer(Foo.class, ThreadLocalTestCase.class);
         container.startContainer();
@@ -48,7 +48,7 @@ public class ThreadLocalTestCase {
         verifyThreadLocals();
     }
 
-    @Test
+//    @Test
     public void ensureNoThreadLocalLeakOnInjectionPoints() throws Exception {
         TestContainer container = new TestContainer(Bar.class, Baz.class);
         container.startContainer();
