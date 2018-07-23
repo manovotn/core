@@ -64,12 +64,12 @@ public class CommonForkJoinPoolExecutorServices extends AbstractExecutorServices
             List<Callable<T>> wrapped = new ArrayList<>(tasks.size());
             for (Callable<T> task : tasks) {
                 wrapped.add(() -> {
-                    ClassLoader oldTccl = Thread.currentThread().getContextClassLoader();
-                    Thread.currentThread().setContextClassLoader(null);
+                    ClassLoader oldTccl = SecurityActions.getTCCL();
+                    SecurityActions.setTCCL(null);
                     try {
                         return task.call();
                     } finally {
-                        Thread.currentThread().setContextClassLoader(oldTccl);
+                        SecurityActions.setTCCL(oldTccl);
                     }
                 });
             }
