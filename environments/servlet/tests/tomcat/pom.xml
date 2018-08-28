@@ -71,12 +71,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.apache.tomcat.embed</groupId>
-            <artifactId>tomcat-embed-logging-juli</artifactId>
-            <scope>test</scope>
-        </dependency>
-
         <!-- Make sure this comes before Tomcat's EL on the classpath -->
         <dependency>
             <groupId>org.glassfish.web</groupId>
@@ -176,23 +170,28 @@
         </profile>
 
         <profile>
-            <id>tomcat7</id>
+            <id>tomcat9</id>
             <activation>
                 <property>
                     <name>tomcat</name>
-                    <value>7</value>
+                    <value>9</value>
                 </property>
             </activation>
-            <dependencies>
 
+            <properties>
+                <tomcat.version>${tomcat9.version}</tomcat.version>
+            </properties>
+
+            <dependencies>
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
-                    <artifactId>arquillian-tomcat-embedded-7</artifactId>
+                    <artifactId>arquillian-tomcat-embedded-8</artifactId>
                     <scope>test</scope>
                 </dependency>
-
             </dependencies>
+
         </profile>
+
 
         <profile>
             <id>tomcat8</id>
@@ -202,18 +201,12 @@
                 </property>
             </activation>
 
-            <properties>
-                <tomcat.version>${tomcat8.version}</tomcat.version>
-            </properties>
-
             <dependencies>
-
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
                     <artifactId>arquillian-tomcat-embedded-8</artifactId>
                     <scope>test</scope>
                 </dependency>
-
             </dependencies>
 
         </profile>

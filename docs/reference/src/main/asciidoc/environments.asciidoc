@@ -92,7 +92,7 @@ Setting the identifier is as simple as adding one context parameter into `web.xm
 
 ==== Tomcat
 
-Tomcat 7 and 8 are supported. Context activation/deactivation and dependency
+Tomcat 8 and 9 are supported. Context activation/deactivation and dependency
 injection into Servlets and Filters works out of the box. Injection into Servlet listeners works on
 Tomcat 7.0.50 and newer.
 
