@@ -39,6 +39,12 @@ public class AssignabilityTest {
 
 
     @Test
+    public void testIt() {
+        beanManager.createInstance().select(new TypeLiteral<Foo<InjectedViaInstanceWithT>>() {
+        }).get();
+    }
+
+    @Test
     public void testAssignability1() {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Dao<Order>>() {
         }.getType());
