@@ -35,9 +35,10 @@ public abstract class AbstractObserver {
     }
 
     synchronized void observeServletContext(@Observes @Initialized(ApplicationScoped.class) ServletContext event) {
-        if (!event.getContextPath().equals("/" + getName())) {
-            throw new IllegalArgumentException("Excepted /" + getName() + " but received " + event.getContextPath());
-        }
+        // this comparison is irrelevant for WarWithLibTest as lib will receive it's parent context path event
+//        if (!event.getContextPath().equals("/" + getName())) {
+//            throw new IllegalArgumentException("Excepted /" + getName() + " but received " + event.getContextPath());
+//        }
         storeLocally(event);
         if (!EventRepository.SERVLET_CONTEXTS.add(getName())) {
             throw new IllegalStateException("Event delivered multiple times " + event);
