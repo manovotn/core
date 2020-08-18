@@ -282,6 +282,7 @@
                                 <arquillian.xml>src/ftest/resources/arquillian-ftest.xml</arquillian.xml>
                                 <jacoco.agent>${jacoco.agent}</jacoco.agent>
                                 <additional.vm.args>${additional.vm.args}</additional.vm.args>
+                                <weld.jenkins.token>${weld.jenkins.token}</weld.jenkins.token>
                                 <org.jboss.remoting-jmx.timeout>360</org.jboss.remoting-jmx.timeout>
                             </systemProperties>
                             <test>${test}</test>

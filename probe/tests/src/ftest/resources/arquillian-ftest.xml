@@ -15,6 +15,9 @@
             <property name="outputToConsole">false</property>
             <property name="allowConnectingToRunningServer">true</property>
             <property name="javaVmArguments">-Xms128m -Xmx768m -XX:MaxPermSize=256m ${jacoco.agent} ${additional.vm.args}</property>
+            <!-- Arq. Drone webdrivers are downloaded from GH and rate limit can be exceeded, this gives us much higher rate limit -->
+            <property name="githubUsername">WeldJenkins</property>
+            <property name="githubToken">${weld.jenkins.token}</property>
         </configuration>
     </container>
 
