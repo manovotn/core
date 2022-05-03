@@ -44,6 +44,15 @@ public class SelfInterceptionComplexTest {
                 .addPackage(SelfInterceptionComplexTest.class.getPackage());
     }
 
+    @Inject
+    ExtendingFoo foo;
+
+    @Test
+    public void test() {
+        foo.toString();
+        foo.genericRetType();
+    }
+
     @Test
     public void selfInvokePublicMethodPublicParamsPublicReturnTypeTest() {
         SelfInterceptor.nullifyCache();
