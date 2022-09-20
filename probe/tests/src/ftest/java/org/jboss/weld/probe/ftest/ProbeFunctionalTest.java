@@ -108,7 +108,7 @@ public class ProbeFunctionalTest {
         page.getBeanArchivesTab().click();
         waitAjax(driver).until().element(By.partialLinkText(ARCHIVE_NAME)).is().visible();
         guardNoRequest(driver.findElement(By.partialLinkText(ARCHIVE_NAME))).click();
-        assertTrue(listOfTargetElements.stream().anyMatch(webElement -> webElement.getText().equals(BeanDiscoveryMode.ALL.name())));
+        assertTrue(listOfTargetElements.stream().anyMatch(webElement -> webElement.getText().equals(BeanDiscoveryMode.ANNOTATED.name())));
         assertTrue(listOfTargetElements.stream().anyMatch(webElement -> webElement.getText().contains(InvocationMonitor.class.getName())));
         assertTrue(listOfTargetElements.stream().anyMatch(webElement -> webElement.getText().contains(ARCHIVE_NAME)));
     }

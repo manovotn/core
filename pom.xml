@@ -523,6 +523,21 @@
                     </compilerArgs>
                 </configuration>
             </plugin>
+<!--            TODO remove afterwards, allows to detect vulnerabities in deps-->
+<!--            <plugin>-->
+<!--                <groupId>org.owasp</groupId>-->
+<!--                <artifactId>dependency-check-maven</artifactId>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <failBuildOnAnyVulnerability>true</failBuildOnAnyVulnerability>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 

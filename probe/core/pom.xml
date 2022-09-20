@@ -197,10 +197,10 @@
                 <rest.url.base>http://localhost:8080/weld-numberguess/weld-probe/</rest.url.base>
                 <head>
                     &lt;link rel="stylesheet" type="text/css"
-                    href="bootstrap.min-3.3.1.css"
+                    href="bootstrap.min-5.2.1.css"
                     /&gt;
                     &lt;link rel="stylesheet" type="text/css"
-                    href="bootstrap-theme.min-3.3.1.css"
+                    href="bootstrap-theme.min-5.2.1.css"
                     /&gt;
                     &lt;link rel="stylesheet" type="text/css"
                     href="basic.css" /&gt;
@@ -215,15 +215,15 @@
                     charset="utf-8"&gt;&lt;/script&gt;
                     &lt;script
                     type="text/javascript"
-                    src="jquery-2.1.1.min.js"&gt;&lt;/script&gt;
+                    src="jquery-3.6.1.min.js"&gt;&lt;/script&gt;
                     &lt;script type="text/javascript"
                     src="handlebars-v2.0.0.js"&gt;&lt;/script&gt;
                     &lt;script type="text/javascript"
                     src="ember.prod-1.9.0.js"&gt;&lt;/script&gt;
                     &lt;script type="text/javascript"
-                    src="bootstrap.min-3.3.1.js"&gt;&lt;/script&gt;
+                    src="bootstrap.min-5.2.1.js"&gt;&lt;/script&gt;
                     &lt;script type="text/javascript"
-                    src="moment.min-2.8.4.js"&gt;&lt;/script&gt;
+                    src="moment.min-2.29.4.js"&gt;&lt;/script&gt;
                     &lt;script type="text/javascript"
                     src="app.js"&gt;&lt;/script&gt;
                     &lt;script type="text/javascript"
