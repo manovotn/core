@@ -9,6 +9,7 @@ import jakarta.servlet.ServletContext;
 
 import org.apache.catalina.core.ApplicationContext;
 import org.apache.catalina.core.ApplicationContextFacade;
+import org.apache.catalina.core.DefaultInstanceManager;
 import org.apache.catalina.core.StandardContext;
 import org.apache.tomcat.InstanceManager;
 import org.jboss.weld.environment.servlet.logging.TomcatLogger;
@@ -53,21 +54,23 @@ public class WeldForwardingInstanceManager extends ForwardingInstanceManager {
 
     @Override
     public void newInstance(Object o) throws IllegalAccessException, InvocationTargetException, NamingException {
-        super.newInstance(o);
         secondProcessor.newInstance(o);
+        super.newInstance(o);
     }
 
     @Override
     public Object newInstance(String fqcn, ClassLoader classLoader) throws IllegalAccessException, InvocationTargetException, NamingException,
             InstantiationException, ClassNotFoundException, NoSuchMethodException {
-        Object a = super.newInstance(fqcn, classLoader);
-        secondProcessor.newInstance(a);
-        return a;
+        Class<?> clazz = classLoader.loadClass(fqcn);
+        Object instance = clazz.getConstructor().newInstance();
+        this.newInstance(instance);
+        return instance;
     }
 
     @Override
     public Object newInstance(String fqcn) throws IllegalAccessException, InvocationTargetException, NamingException, InstantiationException,
             ClassNotFoundException, NoSuchMethodException {
+        // TODO we cannot workaround the problem here, tomcat is using their own CL to initiate the Object
         Object a = super.newInstance(fqcn);
         secondProcessor.newInstance(a);
         return a;
@@ -75,9 +78,9 @@ public class WeldForwardingInstanceManager extends ForwardingInstanceManager {
 
     @Override
     public Object newInstance(Class<?> clazz) throws IllegalAccessException, InvocationTargetException, NamingException, InstantiationException, NoSuchMethodException {
-        Object a = super.newInstance(clazz);
-        secondProcessor.newInstance(a);
-        return a;
+        Object instance = clazz.getConstructor().newInstance();
+        this.newInstance(instance);
+        return instance;
     }
 
     public static void replaceInstanceManager(ServletContext context, WeldManager manager) {
