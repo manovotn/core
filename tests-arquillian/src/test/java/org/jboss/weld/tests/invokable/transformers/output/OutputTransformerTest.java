@@ -62,5 +62,9 @@ public class OutputTransformerTest {
         Assert.assertTrue(result instanceof Gamma);
         Assert.assertEquals("42", ((Gamma)result).ping());
         Assert.assertEquals(Integer.valueOf(42), ((Gamma)result).getInteger());
+
+        result = extension.getTransformException3().invoke(exceptionalBean, new Object[]{23});
+        Assert.assertTrue(result instanceof String);
+        Assert.assertEquals("foobar", result);
     }
 }

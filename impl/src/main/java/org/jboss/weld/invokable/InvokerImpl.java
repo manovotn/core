@@ -126,7 +126,9 @@ public class InvokerImpl<T, R> implements Invoker<T, R> {
             result = result.asType(result.type().changeParameterType(0, transformationArgType));
         } else if (TransformerType.EXCEPTION.equals(transformer.getType()) && !result.type().returnType().equals(transformationArgType)) {
             // exception handlers can return a subtype of original class and that should still be OK
-            result = result.asType(result.type().changeReturnType(annotatedMethod.getJavaMember().getReturnType()));
+            if (annotatedMethod.getJavaMember().getReturnType().isAssignableFrom(result.type().returnType())) {
+                result = result.asType(result.type().changeReturnType(annotatedMethod.getJavaMember().getReturnType()));
+            }
         }
         return result;
     }
@@ -182,12 +184,12 @@ public class InvokerImpl<T, R> implements Invoker<T, R> {
                     // TODO better exception
                     throw new DeploymentException("Output transformer " + transformer + " parameter is not assignable to the expected type " + transformationArgType);
                 }
-                // TODO this isn't currently defined in the API proposal but it looks like it's a limitation of method handles
-                if (TransformerType.EXCEPTION.equals(transformer.getType())
-                        && !annotatedMethod.getJavaMember().getReturnType().isAssignableFrom(m.getReturnType())) {
-                    // TODO better exception
-                    throw new DeploymentException("Exception transformer return type must be equal to or a subclass of the original method return type! Transformer: " + transformer);
-                }
+//                // TODO this isn't currently defined in the API proposal but it looks like it's a limitation of method handles
+//                if (TransformerType.EXCEPTION.equals(transformer.getType())
+//                        && !annotatedMethod.getJavaMember().getReturnType().isAssignableFrom(m.getReturnType())) {
+//                    // TODO better exception
+//                    throw new DeploymentException("Exception transformer return type must be equal to or a subclass of the original method return type! Transformer: " + transformer);
+//                }
                 methodHandleArgs.add(m.getParameters()[0].getType());
             }
         } else {
