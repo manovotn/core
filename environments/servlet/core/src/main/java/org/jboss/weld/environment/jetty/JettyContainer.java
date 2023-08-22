@@ -41,7 +41,6 @@ import org.jboss.weld.resources.spi.ResourceLoader;
  * only logs a message and does no further integration.
  * </p>
  * @since Jetty 9.4.20
- * @see JettyLegacyContainer
  * @author <a href="mailto:gregw@webtide.com">Greg Wilkins</a>
  */
 public class JettyContainer extends AbstractJettyContainer {

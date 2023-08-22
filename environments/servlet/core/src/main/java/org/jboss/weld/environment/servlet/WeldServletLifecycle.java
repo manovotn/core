@@ -44,7 +44,6 @@ import org.jboss.weld.bootstrap.spi.helpers.EEModuleDescriptorImpl;
 import org.jboss.weld.bootstrap.spi.helpers.MetadataImpl;
 import org.jboss.weld.configuration.spi.ExternalConfiguration;
 import org.jboss.weld.configuration.spi.helpers.ExternalConfigurationBuilder;
-import org.jboss.weld.environment.jetty.JettyLegacyContainer;
 import org.jboss.weld.lite.extension.translator.BuildCompatibleExtensionLoader;
 import org.jboss.weld.lite.extension.translator.LiteExtensionTranslator;
 import org.jboss.weld.module.web.el.WeldELContextListener;
@@ -355,7 +354,7 @@ public class WeldServletLifecycle {
             if (container == null) {
                 // 3. Built-in containers in predefined order
                 container = checkContainers(ctx, dump,
-                        Arrays.asList(TomcatContainer.INSTANCE, JettyContainer.INSTANCE, JettyLegacyContainer.INSTANCE, UndertowContainer.INSTANCE));
+                        Arrays.asList(TomcatContainer.INSTANCE, JettyContainer.INSTANCE, UndertowContainer.INSTANCE));
             }
         }
         return container;
