@@ -16,13 +16,17 @@
  */
 package org.jboss.weld.tests.beanDeployment.circular;
 
+import jakarta.ejb.Stateless;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 
+@Stateless
 @Dependent
-class Water {
-    @Inject
-    public Water(Fish fish) {
-    }
+public class Water {
 
+    @Inject
+    Fish fish;
+
+    public Water() {
+    }
 }
