@@ -326,7 +326,20 @@ public class AnnotatedTypes {
                     Object value = method.invoke(a);
                     builder.append(method.getName());
                     builder.append('=');
-                    builder.append(value.toString());
+                    // for arrays, write out every value
+                    if (value instanceof Object[]) {
+                        builder.append('[');
+                        Object[] values = (Object[]) value;
+                        for (int j = 0; j < values.length; j++) {
+                            builder.append(values[j].toString());
+                            if (j + 1 != methods.size()) {
+                                builder.append(',');
+                            }
+                        }
+                        builder.append(']');
+                    } else {
+                        builder.append(value.toString());
+                    }
                 } catch (NullPointerException e) {
                     throwRE(a, method, e);
                 } catch (IllegalArgumentException e) {
