@@ -459,6 +459,30 @@
         </pluginManagement>
         <plugins>
             <plugin>
+                <groupId>org.openrewrite.maven</groupId>
+                <artifactId>rewrite-maven-plugin</artifactId>
+                <version>6.11.0</version>
+                <configuration>
+                    <activeRecipes>
+                        <recipe>org.openrewrite.java.testing.junit5.JUnit4to5Migration</recipe>
+                        <recipe>org.openrewrite.java.testing.junit5.CleanupAssertions</recipe>
+                        <recipe>org.openrewrite.java.testing.cleanup.AssertLiteralBooleanToFailRecipe</recipe>
+                        <recipe>org.openrewrite.java.testing.junit5.AddParameterizedTestAnnotation</recipe>
+                        <recipe>org.openrewrite.java.testing.junit5.RemoveTryCatchFailBlocks</recipe>
+                        <recipe>org.openrewrite.java.testing.junit5.LifecycleNonPrivate</recipe>
+                        <recipe>org.openrewrite.java.testing.junit5.AssertThrowsOnLastStatement</recipe>
+                        <recipe>org.openrewrite.java.testing.arquillian.ArquillianJUnit4ToArquillianJUnit5</recipe>
+                    </activeRecipes>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.openrewrite.recipe</groupId>
+                        <artifactId>rewrite-testing-frameworks</artifactId>
+                        <version>3.10.0</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
