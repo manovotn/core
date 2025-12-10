@@ -3,14 +3,14 @@ package org.jboss.weld.tests.smoke;
 import jakarta.enterprise.inject.Instance;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Smoke tests -- check anything unusual.
@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
  * @author Sam Corbet
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SmokeTest {
     @Deployment
     public static Archive getDeployment() {
@@ -29,7 +29,7 @@ public class SmokeTest {
     @Test
     public void testInnerClass(Instance<Crasher> instance) {
         Crasher crasher = instance.get();
-        Assert.assertNotNull(crasher);
+        Assertions.assertNotNull(crasher);
     }
 
 }

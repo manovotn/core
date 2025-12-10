@@ -20,16 +20,16 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DisposalMethodWithStaticProducerTest {
 
     @Inject
@@ -51,7 +51,7 @@ public class DisposalMethodWithStaticProducerTest {
         Foo foo = fooInstance1.get();
         foo.ping();
         fooInstance1.destroy(foo);
-        Assert.assertTrue(FooProducer.disposed);
+        Assertions.assertTrue(FooProducer.disposed);
     }
 
     @Test
@@ -59,6 +59,6 @@ public class DisposalMethodWithStaticProducerTest {
         Foo foo = fooInstance2.get();
         foo.ping();
         fooInstance2.destroy(foo);
-        Assert.assertTrue(FooProducer.disposedStatic);
+        Assertions.assertTrue(FooProducer.disposedStatic);
     }
 }

@@ -16,10 +16,7 @@
  */
 package org.jboss.weld.tests.extensions.custombeans;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import java.util.Set;
@@ -34,19 +31,19 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.util.TypeLiteral;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author Martin Kouba
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanConfiguratorTest {
 
     @Deployment
@@ -67,7 +64,7 @@ public class BeanConfiguratorTest {
         assertEquals(Dependent.class, fooBean.getScope());
         Foo foo1 = (Foo) beanManager.getReference(fooBean, Foo.class, beanManager.createCreationalContext(fooBean));
         Foo foo2 = (Foo) beanManager.getReference(fooBean, Foo.class, beanManager.createCreationalContext(fooBean));
-        assertFalse(foo1.getId().equals(foo2.getId()));
+        assertNotEquals(foo1.getId(), foo2.getId());
 
         beans = beanManager.getBeans(Foo.class, Juicy.Literal.INSTANCE);
         assertEquals(1, beans.size());

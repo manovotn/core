@@ -24,7 +24,7 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -33,11 +33,11 @@ import org.jboss.weld.bean.ProducerMethod;
 import org.jboss.weld.bean.RIBean;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BootstrapTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -58,11 +58,11 @@ public class BootstrapTest {
                 classes.put(((RIBean<?>) bean).getType(), bean);
             }
         }
-        Assert.assertTrue(classes.containsKey(TarantulaProducer.class));
-        Assert.assertTrue(classes.containsKey(Tarantula.class));
+        Assertions.assertTrue(classes.containsKey(TarantulaProducer.class));
+        Assertions.assertTrue(classes.containsKey(Tarantula.class));
 
-        Assert.assertTrue(classes.get(TarantulaProducer.class) instanceof ManagedBean<?>);
-        Assert.assertTrue(classes.get(Tarantula.class) instanceof ProducerMethod<?, ?>);
+        Assertions.assertTrue(classes.get(TarantulaProducer.class) instanceof ManagedBean<?>);
+        Assertions.assertTrue(classes.get(Tarantula.class) instanceof ProducerMethod<?, ?>);
     }
 
 }

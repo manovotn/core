@@ -22,17 +22,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
@@ -50,8 +49,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
  *
  * @author David Allen
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class ErrorPageTest {
 
     @ArquillianResource
@@ -78,13 +77,13 @@ public class ErrorPageTest {
         HtmlTextInput strength = getFirstMatchingElement(page, HtmlTextInput.class, "stormStrength");
         strength.setValueAttribute("10");
         page = disasterButton.click();
-        Assert.assertEquals("Application Error", page.getTitleText());
+        Assertions.assertEquals("Application Error", page.getTitleText());
 
         HtmlDivision conversationValue = getFirstMatchingElement(page, HtmlDivision.class, "conversation");
-        Assert.assertEquals("10", conversationValue.asNormalizedText());
+        Assertions.assertEquals("10", conversationValue.asNormalizedText());
 
         HtmlDivision requestValue = getFirstMatchingElement(page, HtmlDivision.class, "request");
-        Assert.assertEquals("medium", requestValue.asNormalizedText());
+        Assertions.assertEquals("medium", requestValue.asNormalizedText());
     }
 
     protected String getPath(String page) {

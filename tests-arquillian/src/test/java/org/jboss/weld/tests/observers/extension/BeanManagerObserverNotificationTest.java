@@ -21,10 +21,10 @@ import java.lang.annotation.Annotation;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.runner.RunWith;
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanManagerObserverNotificationTest extends AbstractObserverNotificationTestSuperclass {
 
     @Inject

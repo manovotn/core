@@ -28,20 +28,20 @@ import jakarta.enterprise.inject.spi.ProcessProducerMethod;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class LifecycleEventOrderingTest {
 
     @Deployment
@@ -57,20 +57,20 @@ public class LifecycleEventOrderingTest {
     @Test
     public void testEventsWereFiredInCorrectOrderForProducer() {
         List<Object> actualListOfEvents = extension.getListOfProducerEvents();
-        Assert.assertEquals(4, actualListOfEvents.size());
-        Assert.assertTrue(actualListOfEvents.get(0) instanceof ProcessInjectionPoint);
-        Assert.assertTrue(actualListOfEvents.get(1) instanceof ProcessProducer);
-        Assert.assertTrue(actualListOfEvents.get(2) instanceof ProcessBeanAttributes);
-        Assert.assertTrue(actualListOfEvents.get(3) instanceof ProcessProducerMethod);
+        Assertions.assertEquals(4, actualListOfEvents.size());
+        Assertions.assertTrue(actualListOfEvents.get(0) instanceof ProcessInjectionPoint);
+        Assertions.assertTrue(actualListOfEvents.get(1) instanceof ProcessProducer);
+        Assertions.assertTrue(actualListOfEvents.get(2) instanceof ProcessBeanAttributes);
+        Assertions.assertTrue(actualListOfEvents.get(3) instanceof ProcessProducerMethod);
     }
 
     @Test
     public void testEventsWereFiredInCorrectOrderForOrdinaryBean() {
         List<Object> actualListOfEvents = extension.getListOfBeanEvents();
-        Assert.assertEquals(4, actualListOfEvents.size());
-        Assert.assertTrue(actualListOfEvents.get(0) instanceof ProcessInjectionPoint);
-        Assert.assertTrue(actualListOfEvents.get(1) instanceof ProcessInjectionTarget);
-        Assert.assertTrue(actualListOfEvents.get(2) instanceof ProcessBeanAttributes);
-        Assert.assertTrue(actualListOfEvents.get(3) instanceof ProcessManagedBean);
+        Assertions.assertEquals(4, actualListOfEvents.size());
+        Assertions.assertTrue(actualListOfEvents.get(0) instanceof ProcessInjectionPoint);
+        Assertions.assertTrue(actualListOfEvents.get(1) instanceof ProcessInjectionTarget);
+        Assertions.assertTrue(actualListOfEvents.get(2) instanceof ProcessBeanAttributes);
+        Assertions.assertTrue(actualListOfEvents.get(3) instanceof ProcessManagedBean);
     }
 }

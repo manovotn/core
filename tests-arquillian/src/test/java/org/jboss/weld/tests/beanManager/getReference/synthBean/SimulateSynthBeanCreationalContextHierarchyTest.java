@@ -1,6 +1,6 @@
 package org.jboss.weld.tests.beanManager.getReference.synthBean;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.context.spi.AlterableContext;
 import jakarta.enterprise.context.spi.CreationalContext;
@@ -11,13 +11,13 @@ import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * NOTE: The functionality this test asserts is not explicitly stated in the spec but it turned out to be relied on in
@@ -26,7 +26,7 @@ import org.junit.runner.RunWith;
  * This test aims to create two synthetic beans and use their creational context to create a link between then so that
  * once one gets destroyed, so should the other.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SimulateSynthBeanCreationalContextHierarchyTest {
 
     @Deployment

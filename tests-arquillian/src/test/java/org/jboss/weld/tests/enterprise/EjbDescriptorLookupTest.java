@@ -21,7 +21,7 @@ import jakarta.enterprise.inject.spi.InjectionTarget;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -29,17 +29,16 @@ import org.jboss.weld.bean.SessionBean;
 import org.jboss.weld.ejb.spi.EjbDescriptor;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author pmuir
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class) // all EJB tests need to use this category because the arquillian-weld-ee container does not implement EjbDescriptor.isPassivationCapable()
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration") // all EJB tests need to use this category because the arquillian-weld-ee container does not implement EjbDescriptor.isPassivationCapable()
 public class EjbDescriptorLookupTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -55,13 +54,13 @@ public class EjbDescriptorLookupTest {
         EjbDescriptor<CatLocal> descriptor = beanManager.getEjbDescriptor("Cat");
         assert descriptor.getClass().getSimpleName().equals("InternalEjbDescriptor");
         Bean<CatLocal> bean = beanManager.getBean(descriptor);
-        Assert.assertNotNull(bean);
-        Assert.assertTrue(bean instanceof SessionBean<?>);
-        Assert.assertEquals(Cat.class, bean.getBeanClass());
+        Assertions.assertNotNull(bean);
+        Assertions.assertTrue(bean instanceof SessionBean<?>);
+        Assertions.assertEquals(Cat.class, bean.getBeanClass());
         InjectionTarget<CatLocal> it = beanManager.createInjectionTarget(descriptor);
-        Assert.assertNotNull(it);
-        Assert.assertEquals(bean.getInjectionPoints(), it.getInjectionPoints());
-        Assert.assertTrue(it.produce(beanManager.createCreationalContext(bean)) instanceof CatLocal);
+        Assertions.assertNotNull(it);
+        Assertions.assertEquals(bean.getInjectionPoints(), it.getInjectionPoints());
+        Assertions.assertTrue(it.produce(beanManager.createCreationalContext(bean)) instanceof CatLocal);
     }
 
 }

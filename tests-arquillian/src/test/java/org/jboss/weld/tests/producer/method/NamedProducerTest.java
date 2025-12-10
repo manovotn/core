@@ -25,17 +25,17 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class NamedProducerTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -52,22 +52,22 @@ public class NamedProducerTest {
         Bean<?> iemonBean = beanManager.resolve(beanManager.getBeans("iemon"));
         String[] iemon = (String[]) beanManager.getReference(iemonBean, Object.class,
                 beanManager.createCreationalContext(iemonBean));
-        Assert.assertEquals(3, iemon.length);
+        Assertions.assertEquals(3, iemon.length);
         Bean<?> itoenBean = beanManager.resolve(beanManager.getBeans("itoen"));
         String[] itoen = (String[]) beanManager.getReference(itoenBean, Object.class,
                 beanManager.createCreationalContext(itoenBean));
-        Assert.assertEquals(2, itoen.length);
+        Assertions.assertEquals(2, itoen.length);
     }
 
     @Test
     public void testDefaultNamedProducerMethod() {
         Set<Bean<?>> beans = beanManager.getBeans(JmsTemplate.class);
-        Assert.assertEquals(2, beans.size());
+        Assertions.assertEquals(2, beans.size());
         List<String> beanNames = new ArrayList<String>(Arrays.asList("errorQueueTemplate", "logQueueTemplate"));
         for (Bean<?> b : beans) {
             beanNames.remove(b.getName());
         }
-        Assert.assertTrue(beanNames.isEmpty());
+        Assertions.assertTrue(beanNames.isEmpty());
     }
 
 }

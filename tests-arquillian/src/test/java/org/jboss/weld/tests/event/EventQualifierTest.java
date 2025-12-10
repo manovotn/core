@@ -28,16 +28,16 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EventQualifierTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -51,24 +51,24 @@ public class EventQualifierTest {
     @Test
     public void testDefaultQualifierNotRequired(Bar bar) {
         bar.fireWithNoQualifiers();
-        Assert.assertTrue(bar.isUnqualifiedObserved());
-        Assert.assertFalse(bar.isUpdatedObserved());
+        Assertions.assertTrue(bar.isUnqualifiedObserved());
+        Assertions.assertFalse(bar.isUpdatedObserved());
         bar.reset();
         bar.fireWithNoQualifiersViaManager();
-        Assert.assertTrue(bar.isUnqualifiedObserved());
-        Assert.assertFalse(bar.isUpdatedObserved());
+        Assertions.assertTrue(bar.isUnqualifiedObserved());
+        Assertions.assertFalse(bar.isUpdatedObserved());
         bar.reset();
         bar.fireWithUpdatedQualifierViaAnnotation();
-        Assert.assertTrue(bar.isUnqualifiedObserved());
-        Assert.assertTrue(bar.isUpdatedObserved());
+        Assertions.assertTrue(bar.isUnqualifiedObserved());
+        Assertions.assertTrue(bar.isUpdatedObserved());
         bar.reset();
         bar.fireWithUpdatedQualifierViaManager();
-        Assert.assertTrue(bar.isUpdatedObserved());
-        Assert.assertTrue(bar.isUnqualifiedObserved());
+        Assertions.assertTrue(bar.isUpdatedObserved());
+        Assertions.assertTrue(bar.isUnqualifiedObserved());
         bar.reset();
         bar.fireWithUpdatedQualifierViaSelect();
-        Assert.assertTrue(bar.isUnqualifiedObserved());
-        Assert.assertTrue(bar.isUpdatedObserved());
+        Assertions.assertTrue(bar.isUnqualifiedObserved());
+        Assertions.assertTrue(bar.isUpdatedObserved());
     }
 
     @Test
@@ -80,32 +80,32 @@ public class EventQualifierTest {
 
         // just get event fire right away - @Default should be included
         bm.getEvent().fire(new Payload());
-        Assert.assertEquals(1, bean.getDefaultObjectNotified());
-        Assert.assertEquals(1, bean.getDefaultPayloadNotified());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultObjectQualifiers());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultPayloadQualifiers());
+        Assertions.assertEquals(1, bean.getDefaultObjectNotified());
+        Assertions.assertEquals(1, bean.getDefaultPayloadNotified());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultObjectQualifiers());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultPayloadQualifiers());
 
         // select Payload and fire - @Default should be included
         bm.getEvent().select(Payload.class).fire(new Payload());
-        Assert.assertEquals(2, bean.getDefaultObjectNotified());
-        Assert.assertEquals(2, bean.getDefaultPayloadNotified());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultObjectQualifiers());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultPayloadQualifiers());
+        Assertions.assertEquals(2, bean.getDefaultObjectNotified());
+        Assertions.assertEquals(2, bean.getDefaultPayloadNotified());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultObjectQualifiers());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultPayloadQualifiers());
 
         // same in async variant
         // just get event fire right away - @Default should be included
         bm.getEvent().fireAsync(new Payload()).toCompletableFuture().get(2, TimeUnit.SECONDS);
-        Assert.assertEquals(1, bean.getDefaultObjectAsyncNotified());
-        Assert.assertEquals(1, bean.getDefaultPayloadAsyncNotified());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultObjectAsyncQualifiers());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultPayloadAsyncQualifiers());
+        Assertions.assertEquals(1, bean.getDefaultObjectAsyncNotified());
+        Assertions.assertEquals(1, bean.getDefaultPayloadAsyncNotified());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultObjectAsyncQualifiers());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultPayloadAsyncQualifiers());
 
         // select Payload and fire - @Default should be included
         bm.getEvent().select(Payload.class).fireAsync(new Payload()).toCompletableFuture().get(2, TimeUnit.SECONDS);
-        Assert.assertEquals(2, bean.getDefaultObjectAsyncNotified());
-        Assert.assertEquals(2, bean.getDefaultPayloadAsyncNotified());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultObjectAsyncQualifiers());
-        Assert.assertEquals(expectedQualifiers, bean.getDefaultPayloadAsyncQualifiers());
+        Assertions.assertEquals(2, bean.getDefaultObjectAsyncNotified());
+        Assertions.assertEquals(2, bean.getDefaultPayloadAsyncNotified());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultObjectAsyncQualifiers());
+        Assertions.assertEquals(expectedQualifiers, bean.getDefaultPayloadAsyncQualifiers());
 
     }
 

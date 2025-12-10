@@ -33,19 +33,17 @@ import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Broken;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BuiltInBeanPassivationCapableTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -58,10 +56,11 @@ public class BuiltInBeanPassivationCapableTest {
     }
 
     @Test
-    @Category({ Integration.class, Broken.class })
+    @Tag("Integration")
+    @Tag("Broken")
     public void testPrincipal(Principal principal) throws Throwable {
         Principal principal1 = Utils.deserialize(Utils.serialize(principal));
-        Assert.assertTrue(checkPrincipal(principal1));
+        Assertions.assertTrue(checkPrincipal(principal1));
     }
 
     @Test
@@ -69,30 +68,30 @@ public class BuiltInBeanPassivationCapableTest {
         // proxy for this class will be declared using our CL hence the deserialization also needs to use the same CL
         UserTransaction userTransaction1 = Utils.deserialize(Utils.serialize(userTransaction),
                 userTransaction.getClass().getClassLoader());
-        Assert.assertTrue(checkUserTransaction(userTransaction1));
+        Assertions.assertTrue(checkUserTransaction(userTransaction1));
     }
 
     @Test
     public void testBeanManagerBean(BeanManager beanManager) throws Throwable {
         BeanManager beanManager1 = Utils.deserialize(Utils.serialize(beanManager));
-        Assert.assertTrue(checkBeanManager(beanManager1));
-        Assert.assertTrue(checkEquality(beanManager, beanManager1));
+        Assertions.assertTrue(checkBeanManager(beanManager1));
+        Assertions.assertTrue(checkEquality(beanManager, beanManager1));
     }
 
     @Test
     public void testInstance(Consumer consumer) throws Throwable {
         Instance<Cow> instance = consumer.getCow();
         Instance<Cow> instance1 = Utils.deserialize(Utils.serialize(instance));
-        Assert.assertTrue(checkInstance(instance1));
-        Assert.assertTrue(checkEquality(instance, instance1));
+        Assertions.assertTrue(checkInstance(instance1));
+        Assertions.assertTrue(checkEquality(instance, instance1));
     }
 
     @Test
     public void testEvent(Consumer consumer, CowEventObserver observer) throws Throwable {
         Event<Cow> event = consumer.getEvent();
         Event<Cow> event1 = Utils.deserialize(Utils.serialize(event));
-        Assert.assertTrue(checkEvent(event1, observer));
-        Assert.assertTrue(checkEquality(event, event1));
+        Assertions.assertTrue(checkEvent(event1, observer));
+        Assertions.assertTrue(checkEquality(event, event1));
     }
 
     @Test
@@ -101,8 +100,8 @@ public class BuiltInBeanPassivationCapableTest {
         consumer.ping();
         InjectionPoint injectionPoint = Dog.getInjectionPoint();
         InjectionPoint injectionPoint1 = Utils.deserialize(Utils.serialize(injectionPoint));
-        Assert.assertTrue(checkInjectionPoint(injectionPoint1, FieldInjectionPointConsumer.class));
-        Assert.assertTrue(checkEquality(injectionPoint, injectionPoint1));
+        Assertions.assertTrue(checkInjectionPoint(injectionPoint1, FieldInjectionPointConsumer.class));
+        Assertions.assertTrue(checkEquality(injectionPoint, injectionPoint1));
     }
 
     @Test
@@ -111,8 +110,8 @@ public class BuiltInBeanPassivationCapableTest {
         consumer.ping();
         InjectionPoint injectionPoint = Dog.getInjectionPoint();
         InjectionPoint injectionPoint1 = Utils.deserialize(Utils.serialize(injectionPoint));
-        Assert.assertTrue(checkInjectionPoint(injectionPoint1, ConstructorInjectionPointConsumer.class));
-        Assert.assertTrue(checkEquality(injectionPoint, injectionPoint1));
+        Assertions.assertTrue(checkInjectionPoint(injectionPoint1, ConstructorInjectionPointConsumer.class));
+        Assertions.assertTrue(checkEquality(injectionPoint, injectionPoint1));
     }
 
     @Test
@@ -121,8 +120,8 @@ public class BuiltInBeanPassivationCapableTest {
         consumer.ping();
         InjectionPoint injectionPoint = Dog.getInjectionPoint();
         InjectionPoint injectionPoint1 = Utils.deserialize(Utils.serialize(injectionPoint));
-        Assert.assertTrue(checkInjectionPoint(injectionPoint1, MethodInjectionPointConsumer.class));
-        Assert.assertTrue(checkEquality(injectionPoint, injectionPoint1));
+        Assertions.assertTrue(checkInjectionPoint(injectionPoint1, MethodInjectionPointConsumer.class));
+        Assertions.assertTrue(checkEquality(injectionPoint, injectionPoint1));
     }
 
     @Test

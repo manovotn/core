@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -34,14 +34,14 @@ import org.jboss.weld.resources.ReflectionCacheFactory;
 import org.jboss.weld.resources.SharedObjectCache;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.util.Beans;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SimpleWeldClassTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -61,7 +61,7 @@ public class SimpleWeldClassTest {
         Collection<EnhancedAnnotatedMethod<?, ? super StringProcessor>> methods = weldClass.getEnhancedMethods();
         //assert methods.size() == 2;
         List<EnhancedAnnotatedMethod<?, ?>> interceptableMethods = Beans.getInterceptableMethods(weldClass);
-        Assert.assertEquals(5, interceptableMethods.size());
+        Assertions.assertEquals(5, interceptableMethods.size());
     }
 
 }

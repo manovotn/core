@@ -32,22 +32,21 @@ import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.BeanDiscoveryMode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.extensions.annotatedType.EcoFriendlyWashingMachine.EcoFriendlyWashingMachineLiteral;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class AnnotatedTypeExtensionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -63,8 +62,8 @@ public class AnnotatedTypeExtensionTest {
 
     @Test
     public void testMultipleBeansOfSameType(Laundry laundry) {
-        Assert.assertNotNull(laundry.ecoFriendlyWashingMachine);
-        Assert.assertNotNull(laundry.fastWashingMachine);
+        Assertions.assertNotNull(laundry.ecoFriendlyWashingMachine);
+        Assertions.assertNotNull(laundry.fastWashingMachine);
     }
 
     /*
@@ -73,36 +72,36 @@ public class AnnotatedTypeExtensionTest {
     @Test
     public void testAnnotationsAreOverridden() {
         Bean<WashingMachine> bean = Utils.getBean(beanManager, WashingMachine.class, EcoFriendlyWashingMachineLiteral.INSTANCE);
-        Assert.assertTrue(Utils.annotationSetMatches(bean.getQualifiers(), Any.class, EcoFriendlyWashingMachine.class));
+        Assertions.assertTrue(Utils.annotationSetMatches(bean.getQualifiers(), Any.class, EcoFriendlyWashingMachine.class));
 
         // Verify overriding the class structure works
         Clothes.reset();
         TumbleDryer tumbleDryer = Utils.getReference(beanManager, TumbleDryer.class);
         Bean<TumbleDryer> tumbleDryerBean = Utils.getBean(beanManager, TumbleDryer.class);
-        Assert.assertNotNull(tumbleDryer);
+        Assertions.assertNotNull(tumbleDryer);
 
-        Assert.assertFalse(containsConstructor(tumbleDryerBean.getInjectionPoints(), SerialNumber.class));
-        Assert.assertTrue(containsConstructor(tumbleDryerBean.getInjectionPoints(), Clothes.class));
-        Assert.assertNull(tumbleDryer.getSerialNumber());
-        Assert.assertNotNull(tumbleDryer.getClothes());
-        Assert.assertFalse(Clothes.getInjectionPoint().getAnnotated().isAnnotationPresent(Original.class));
+        Assertions.assertFalse(containsConstructor(tumbleDryerBean.getInjectionPoints(), SerialNumber.class));
+        Assertions.assertTrue(containsConstructor(tumbleDryerBean.getInjectionPoints(), Clothes.class));
+        Assertions.assertNull(tumbleDryer.getSerialNumber());
+        Assertions.assertNotNull(tumbleDryer.getClothes());
+        Assertions.assertFalse(Clothes.getInjectionPoint().getAnnotated().isAnnotationPresent(Original.class));
         AnnotatedConstructor<?> clothesConstructor = getConstructor(tumbleDryerBean.getInjectionPoints(), Clothes.class);
-        Assert.assertTrue(clothesConstructor.getParameters().get(0).isAnnotationPresent(Special.class));
-        Assert.assertFalse(clothesConstructor.getParameters().get(0).isAnnotationPresent(Original.class));
+        Assertions.assertTrue(clothesConstructor.getParameters().get(0).isAnnotationPresent(Special.class));
+        Assertions.assertFalse(clothesConstructor.getParameters().get(0).isAnnotationPresent(Original.class));
 
-        Assert.assertTrue(containsField(tumbleDryerBean.getInjectionPoints(), "plug"));
-        Assert.assertFalse(containsField(tumbleDryerBean.getInjectionPoints(), "coins"));
-        Assert.assertNotNull(tumbleDryer.getPlug());
-        Assert.assertNull(tumbleDryer.getCoins());
+        Assertions.assertTrue(containsField(tumbleDryerBean.getInjectionPoints(), "plug"));
+        Assertions.assertFalse(containsField(tumbleDryerBean.getInjectionPoints(), "coins"));
+        Assertions.assertNotNull(tumbleDryer.getPlug());
+        Assertions.assertNull(tumbleDryer.getCoins());
 
-        Assert.assertTrue(containsMethod(tumbleDryerBean.getInjectionPoints(), "setRunningTime", RunningTime.class));
-        Assert.assertFalse(containsMethod(tumbleDryerBean.getInjectionPoints(), "setHotAir", HotAir.class));
-        Assert.assertNotNull(tumbleDryer.getRunningTime());
-        Assert.assertNull(tumbleDryer.getHotAir());
+        Assertions.assertTrue(containsMethod(tumbleDryerBean.getInjectionPoints(), "setRunningTime", RunningTime.class));
+        Assertions.assertFalse(containsMethod(tumbleDryerBean.getInjectionPoints(), "setHotAir", HotAir.class));
+        Assertions.assertNotNull(tumbleDryer.getRunningTime());
+        Assertions.assertNull(tumbleDryer.getHotAir());
         AnnotatedMethod<?> runningTimeMethod = getMethod(tumbleDryerBean.getInjectionPoints(), "setRunningTime",
                 RunningTime.class);
-        Assert.assertTrue(runningTimeMethod.getParameters().get(0).isAnnotationPresent(Special.class));
-        Assert.assertFalse(runningTimeMethod.getParameters().get(0).isAnnotationPresent(Original.class));
+        Assertions.assertTrue(runningTimeMethod.getParameters().get(0).isAnnotationPresent(Special.class));
+        Assertions.assertFalse(runningTimeMethod.getParameters().get(0).isAnnotationPresent(Original.class));
     }
 
     private static boolean containsField(Set<InjectionPoint> injectionPoints, String name) {

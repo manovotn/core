@@ -1,28 +1,26 @@
 package org.jboss.weld.tests.injectionPoint.weld1177;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.exceptions.IllegalStateException;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:mluksa@redhat.com">Marko Luksa</a>
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class Weld1177Test {
 
     @Deployment
@@ -84,12 +82,13 @@ public class Weld1177Test {
         assertEquals(Foo.class, foo2.getInjectionPointType());
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testInjectionPointOutsideSLSB() throws Exception {
+    @Test
+    public void testInjectionPointOutsideSLSB() {
         assertNotNull(foo.getInjectionPoint());
+        assertThrows(IllegalStateException.class, () ->
         // This should yield an exception - injection point metadata injected into a stateless session bean may only be accessed within its business method
         // invocation
-        foo.getInjectionPoint().getType();
+        foo.getInjectionPoint().getType());
     }
 
 }

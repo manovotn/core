@@ -19,10 +19,10 @@ package org.jboss.weld.tests.interceptors.extension;
 import jakarta.interceptor.Interceptor;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Registers an extension-provided implementation of the {@link Interceptor} interface. This causes deployment error on Weld if
@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class CustomInterceptorRegistrationTest {
 
     @Deployment

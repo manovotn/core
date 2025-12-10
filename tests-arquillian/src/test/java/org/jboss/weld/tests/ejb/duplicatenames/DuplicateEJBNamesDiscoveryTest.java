@@ -20,7 +20,7 @@ import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.Testable;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
@@ -28,18 +28,17 @@ import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @see WELD-1680
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class DuplicateEJBNamesDiscoveryTest {
 
     @Deployment(testable = true)
@@ -71,8 +70,8 @@ public class DuplicateEJBNamesDiscoveryTest {
 
     @Test
     public void test() {
-        Assert.assertEquals(org.jboss.weld.tests.ejb.duplicatenames.first.MyEjbImpl.MESSAGE, first.call());
-        Assert.assertEquals(org.jboss.weld.tests.ejb.duplicatenames.second.MyEjbImpl.MESSAGE, second.call());
+        Assertions.assertEquals(org.jboss.weld.tests.ejb.duplicatenames.first.MyEjbImpl.MESSAGE, first.call());
+        Assertions.assertEquals(org.jboss.weld.tests.ejb.duplicatenames.second.MyEjbImpl.MESSAGE, second.call());
     }
 
 }

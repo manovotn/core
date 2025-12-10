@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.test.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -170,12 +170,12 @@ public final class ActionSequence {
      * @param expected
      */
     public void assertDataEquals(List<String> expected) {
-        assertEquals(String.format("%s and expected sequence differ in size.",
-                toString()), expected.size(), data.size());
+        assertEquals(expected.size(), data.size(), String.format("%s and expected sequence differ in size.",
+                toString()));
         for (int i = 0; i < expected.size(); i++) {
-            assertEquals(String.format(
+            assertEquals(data.get(i), expected.get(i), String.format(
                     "%s and expected sequence differ on the index %d.",
-                    toString(), i), data.get(i), expected.get(i));
+                    toString(), i));
         }
     }
 
@@ -209,8 +209,8 @@ public final class ActionSequence {
      */
     public void assertDataContainsAll(Collection<String> expected) {
         for (String s : expected) {
-            assertTrue(String.format("%s does not contain %s", toString(), s),
-                    data.contains(s));
+            assertTrue(data.contains(s),
+                    String.format("%s does not contain %s", toString(), s));
         }
     }
 

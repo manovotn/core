@@ -16,29 +16,28 @@
  */
 package org.jboss.weld.tests.resources.proxy.weld1782;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.TimeUnit;
 
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Martin Kouba
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class RequestScopeEventMessageDeliveryTest {
 
     @Deployment
@@ -62,7 +61,7 @@ public class RequestScopeEventMessageDeliveryTest {
     @Test
     // Temporarily disabled due to flaky CI results, see WELD-2760
     // Note that there is a very similar test in TCKs (with same class name) so we don't even lose coverage
-    @Ignore
+    @Disabled
     public void testEventsFired() throws Exception {
 
         AbstractMessageListener.reset();

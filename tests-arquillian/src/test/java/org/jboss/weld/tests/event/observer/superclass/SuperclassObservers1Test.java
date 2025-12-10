@@ -16,22 +16,22 @@
  */
 package org.jboss.weld.tests.event.observer.superclass;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SuperclassObservers1Test {
     @Deployment
     public static Archive<?> deploy() {
@@ -50,7 +50,7 @@ public class SuperclassObservers1Test {
     public void testObserverMethodOnOverridesWithAnnotAreInvoked() {
         reenabled.reset();
 
-        Assert.assertNull(reenabled.getTestEvent());
+        Assertions.assertNull(reenabled.getTestEvent());
         event.fire(new TestEvent());
         assertNotNull(reenabled.getTestEvent());
     }

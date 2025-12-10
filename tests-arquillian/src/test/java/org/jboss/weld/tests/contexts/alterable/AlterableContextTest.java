@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.contexts.alterable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.enterprise.context.spi.AlterableContext;
 import jakarta.enterprise.inject.spi.Bean;
@@ -27,13 +25,13 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for https://issues.jboss.org/browse/CDI-139
@@ -41,7 +39,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AlterableContextTest {
 
     private static final String[] VALUES = { "foo", "bar", "baz" };

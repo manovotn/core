@@ -20,16 +20,16 @@ package org.jboss.weld.tests.stereotypes.priority;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class StereotypeWithPriorityTest {
 
     @Deployment
@@ -53,24 +53,24 @@ public class StereotypeWithPriorityTest {
     @Test
     public void testStereotypeWithPriority() {
         // injected Foo should be FooAlternative
-        Assert.assertEquals(FooAlternative.class.getSimpleName(), foo.ping());
+        Assertions.assertEquals(FooAlternative.class.getSimpleName(), foo.ping());
     }
 
     @Test
     public void testStereotypeWithAlternativeAndPriority() {
         // injected Bar should be instance of BarExtended
-        Assert.assertEquals(BarExtended.class.getSimpleName(), bar.ping());
+        Assertions.assertEquals(BarExtended.class.getSimpleName(), bar.ping());
     }
 
     @Test
     public void testBeanPriorityFromStereotypeOverridesOtherAlternative() {
         // injected Baz should be instance of BazAlternative2
-        Assert.assertEquals(BazAlternative2.class.getSimpleName(), baz.ping());
+        Assertions.assertEquals(BazAlternative2.class.getSimpleName(), baz.ping());
     }
 
     @Test
     public void testBeanOverridesPriorityFromStereotype() {
         // injected Charlie should be instance of CharlieAlternative
-        Assert.assertEquals(CharlieAlternative.class.getSimpleName(), charlie.ping());
+        Assertions.assertEquals(CharlieAlternative.class.getSimpleName(), charlie.ping());
     }
 }

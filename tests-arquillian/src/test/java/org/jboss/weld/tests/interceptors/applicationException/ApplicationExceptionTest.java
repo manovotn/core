@@ -18,17 +18,15 @@
 package org.jboss.weld.tests.interceptors.applicationException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Broken;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test for CDI-115 and in the case of JBoss, JBAS-9266
@@ -37,8 +35,9 @@ import org.junit.runner.RunWith;
  * @author Marius Bogoevici
  */
 
-@Category(value = { Integration.class, Broken.class })
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@Tag("Broken")
+@ExtendWith(ArquillianExtension.class)
 public class ApplicationExceptionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -50,8 +49,8 @@ public class ApplicationExceptionTest {
     @Test
     public void testSuccessfulMethod(FooStateless stateless) {
         FooInterceptor.invocationCount = 0;
-        Assert.assertEquals("hello", stateless.helloWorld());
-        Assert.assertEquals(1, FooInterceptor.invocationCount);
+        Assertions.assertEquals("hello", stateless.helloWorld());
+        Assertions.assertEquals(1, FooInterceptor.invocationCount);
     }
 
     @Test
@@ -59,11 +58,11 @@ public class ApplicationExceptionTest {
         FooInterceptor.invocationCount = 0;
         try {
             stateless.fail();
-            Assert.fail("No exception thrown");
+            Assertions.fail("No exception thrown");
         } catch (Exception e) {
-            Assert.assertTrue(e instanceof FooException);
+            Assertions.assertTrue(e instanceof FooException);
         }
-        Assert.assertEquals(1, FooInterceptor.invocationCount);
+        Assertions.assertEquals(1, FooInterceptor.invocationCount);
     }
 
 }

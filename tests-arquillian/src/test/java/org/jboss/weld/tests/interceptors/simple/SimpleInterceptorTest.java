@@ -26,7 +26,7 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -37,14 +37,14 @@ import org.jboss.weld.resources.ClassTransformer;
 import org.jboss.weld.resources.ReflectionCacheFactory;
 import org.jboss.weld.resources.SharedObjectCache;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:mariusb@redhat.com">Marius Bogoevici</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SimpleInterceptorTest {
     @Deployment
     public static JavaArchive createDeployment() {
@@ -57,7 +57,7 @@ public class SimpleInterceptorTest {
     @Inject
     private BeanManager beanManager;
 
-    @Before
+    @BeforeEach
     public void resetInterceptors() {
         SimpleInterceptor.aroundInvokeCalled = false;
         SimpleInterceptor.postConstructCalled = false;

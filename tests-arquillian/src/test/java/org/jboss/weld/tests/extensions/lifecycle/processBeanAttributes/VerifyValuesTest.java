@@ -19,12 +19,7 @@ package org.jboss.weld.tests.extensions.lifecycle.processBeanAttributes;
 import static org.jboss.weld.tests.util.BeanUtilities.verifyQualifierTypes;
 import static org.jboss.weld.tests.util.BeanUtilities.verifyStereotypes;
 import static org.jboss.weld.tests.util.BeanUtilities.verifyTypes;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.annotation.Annotation;
 
@@ -37,16 +32,16 @@ import jakarta.inject.Inject;
 import jakarta.inject.Named;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.util.BeanUtilities;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class VerifyValuesTest {
 
     @Inject

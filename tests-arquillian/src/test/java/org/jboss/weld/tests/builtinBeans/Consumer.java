@@ -26,7 +26,7 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 import jakarta.transaction.UserTransaction;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 @SessionScoped
 @SuppressWarnings("serial")
@@ -59,13 +59,13 @@ public class Consumer implements Serializable {
     }
 
     public void check() {
-        Assert.assertTrue(Checker.checkBeanManager(beanManager));
+        Assertions.assertTrue(Checker.checkBeanManager(beanManager));
 
         // Not working incontainer as there is no principal
         //assert Checker.checkPrincipal(principal);
-        Assert.assertTrue(Checker.checkUserTransaction(userTransaction));
-        Assert.assertTrue(Checker.checkInstance(cow));
-        Assert.assertTrue(Checker.checkEvent(event, observer));
+        Assertions.assertTrue(Checker.checkUserTransaction(userTransaction));
+        Assertions.assertTrue(Checker.checkInstance(cow));
+        Assertions.assertTrue(Checker.checkEvent(event, observer));
     }
 
 }

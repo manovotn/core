@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.interceptors.lifecycle;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;

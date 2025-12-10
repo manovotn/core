@@ -17,20 +17,20 @@
 package org.jboss.weld.tests.decorators;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
  * @version $Revision: 1.1 $
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SimpleDecoratorTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -43,29 +43,29 @@ public class SimpleDecoratorTest {
     public void testSimpleDecorator(SimpleBean simpleBean) {
         resetDecorators();
         simpleBean.resetInvokedFlag();
-        Assert.assertEquals(1, simpleBean.echo1(1));
+        Assertions.assertEquals(1, simpleBean.echo1(1));
         assertDecoratorsInvoked(true, false, false, false);
-        Assert.assertTrue(simpleBean.isInvoked());
+        Assertions.assertTrue(simpleBean.isInvoked());
 
         resetDecorators();
         simpleBean.resetInvokedFlag();
-        Assert.assertEquals(2, simpleBean.echo2(2));
+        Assertions.assertEquals(2, simpleBean.echo2(2));
         assertDecoratorsInvoked(false, false, true, false);
-        Assert.assertTrue(simpleBean.isInvoked());
+        Assertions.assertTrue(simpleBean.isInvoked());
 
         resetDecorators();
         simpleBean.resetInvokedFlag();
-        Assert.assertEquals(3, simpleBean.echo3(3));
+        Assertions.assertEquals(3, simpleBean.echo3(3));
         assertDecoratorsInvoked(false, true, false, true);
 
-        Assert.assertTrue(simpleBean.isInvoked());
+        Assertions.assertTrue(simpleBean.isInvoked());
 
         resetDecorators();
         simpleBean.resetInvokedFlag();
-        Assert.assertEquals(4, simpleBean.echo4(4));
+        Assertions.assertEquals(4, simpleBean.echo4(4));
         assertDecoratorsInvoked(false, false, false, false);
 
-        Assert.assertTrue(simpleBean.isInvoked());
+        Assertions.assertTrue(simpleBean.isInvoked());
     }
 
     private void resetDecorators() {
@@ -75,9 +75,9 @@ public class SimpleDecoratorTest {
 
     private void assertDecoratorsInvoked(boolean decorator1Echo1, boolean decorator1Echo3, boolean decorator2Echo2,
             boolean decorator2Echo3) {
-        Assert.assertEquals(decorator1Echo1, SimpleDecorator1.echo1);
-        Assert.assertEquals(decorator1Echo3, SimpleDecorator1.echo3);
-        Assert.assertEquals(decorator2Echo2, SimpleDecorator2.echo2);
-        Assert.assertEquals(decorator2Echo3, SimpleDecorator2.echo3);
+        Assertions.assertEquals(decorator1Echo1, SimpleDecorator1.echo1);
+        Assertions.assertEquals(decorator1Echo3, SimpleDecorator1.echo3);
+        Assertions.assertEquals(decorator2Echo2, SimpleDecorator2.echo2);
+        Assertions.assertEquals(decorator2Echo3, SimpleDecorator2.echo3);
     }
 }

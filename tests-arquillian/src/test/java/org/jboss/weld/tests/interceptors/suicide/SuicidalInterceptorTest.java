@@ -19,14 +19,14 @@ package org.jboss.weld.tests.interceptors.suicide;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies that an interceptor may destroy a bean it intercepts.
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SuicidalInterceptorTest {
 
     @Inject
@@ -51,20 +51,20 @@ public class SuicidalInterceptorTest {
     @Test
     public void test() {
         InterceptedBean.reset();
-        Assert.assertEquals(1, bean.ping(true));
-        Assert.assertEquals(2, bean.ping(true));
-        Assert.assertTrue(InterceptedBean.created);
-        Assert.assertFalse(InterceptedBean.destroyed);
+        Assertions.assertEquals(1, bean.ping(true));
+        Assertions.assertEquals(2, bean.ping(true));
+        Assertions.assertTrue(InterceptedBean.created);
+        Assertions.assertFalse(InterceptedBean.destroyed);
         try {
             bean.ping(false);
-            Assert.fail();
+            Assertions.fail();
         } catch (RuntimeException expected) {
         }
-        Assert.assertTrue(InterceptedBean.created);
-        Assert.assertTrue(InterceptedBean.destroyed);
+        Assertions.assertTrue(InterceptedBean.created);
+        Assertions.assertTrue(InterceptedBean.destroyed);
         InterceptedBean.reset();
-        Assert.assertEquals(1, bean.ping(true));
-        Assert.assertTrue(InterceptedBean.created);
-        Assert.assertFalse(InterceptedBean.destroyed);
+        Assertions.assertEquals(1, bean.ping(true));
+        Assertions.assertTrue(InterceptedBean.created);
+        Assertions.assertFalse(InterceptedBean.destroyed);
     }
 }

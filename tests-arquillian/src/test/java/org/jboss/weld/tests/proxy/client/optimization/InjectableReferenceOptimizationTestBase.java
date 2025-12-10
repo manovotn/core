@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.proxy.client.optimization;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.enterprise.inject.spi.Extension;
 
@@ -62,9 +60,9 @@ public abstract class InjectableReferenceOptimizationTestBase {
     protected void assertProxy(Object beanInstance, boolean expectsProxy) {
         assertNotNull(beanInstance);
         if (expectsProxy) {
-            assertTrue(beanInstance + " is not a proxy", Utils.isProxy(beanInstance));
+            assertTrue(Utils.isProxy(beanInstance), beanInstance + " is not a proxy");
         } else {
-            assertFalse(beanInstance + " is a proxy", Utils.isProxy(beanInstance));
+            assertFalse(Utils.isProxy(beanInstance), beanInstance + " is a proxy");
         }
     }
 

@@ -20,24 +20,23 @@ import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.Testable;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Tomas Remes
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EnterpriseBeanPrivateMethodProxyTest {
 
     @Inject
@@ -66,16 +65,16 @@ public class EnterpriseBeanPrivateMethodProxyTest {
 
     @Test
     public void testSingletonSessionBean() {
-        Assert.assertTrue(foo.pingSingletonSessionBean());
+        Assertions.assertTrue(foo.pingSingletonSessionBean());
     }
 
     @Test
     public void testStatefulSessionBean() {
-        Assert.assertTrue(foo.pingStatefulSessionBean());
+        Assertions.assertTrue(foo.pingStatefulSessionBean());
     }
 
     @Test
     public void testStatelessSessionBean() {
-        Assert.assertTrue(foo.pingStatelessSessionBean());
+        Assertions.assertTrue(foo.pingStatelessSessionBean());
     }
 }

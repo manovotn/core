@@ -16,10 +16,7 @@
  */
 package org.jboss.weld.tests.injectionTarget;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.enterprise.context.spi.CreationalContext;
 import jakarta.enterprise.event.Event;
@@ -28,7 +25,7 @@ import jakarta.enterprise.inject.spi.InjectionTarget;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,11 +33,11 @@ import org.jboss.weld.exceptions.CreationException;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.manager.api.WeldInjectionTargetBuilder;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InjectionTargetTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -75,7 +72,7 @@ public class InjectionTargetTest {
         assertNotNull(instance.getManager());
         try {
             it.produce(ctx);
-            Assert.fail();
+            Assertions.fail();
         } catch (CreationException expected) {
         }
         it.preDestroy(instance);
@@ -93,7 +90,7 @@ public class InjectionTargetTest {
         assertNotNull(instance.getEvent());
         try {
             it.produce(ctx);
-            Assert.fail();
+            Assertions.fail();
         } catch (CreationException expected) {
         }
         it.preDestroy(instance);
@@ -114,7 +111,7 @@ public class InjectionTargetTest {
         assertNotNull(instance.getBeanManager());
         try {
             injectionTarget.produce(ctx);
-            Assert.fail();
+            Assertions.fail();
         } catch (CreationException expected) {
         }
     }
@@ -135,7 +132,7 @@ public class InjectionTargetTest {
         assertNotNull(instance.getBeanManager());
         try {
             injectionTarget.produce(ctx);
-            Assert.fail();
+            Assertions.fail();
         } catch (CreationException expected) {
         }
     }

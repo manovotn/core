@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 @WebServlet("/")
 public class RemoteClient extends HttpServlet {
@@ -40,25 +40,25 @@ public class RemoteClient extends HttpServlet {
             TempConsumer tempConsumer = Utils.getReference(beanManager, TempConsumer.class);
             if (pathInfo.equals("/request1")) {
 
-                Assert.assertEquals(RequestScoped.class, specialTempBean.getScope());
-                Assert.assertEquals(RequestScoped.class, uselessTempBean.getScope());
-                Assert.assertEquals(10, Utils.getReference(beanManager, specialTempBean).getNumber());
-                Assert.assertEquals(11, Utils.getReference(beanManager, uselessTempBean).getNumber());
+                Assertions.assertEquals(RequestScoped.class, specialTempBean.getScope());
+                Assertions.assertEquals(RequestScoped.class, uselessTempBean.getScope());
+                Assertions.assertEquals(10, Utils.getReference(beanManager, specialTempBean).getNumber());
+                Assertions.assertEquals(11, Utils.getReference(beanManager, uselessTempBean).getNumber());
 
                 tempConsumer.getSpecialTemp().setNumber(101);
                 tempConsumer.getUselessTemp().setNumber(102);
 
-                Assert.assertEquals(101, tempConsumer.getSpecialTemp().getNumber());
-                Assert.assertEquals(102, tempConsumer.getUselessTemp().getNumber());
-                Assert.assertEquals(101, Utils.getReference(beanManager, specialTempBean).getNumber());
-                Assert.assertEquals(102, Utils.getReference(beanManager, uselessTempBean).getNumber());
+                Assertions.assertEquals(101, tempConsumer.getSpecialTemp().getNumber());
+                Assertions.assertEquals(102, tempConsumer.getUselessTemp().getNumber());
+                Assertions.assertEquals(101, Utils.getReference(beanManager, specialTempBean).getNumber());
+                Assertions.assertEquals(102, Utils.getReference(beanManager, uselessTempBean).getNumber());
                 return;
             } else if (pathInfo.equals("/request2")) {
 
-                Assert.assertEquals(10, tempConsumer.getSpecialTemp().getNumber());
-                Assert.assertEquals(102, tempConsumer.getUselessTemp().getNumber());
-                Assert.assertEquals(10, Utils.getReference(beanManager, specialTempBean).getNumber());
-                Assert.assertEquals(102, Utils.getReference(beanManager, uselessTempBean).getNumber());
+                Assertions.assertEquals(10, tempConsumer.getSpecialTemp().getNumber());
+                Assertions.assertEquals(102, tempConsumer.getUselessTemp().getNumber());
+                Assertions.assertEquals(10, Utils.getReference(beanManager, specialTempBean).getNumber());
+                Assertions.assertEquals(102, Utils.getReference(beanManager, uselessTempBean).getNumber());
                 return;
             }
         } catch (AssertionError e) {

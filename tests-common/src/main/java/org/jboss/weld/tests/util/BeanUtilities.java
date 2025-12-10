@@ -16,9 +16,9 @@
  */
 package org.jboss.weld.tests.util;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
@@ -53,7 +53,7 @@ public class BeanUtilities {
                 fail("Expected type " + type + " not a bean type of " + attributes);
             }
         }
-        assertTrue("The following unexpected types " + types + FOUND_ON + attributes, types.isEmpty());
+        assertTrue(types.isEmpty(), "The following unexpected types " + types + FOUND_ON + attributes);
     }
 
     /**
@@ -67,7 +67,7 @@ public class BeanUtilities {
                 fail("Expected stereotype " + stereotype + NOT_FOUND_ON + attributes);
             }
         }
-        assertTrue("The following unexpected stereotypes " + stereotypes + FOUND_ON + attributes, stereotypes.isEmpty());
+        assertTrue(stereotypes.isEmpty(), "The following unexpected stereotypes " + stereotypes + FOUND_ON + attributes);
     }
 
     /**
@@ -84,7 +84,7 @@ public class BeanUtilities {
                 fail("Unexpected qualifier type " + qualifier.annotationType());
             }
         }
-        assertTrue("Expected qualifier types " + expectedQualifierTypes + " not found", expectedQualifierTypes.isEmpty());
+        assertTrue(expectedQualifierTypes.isEmpty(), "Expected qualifier types " + expectedQualifierTypes + " not found");
     }
 
     /**
@@ -97,6 +97,6 @@ public class BeanUtilities {
                 fail("Expected qualifier not present " + qualifier.annotationType());
             }
         }
-        assertTrue("Expected qualifiers" + expectedQualifiers + NOT_FOUND_ON + attributes, expectedQualifiers.isEmpty());
+        assertTrue(expectedQualifiers.isEmpty(), "Expected qualifiers" + expectedQualifiers + NOT_FOUND_ON + attributes);
     }
 }

@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.interceptors.aroundConstruct.integration;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptors;

@@ -1,8 +1,6 @@
 package org.jboss.weld.tests.beanManager;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,16 +11,16 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanManagerTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -34,24 +32,24 @@ public class BeanManagerTest {
     @Inject
     private BeanManagerImpl beanManager;
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullBeanArgumentToGetReference() {
         Bean<Foo> bean = Utils.getBean(beanManager, Foo.class);
         CreationalContext<Foo> cc = beanManager.createCreationalContext(bean);
-        beanManager.getReference(null, Foo.class, cc);
+        assertThrows(IllegalArgumentException.class, () -> beanManager.getReference(null, Foo.class, cc));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullBeanTypeArgumentToGetReference() {
         Bean<Foo> bean = Utils.getBean(beanManager, Foo.class);
         CreationalContext<Foo> cc = beanManager.createCreationalContext(bean);
-        beanManager.getReference(bean, null, cc);
+        assertThrows(IllegalArgumentException.class, () -> beanManager.getReference(bean, null, cc));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullCreationalContextArgumentToGetReference() {
         Bean<Foo> bean = Utils.getBean(beanManager, Foo.class);
-        beanManager.getReference(bean, Foo.class, null);
+        assertThrows(IllegalArgumentException.class, () -> beanManager.getReference(bean, Foo.class, null));
     }
 
     @Test
@@ -61,7 +59,7 @@ public class BeanManagerTest {
         Bean<?> sourceBean = beans.iterator().next();
         Object myBean = beanManager.getReference(sourceBean, Object.class, beanManager.createCreationalContext(sourceBean));
         assertTrue(myBean instanceof UserInfo);
-        assertEquals(((UserInfo) myBean).getUsername(), "pmuir");
+        assertEquals("pmuir", ((UserInfo) myBean).getUsername());
     }
 
     @Test

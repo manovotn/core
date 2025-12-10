@@ -17,8 +17,8 @@
 package org.jboss.weld.tests.builtinBeans.metadata;
 
 import static org.jboss.weld.util.reflection.Reflections.cast;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.lang.reflect.Type;
 import java.util.Collections;
@@ -32,16 +32,16 @@ import jakarta.enterprise.inject.spi.Interceptor;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BuiltinMetadataBeanTest {
 
     @Inject
@@ -112,7 +112,7 @@ public class BuiltinMetadataBeanTest {
         CreationalContext<?> ctx = manager.createCreationalContext(bean);
         try {
             manager.getReference(bean, type, ctx);
-            Assert.fail();
+            Assertions.fail();
         } catch (IllegalArgumentException expected) {
         }
     }

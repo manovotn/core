@@ -20,16 +20,16 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ParameterizedProducerTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -40,42 +40,42 @@ public class ParameterizedProducerTest {
     @Test
     public void testParameterizedListInjection(Target target, ParameterizedListInjection item) {
         List<String> strings = target.getStringList();
-        Assert.assertEquals(2, strings.size());
+        Assertions.assertEquals(2, strings.size());
 
-        Assert.assertEquals(2, item.getFieldInjection().size());
-        Assert.assertEquals(2, item.getValue().size());
-        Assert.assertEquals(2, item.getSetterInjection().size());
+        Assertions.assertEquals(2, item.getFieldInjection().size());
+        Assertions.assertEquals(2, item.getValue().size());
+        Assertions.assertEquals(2, item.getSetterInjection().size());
 
     }
 
     @Test
     public void testParameterizedCollectionInjection(Target target, ParameterizedCollectionInjection item) {
         Collection<String> strings = target.getStrings();
-        Assert.assertEquals(2, strings.size());
+        Assertions.assertEquals(2, strings.size());
 
-        Assert.assertEquals(2, item.getFieldInjection().size());
-        Assert.assertEquals(2, item.getValue().size());
-        Assert.assertEquals(2, item.getSetterInjection().size());
+        Assertions.assertEquals(2, item.getFieldInjection().size());
+        Assertions.assertEquals(2, item.getValue().size());
+        Assertions.assertEquals(2, item.getSetterInjection().size());
     }
 
     @Test
     public void testIntegerCollectionInjection(Target target, IntegerCollectionInjection item) {
         Collection<Integer> integers = target.getIntegers();
-        Assert.assertEquals(4, integers.size());
+        Assertions.assertEquals(4, integers.size());
 
-        Assert.assertEquals(4, item.getFieldInjection().size());
-        Assert.assertEquals(4, item.getValue().size());
-        Assert.assertEquals(4, item.getSetterInjection().size());
+        Assertions.assertEquals(4, item.getFieldInjection().size());
+        Assertions.assertEquals(4, item.getValue().size());
+        Assertions.assertEquals(4, item.getSetterInjection().size());
 
     }
 
     @Test
     public void testInstanceList(ListInstance listInstance) {
-        Assert.assertTrue(listInstance.get().isAmbiguous());
+        Assertions.assertTrue(listInstance.get().isAmbiguous());
     }
 
     @Test
     public void testTypeParameterInstance(ListStringInstance listInstance) {
-        Assert.assertEquals(2, listInstance.get().size());
+        Assertions.assertEquals(2, listInstance.get().size());
     }
 }

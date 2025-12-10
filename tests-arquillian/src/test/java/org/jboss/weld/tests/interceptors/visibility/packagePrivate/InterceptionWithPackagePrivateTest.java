@@ -21,18 +21,18 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.interceptors.visibility.packagePrivate.pack1.SoMuchBetterFoo;
 import org.jboss.weld.tests.interceptors.visibility.packagePrivate.pack2.Foo;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InterceptionWithPackagePrivateTest {
 
     @Deployment
@@ -48,7 +48,7 @@ public class InterceptionWithPackagePrivateTest {
 
     @Test
     public void testSubclassCreationOnFoo() {
-        Assert.assertTrue(instance.isResolvable());
-        org.junit.Assert.assertEquals(Foo.class.getSimpleName(), instance.get().ping());
+        Assertions.assertTrue(instance.isResolvable());
+        Assertions.assertEquals(Foo.class.getSimpleName(), instance.get().ping());
     }
 }

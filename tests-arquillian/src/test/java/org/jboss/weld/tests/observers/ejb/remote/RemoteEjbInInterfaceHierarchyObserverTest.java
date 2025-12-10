@@ -19,19 +19,18 @@ package org.jboss.weld.tests.observers.ejb.remote;
 import jakarta.enterprise.inject.spi.BeanManager;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class RemoteEjbInInterfaceHierarchyObserverTest {
 
     @Deployment
@@ -44,7 +43,7 @@ public class RemoteEjbInInterfaceHierarchyObserverTest {
     @Test
     public void testRemoteEjbObserverNotified(BeanManager beanManager) {
         beanManager.getEvent().select(Giraffe.class).fire(new Giraffe());
-        Assert.assertEquals(BarBean.observations.get(), 1);
+        Assertions.assertEquals(1, BarBean.observations.get());
     }
 
 }

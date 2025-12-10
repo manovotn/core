@@ -33,13 +33,13 @@ import jakarta.enterprise.util.Nonbinding;
 import org.jboss.weld.literal.InterceptorBindingTypeLiteral;
 import org.jboss.weld.util.annotated.ForwardingAnnotatedMethod;
 import org.jboss.weld.util.annotated.ForwardingAnnotatedType;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class QuickExtension implements Extension {
 
     public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, final BeanManager manager) {
-        Assert.assertFalse(manager.isInterceptorBinding(Quick.class));
-        Assert.assertFalse(manager.isInterceptorBinding(Slow.class));
+        Assertions.assertFalse(manager.isInterceptorBinding(Quick.class));
+        Assertions.assertFalse(manager.isInterceptorBinding(Slow.class));
         event.addInterceptorBinding(new QuickAnnotatedType(manager.createAnnotatedType(Quick.class)));
         event.addInterceptorBinding(manager.createAnnotatedType(Slow.class));
     }

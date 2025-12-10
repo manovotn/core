@@ -20,7 +20,7 @@ import jakarta.servlet.ServletContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.Testable;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -28,11 +28,10 @@ import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies that an observer is not notified of a non-visible {@link ServletContext}.
@@ -40,8 +39,8 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class MultiWarTest {
 
     @Deployment
@@ -62,18 +61,18 @@ public class MultiWarTest {
 
     @Test
     public void testServletContextObservers() {
-        Assert.assertEquals(2, EventRepository.SERVLET_CONTEXTS.size());
-        Assert.assertTrue(EventRepository.SERVLET_CONTEXTS.contains("test1"));
-        Assert.assertTrue(EventRepository.SERVLET_CONTEXTS.contains("test2"));
+        Assertions.assertEquals(2, EventRepository.SERVLET_CONTEXTS.size());
+        Assertions.assertTrue(EventRepository.SERVLET_CONTEXTS.contains("test1"));
+        Assertions.assertTrue(EventRepository.SERVLET_CONTEXTS.contains("test2"));
     }
 
     @Test
     public void testObject() {
-        Assert.assertEquals(EventRepository.OBJECTS.toString(), 5, EventRepository.OBJECTS.size());
-        Assert.assertTrue(EventRepository.OBJECTS.contains("test1"));
-        Assert.assertTrue(EventRepository.OBJECTS.contains("test2"));
-        Assert.assertTrue(EventRepository.OBJECTS.contains("lib"));
-        Assert.assertTrue(EventRepository.OBJECTS.contains("ejb1"));
-        Assert.assertTrue(EventRepository.OBJECTS.contains("ejb2"));
+        Assertions.assertEquals(5, EventRepository.OBJECTS.size(), EventRepository.OBJECTS.toString());
+        Assertions.assertTrue(EventRepository.OBJECTS.contains("test1"));
+        Assertions.assertTrue(EventRepository.OBJECTS.contains("test2"));
+        Assertions.assertTrue(EventRepository.OBJECTS.contains("lib"));
+        Assertions.assertTrue(EventRepository.OBJECTS.contains("ejb1"));
+        Assertions.assertTrue(EventRepository.OBJECTS.contains("ejb2"));
     }
 }

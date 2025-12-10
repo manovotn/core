@@ -17,28 +17,27 @@
 
 package org.jboss.weld.tests.beanManager.injectionTarget.ejb;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:mluksa@redhat.com">Marko Luksa</a>
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class InjectionTargetPostConstructTest {
 
     @Inject
@@ -57,27 +56,27 @@ public class InjectionTargetPostConstructTest {
     @Test
     public void testPostConstructInvokedOnCDIBean() {
         cdiBean.foo();
-        assertTrue("postConstruct not invoked", cdiBean.isPostConstructInvoked());
+        assertTrue(cdiBean.isPostConstructInvoked(), "postConstruct not invoked");
     }
 
     @Test
     public void testPostConstructInvokedOnEJB() {
         ejb.foo();
-        assertTrue("postConstruct not invoked", ejb.isPostConstructInvoked());
+        assertTrue(ejb.isPostConstructInvoked(), "postConstruct not invoked");
     }
 
     @Test
     public void testInjectionTargetPostConstructInvokedForCDIBean() {
         cdiBean.foo();
-        assertTrue("InjectionTarget.postConstruct not invoked",
-                InjectionTargetWrappingExtension.invokedPostConstructs.contains(TheCDIBean.class.getName()));
+        assertTrue(InjectionTargetWrappingExtension.invokedPostConstructs.contains(TheCDIBean.class.getName()),
+                "InjectionTarget.postConstruct not invoked");
     }
 
     @Test
-    @Ignore("WFLY-168")
+    @Disabled("WFLY-168")
     public void testInjectionTargetPostConstructInvokedForEJB() {
         ejb.foo();
-        assertTrue("InjectionTarget.postConstruct not invoked",
-                InjectionTargetWrappingExtension.invokedPostConstructs.contains(TheEJB.class.getName()));
+        assertTrue(InjectionTargetWrappingExtension.invokedPostConstructs.contains(TheEJB.class.getName()),
+                "InjectionTarget.postConstruct not invoked");
     }
 }

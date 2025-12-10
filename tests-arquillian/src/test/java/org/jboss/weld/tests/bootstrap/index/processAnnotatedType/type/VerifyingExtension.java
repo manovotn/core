@@ -37,7 +37,7 @@ import org.jboss.weld.event.ObserverNotifier;
 import org.jboss.weld.resolution.Resolvable;
 import org.jboss.weld.resources.ClassTransformer;
 import org.jboss.weld.resources.spi.ClassFileServices;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class VerifyingExtension implements Extension {
 
@@ -75,7 +75,7 @@ public class VerifyingExtension implements Extension {
             notResolved.removeAll(actual);
             Set<?> notExpected = new HashSet<Object>(actual);
             notExpected.removeAll(expected);
-            Assert.fail("Resolved observer mismatch for " + javaClass + ". Expected but not resolved: " + notResolved
+            Assertions.fail("Resolved observer mismatch for " + javaClass + ". Expected but not resolved: " + notResolved
                     + ". Resolved but not expected: " + notExpected);
         }
     }

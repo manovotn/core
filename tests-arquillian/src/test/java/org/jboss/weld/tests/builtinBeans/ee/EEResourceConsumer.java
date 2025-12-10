@@ -29,7 +29,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.UserTransaction;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 @SessionScoped
 public class EEResourceConsumer implements Serializable {
@@ -48,10 +48,10 @@ public class EEResourceConsumer implements Serializable {
     HorseRemote horse;
 
     public void check() {
-        Assert.assertTrue(checkUserTransaction(userTransaction));
-        Assert.assertTrue(checkEntityManager(entityManager));
-        Assert.assertTrue(checkEntityManagerFactory(entityManagerFactory));
-        Assert.assertTrue(checkRemoteEjb(horse));
+        Assertions.assertTrue(checkUserTransaction(userTransaction));
+        Assertions.assertTrue(checkEntityManager(entityManager));
+        Assertions.assertTrue(checkEntityManagerFactory(entityManagerFactory));
+        Assertions.assertTrue(checkRemoteEjb(horse));
     }
 
 }

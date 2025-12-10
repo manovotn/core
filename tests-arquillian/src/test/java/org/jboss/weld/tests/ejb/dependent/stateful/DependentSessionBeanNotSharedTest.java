@@ -24,8 +24,8 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.config.ConfigurationKey;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.util.PropertiesBuilder;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * See http://lists.jboss.org/pipermail/cdi-dev/2014-December/005800.html for details
@@ -52,6 +52,6 @@ public abstract class DependentSessionBeanNotSharedTest {
 
     @Test
     public void testDependentStatefulSessionBeanNotSharedBetweenInjectionPoints() {
-        Assert.assertEquals("init", injection.invokeStatefulService());
+        Assertions.assertEquals("init", injection.invokeStatefulService());
     }
 }

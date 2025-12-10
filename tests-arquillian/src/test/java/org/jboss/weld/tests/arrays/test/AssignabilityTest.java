@@ -14,19 +14,19 @@ import jakarta.enterprise.util.TypeLiteral;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AssignabilityTest {
 
     @Inject
@@ -43,8 +43,8 @@ public class AssignabilityTest {
         Set<Bean<Result<? extends Throwable, ? super Exception>>> beans = getBeans(
                 new TypeLiteral<Result<? extends Throwable, ? super Exception>>() {
                 });
-        Assert.assertEquals(1, beans.size());
-        Assert.assertTrue(rawTypeSetMatches(beans.iterator().next().getTypes(), Result.class, Object.class));
+        Assertions.assertEquals(1, beans.size());
+        Assertions.assertTrue(rawTypeSetMatches(beans.iterator().next().getTypes(), Result.class, Object.class));
     }
 
     @Test
@@ -52,8 +52,8 @@ public class AssignabilityTest {
         Set<Bean<Result<? extends Exception, ? super Exception>>> beans = getBeans(
                 new TypeLiteral<Result<? extends Exception, ? super Exception>>() {
                 });
-        Assert.assertEquals(1, beans.size());
-        Assert.assertTrue(rawTypeSetMatches(beans.iterator().next().getTypes(), Result.class, Object.class));
+        Assertions.assertEquals(1, beans.size());
+        Assertions.assertTrue(rawTypeSetMatches(beans.iterator().next().getTypes(), Result.class, Object.class));
     }
 
     public <T> Set<Bean<T>> getBeans(TypeLiteral<T> type, Annotation... bindings) {

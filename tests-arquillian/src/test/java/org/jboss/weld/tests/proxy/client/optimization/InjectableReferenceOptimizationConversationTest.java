@@ -16,23 +16,26 @@
  */
 package org.jboss.weld.tests.proxy.client.optimization;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author Martin Kouba
  * @see WELD-1659
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class InjectableReferenceOptimizationConversationTest extends InjectableReferenceOptimizationTestBase {
 
     @Test
-    @InSequence(1)
+    @Order(1)
     public void testConversationScopedBean(Delta delta) {
         assertNotNull(delta);
         assertIsProxy(delta.getAlpha());
@@ -46,7 +49,7 @@ public class InjectableReferenceOptimizationConversationTest extends InjectableR
     }
 
     @Test
-    @InSequence(2)
+    @Order(2)
     public void initBravo(Delta delta) {
         assertNotNull(delta);
         // Lazy init @ApplicationScoped bravo
@@ -54,7 +57,7 @@ public class InjectableReferenceOptimizationConversationTest extends InjectableR
     }
 
     @Test
-    @InSequence(3)
+    @Order(3)
     public void testConversationScopedBeanExistingApplicationScoped(Delta delta) {
         assertNotNull(delta);
         // Bravo exists but optimization is not allowed

@@ -1,6 +1,6 @@
 package org.jboss.weld.tests.weld1192;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Set;
 
@@ -9,18 +9,18 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:mluksa@redhat.com">Marko Luksa</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class Weld1192Test {
 
     @Deployment
@@ -36,7 +36,7 @@ public class Weld1192Test {
     public void testTypedBeanDeployment() {
         // tests that typed bean can be deployed
         Set<Bean<?>> beans = manager.getBeans(StringFoo.class);
-        assertTrue(beans.size() == 1);
+        assertEquals(1, beans.size());
     }
 
 }

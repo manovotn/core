@@ -19,19 +19,19 @@ package org.jboss.weld.tests.stereotypes.alternative;
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Kirill Gaevskii
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AlternativeStereotypeTest {
 
     @Deployment
@@ -43,6 +43,6 @@ public class AlternativeStereotypeTest {
 
     @Test
     public void testStereotypeGloballyEnabledByExtension(UsefullLogic usefullLogic) {
-        Assert.assertEquals(UsefullLogicAlternative.class, usefullLogic.getName());
+        Assertions.assertEquals(UsefullLogicAlternative.class, usefullLogic.getName());
     }
 }

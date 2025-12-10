@@ -20,21 +20,21 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that you can create a custom bean via (Weld)BeanConfigurator and give it a priority hence selecting it.
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class CustomBeanPriorityTest {
 
     @Deployment
@@ -52,8 +52,8 @@ public class CustomBeanPriorityTest {
 
     @Test
     public void contextLifecycleEventFiredForPostConstructCallbackActivation() {
-        Assert.assertEquals("bar", alternative.ping());
-        Assert.assertEquals("bar", foo.ping());
-        Assert.assertEquals(1, MyExtension.PSB_OBSERVED);
+        Assertions.assertEquals("bar", alternative.ping());
+        Assertions.assertEquals("bar", foo.ping());
+        Assertions.assertEquals(1, MyExtension.PSB_OBSERVED);
     }
 }

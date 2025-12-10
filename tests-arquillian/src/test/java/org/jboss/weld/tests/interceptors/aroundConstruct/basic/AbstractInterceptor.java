@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.interceptors.aroundConstruct.basic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Constructor;
 

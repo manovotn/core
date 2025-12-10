@@ -16,16 +16,14 @@
  */
 package org.jboss.weld.tests.enterprise.lifecycle;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.hamcrest.Description;
-import org.hamcrest.SelfDescribing;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
@@ -35,12 +33,10 @@ import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.ComparisonFailure;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -58,8 +54,8 @@ import com.gargoylesoftware.htmlunit.WebClient;
  *         <p/>
  *         Spec version: Public Release Draft 2
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EnterpriseBeanLifecycleRemoteTest {
     @Deployment(testable = false)
     public static Archive<?> deploy() {
@@ -72,7 +68,7 @@ public class EnterpriseBeanLifecycleRemoteTest {
                 .setManifest(new StringAsset("Manifest-Version: 1.0\nClass-Path: test-archive.jar\n")));
         ear.addAsModule(ShrinkWrap.create(BeanArchive.class, "test-archive.jar")
                 .addClasses(KleinStadt.class, Kassel.class, GrossStadt.class, FrankfurtAmMain.class, SchoeneStadt.class)
-                .addClasses(Utils.class, Assert.class, Description.class, SelfDescribing.class, ComparisonFailure.class)
+                .addClasses(Utils.class, Assertions.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml"));
         return ear;
     }
@@ -84,9 +80,9 @@ public class EnterpriseBeanLifecycleRemoteTest {
     public void testDestroyRemovesSFSB() throws Exception {
         WebClient client = new WebClient();
         Page page = client.getPage(getPath("request1"));
-        assertEquals(page.getWebResponse().getStatusCode(), HttpServletResponse.SC_OK);
+        assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
         page = client.getPage(getPath("request2"));
-        assertEquals(page.getWebResponse().getStatusCode(), HttpServletResponse.SC_OK);
+        assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
     }
 
     protected String getPath(String viewId) {

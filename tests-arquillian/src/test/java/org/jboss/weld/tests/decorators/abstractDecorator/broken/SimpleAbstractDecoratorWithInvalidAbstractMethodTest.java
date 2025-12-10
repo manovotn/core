@@ -21,19 +21,19 @@ import jakarta.enterprise.inject.spi.DefinitionException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.ShouldThrowException;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:mariusb@redhat.com">Marius Bogoevici</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SimpleAbstractDecoratorWithInvalidAbstractMethodTest {
     @Deployment
     @ShouldThrowException(DefinitionException.class)
@@ -47,6 +47,6 @@ public class SimpleAbstractDecoratorWithInvalidAbstractMethodTest {
 
     @Test
     public void testAbstractDecoratorApplied() {
-        Assert.assertFalse(false);
+        Assertions.assertFalse(false);
     }
 }

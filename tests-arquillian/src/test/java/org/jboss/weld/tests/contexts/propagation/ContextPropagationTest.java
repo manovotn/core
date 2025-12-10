@@ -24,15 +24,15 @@ import jakarta.enterprise.inject.spi.CDI;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.manager.api.WeldManager;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test verifies context propagation using an executor service with one thread to which we offload some Callable. Callable is
@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ContextPropagationTest {
 
     @Deployment
@@ -88,9 +88,9 @@ public class ContextPropagationTest {
     private void pingBeanAndOffloadTask(WeldManager manager, Class<? extends AbstractBeanWithState> beanClazz) {
         // use the bean in this thread first - set counter to one
         AbstractBeanWithState bean = manager.instance().select(beanClazz).get();
-        Assert.assertEquals(0, bean.getValue());
+        Assertions.assertEquals(0, bean.getValue());
         bean.incrementCounter();
-        Assert.assertEquals(1, bean.getValue());
+        Assertions.assertEquals(1, bean.getValue());
 
         // prepare a callable which will further increase the counter and return the value we gave there
         Callable<Integer> callableTask = () -> {
@@ -103,21 +103,21 @@ public class ContextPropagationTest {
         // block until we have result
         try {
             Integer result = futureResult.get();
-            Assert.assertEquals(2, result.intValue());
+            Assertions.assertEquals(2, result.intValue());
         } catch (InterruptedException e) {
-            Assert.fail("Encountered InterruptedException while waiting for result from a different thread!");
+            Assertions.fail("Encountered InterruptedException while waiting for result from a different thread!");
         } catch (ExecutionException e) {
-            Assert.fail(e.toString());
+            Assertions.fail(e.toString());
         }
     }
 
     private void pingBeanAndRunImmediately(WeldManager manager, Class<? extends AbstractBeanWithState> beanClazz) {
         // use the bean in this thread first - set counter to two
         AbstractBeanWithState bean = manager.instance().select(beanClazz).get();
-        Assert.assertEquals(0, bean.getValue());
+        Assertions.assertEquals(0, bean.getValue());
         bean.incrementCounter();
         bean.incrementCounter();
-        Assert.assertEquals(2, bean.getValue());
+        Assertions.assertEquals(2, bean.getValue());
 
         // prepare a callable which will further increase the counter and return the value we found there
         Callable<Integer> callableTask = () -> {
@@ -126,6 +126,6 @@ public class ContextPropagationTest {
             return beanInCallable.getValue();
         };
         Integer result = ContextPropagationService.wrapAndRunOnTheSameThread(callableTask);
-        Assert.assertEquals(1, result.intValue());
+        Assertions.assertEquals(1, result.intValue());
     }
 }

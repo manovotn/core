@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.security.members;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
@@ -43,14 +41,16 @@ import jakarta.enterprise.inject.spi.Producer;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies that members that were set accessible by Weld do not leak to the application.
@@ -60,7 +60,8 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AccessibleMemberLeakTest {
 
     @Inject
@@ -78,7 +79,7 @@ public class AccessibleMemberLeakTest {
     }
 
     @Test
-    @InSequence(-1)
+    @Order(-1)
     public void init(Instance<SimpleBean> bean, Instance<Integer> integer, Event<String> event, Instance<Float> f) {
         bean.get();
         integer.destroy(integer.get());

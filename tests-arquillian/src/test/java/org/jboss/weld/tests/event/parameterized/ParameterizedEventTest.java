@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.event.parameterized;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,14 +29,14 @@ import jakarta.enterprise.util.TypeLiteral;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test that verifies that the container uses the runtime type of the event object as the event type. If the event type contains
@@ -47,7 +47,7 @@ import org.junit.runner.RunWith;
  * @see WELD-1272
  * @see CDI-256
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ParameterizedEventTest {
 
     @Inject
@@ -181,7 +181,7 @@ public class ParameterizedEventTest {
     public void testUnresolvedTypeVariableDetected1() {
         try {
             integerListFooEvent.fire(new Blah<List<Integer>, Integer>());
-            Assert.fail();
+            Assertions.fail();
         } catch (IllegalArgumentException expected) {
         }
     }
@@ -192,7 +192,7 @@ public class ParameterizedEventTest {
         try {
             event.select(new TypeLiteral<Map<Exception, T>>() {
             }).fire(new HashMap<Exception, T>());
-            Assert.fail();
+            Assertions.fail();
         } catch (IllegalArgumentException expected) {
         }
     }
@@ -203,7 +203,7 @@ public class ParameterizedEventTest {
         try {
             event.select(new TypeLiteral<ArrayList<List<List<List<T>>>>>() {
             }).fire(new ArrayList<List<List<List<T>>>>());
-            Assert.fail();
+            Assertions.fail();
         } catch (IllegalArgumentException expected) {
         }
     }

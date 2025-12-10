@@ -17,7 +17,7 @@ import org.jboss.weld.tests.invokable.common.ReturnValueTransformer;
 import org.jboss.weld.tests.invokable.common.SimpleBean;
 import org.jboss.weld.tests.invokable.common.TransformableBean;
 import org.jboss.weld.tests.invokable.common.TrulyExceptionalBean;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class ObservingExtension implements Extension {
 
@@ -150,7 +150,7 @@ public class ObservingExtension implements Extension {
 
     public void createNoTransformationInvokers(@Observes WeldProcessManagedBean<SimpleBean> pmb) {
         Collection<AnnotatedMethod<? super SimpleBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (AnnotatedMethod<? super SimpleBean> invokableMethod : invokableMethods) {
             if (invokableMethod.getJavaMember().getName().contains("staticPing")) {
                 staticNoTransformationInvoker = pmb.createInvoker(invokableMethod).build();
@@ -170,7 +170,7 @@ public class ObservingExtension implements Extension {
 
     public void createArgTransformationInvokers(@Observes WeldProcessManagedBean<TransformableBean> pmb) {
         Collection<AnnotatedMethod<? super TransformableBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (AnnotatedMethod<? super TransformableBean> invokableMethod : invokableMethods) {
             if (invokableMethod.getJavaMember().getName().contains("staticPing")) {
                 staticArgTransformingInvoker = pmb.createInvoker(invokableMethod)
@@ -196,7 +196,7 @@ public class ObservingExtension implements Extension {
 
     public void createInstanceTransformationInvokers(@Observes WeldProcessManagedBean<TransformableBean> pmb) {
         Collection<AnnotatedMethod<? super TransformableBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (AnnotatedMethod<? super TransformableBean> invokableMethod : invokableMethods) {
             if (invokableMethod.getJavaMember().getName().contains("ping")) {
                 instanceTransformerInvoker = pmb.createInvoker(invokableMethod)
@@ -214,7 +214,7 @@ public class ObservingExtension implements Extension {
 
     public void createReturnValueTransformationInvokers(@Observes WeldProcessManagedBean<TransformableBean> pmb) {
         Collection<AnnotatedMethod<? super TransformableBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (AnnotatedMethod<? super TransformableBean> invokableMethod : invokableMethods) {
             if (invokableMethod.getJavaMember().getName().contains("ping")) {
                 returnTransformerInvoker = pmb.createInvoker(invokableMethod)
@@ -237,7 +237,7 @@ public class ObservingExtension implements Extension {
 
     public void createExceptionTransformationInvokers(@Observes WeldProcessManagedBean<TrulyExceptionalBean> pmb) {
         Collection<AnnotatedMethod<? super TrulyExceptionalBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(2, invokableMethods.size());
+        Assertions.assertEquals(2, invokableMethods.size());
         for (AnnotatedMethod<? super TrulyExceptionalBean> invokableMethod : invokableMethods) {
             if (invokableMethod.getJavaMember().getName().contains("ping")) {
                 exceptionTransformerInvoker = pmb.createInvoker(invokableMethod)
@@ -254,7 +254,7 @@ public class ObservingExtension implements Extension {
 
     public void createInvocationWrapperInvokers(@Observes WeldProcessManagedBean<SimpleBean> pmb) {
         Collection<AnnotatedMethod<? super SimpleBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (AnnotatedMethod<? super SimpleBean> invokableMethod : invokableMethods) {
             if (invokableMethod.getJavaMember().getName().contains("ping")) {
                 invocationWrapperInvoker = pmb.createInvoker(invokableMethod)

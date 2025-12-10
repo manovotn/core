@@ -24,7 +24,7 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -32,11 +32,11 @@ import org.jboss.weld.bean.ManagedBean;
 import org.jboss.weld.bean.RIBean;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BootstrapTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -56,15 +56,15 @@ public class BootstrapTest {
                 classes.put(((RIBean<?>) bean).getType(), bean);
             }
         }
-        Assert.assertTrue(classes.containsKey(Tuna.class));
-        Assert.assertTrue(classes.containsKey(Salmon.class));
-        Assert.assertTrue(classes.containsKey(SeaBass.class));
-        Assert.assertTrue(classes.containsKey(Sole.class));
+        Assertions.assertTrue(classes.containsKey(Tuna.class));
+        Assertions.assertTrue(classes.containsKey(Salmon.class));
+        Assertions.assertTrue(classes.containsKey(SeaBass.class));
+        Assertions.assertTrue(classes.containsKey(Sole.class));
 
-        Assert.assertTrue(classes.get(Tuna.class) instanceof ManagedBean);
-        Assert.assertTrue(classes.get(Salmon.class) instanceof ManagedBean);
-        Assert.assertTrue(classes.get(SeaBass.class) instanceof ManagedBean);
-        Assert.assertTrue(classes.get(Sole.class) instanceof ManagedBean);
+        Assertions.assertTrue(classes.get(Tuna.class) instanceof ManagedBean);
+        Assertions.assertTrue(classes.get(Salmon.class) instanceof ManagedBean);
+        Assertions.assertTrue(classes.get(SeaBass.class) instanceof ManagedBean);
+        Assertions.assertTrue(classes.get(Sole.class) instanceof ManagedBean);
     }
 
 }

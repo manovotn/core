@@ -18,20 +18,20 @@
 package org.jboss.weld.tests.interceptors.tb;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.BeanDiscoveryMode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DAOTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -46,10 +46,10 @@ public class DAOTest {
         TxInterceptor.ignoreDup = false;
 
         Client c = filter.verify();
-        Assert.assertNotNull(c);
+        Assertions.assertNotNull(c);
         c = filter.check();
-        Assert.assertNotNull(c);
-        Assert.assertEquals("TxInterceptor_TEMP", c.name);
+        Assertions.assertNotNull(c);
+        Assertions.assertEquals("TxInterceptor_TEMP", c.name);
         filter.save(c);
     }
 }

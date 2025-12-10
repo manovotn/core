@@ -11,23 +11,23 @@ import jakarta.enterprise.inject.spi.el.ELAwareBeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.test.util.el.EL;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test the injection of ELAwareBeanManager.
  *
  * @author Andrew Rouse
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ELAwareBeanManagerInjectionTest {
 
     @Deployment
@@ -47,10 +47,10 @@ public class ELAwareBeanManagerInjectionTest {
     @Test
     public void testInjection() {
         ELAwareBeanManager elBm = bean.getElAwareBeanManager();
-        Assert.assertNotNull("elBm", elBm);
+        Assertions.assertNotNull(elBm, "elBm");
 
         ELResolver elResolver = elBm.getELResolver();
-        Assert.assertNotNull("elResolver", elResolver);
+        Assertions.assertNotNull(elResolver, "elResolver");
 
         // Attempt to use the resolver
         ExpressionFactory exprFactory = EL.EXPRESSION_FACTORY;
@@ -58,12 +58,12 @@ public class ELAwareBeanManagerInjectionTest {
 
         ValueExpression exp = exprFactory.createValueExpression(elContext, "Result: ${testbean.value}", String.class);
         String value = exp.getValue(elContext);
-        Assert.assertEquals("Result: hello", value);
+        Assertions.assertEquals("Result: hello", value);
 
         // Use it as a regular BeanManager (e.g. look up a bean)
         Set<Bean<?>> beans = beanManager.getBeans(ELAwareTestBean.class);
-        Assert.assertEquals(1, beans.size());
+        Assertions.assertEquals(1, beans.size());
         Bean<?> bean = beans.stream().findFirst().get();
-        Assert.assertEquals("testbean", bean.getName());
+        Assertions.assertEquals("testbean", bean.getName());
     }
 }

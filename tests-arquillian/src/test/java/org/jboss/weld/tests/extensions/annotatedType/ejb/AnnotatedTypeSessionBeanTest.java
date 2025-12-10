@@ -19,25 +19,24 @@ package org.jboss.weld.tests.extensions.annotatedType.ejb;
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.test.util.annotated.TestAnnotatedTypeBuilder;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that it is possible to override ejb annotations through the SPI
  *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class AnnotatedTypeSessionBeanTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -49,12 +48,12 @@ public class AnnotatedTypeSessionBeanTest {
 
     @Test
     public void testOverridingEjbAnnotations(@ConveyorShaft Shaft conveyerShaft) {
-        Assert.assertNotNull(conveyerShaft);
+        Assertions.assertNotNull(conveyerShaft);
     }
 
     @Test
     public void testAddingBultipleBeansPerEjbClass(@BigLathe LatheLocal bigLathe, @SmallLathe LatheLocal smallLathe) {
-        Assert.assertNotNull(bigLathe);
-        Assert.assertNotNull(smallLathe);
+        Assertions.assertNotNull(bigLathe);
+        Assertions.assertNotNull(smallLathe);
     }
 }

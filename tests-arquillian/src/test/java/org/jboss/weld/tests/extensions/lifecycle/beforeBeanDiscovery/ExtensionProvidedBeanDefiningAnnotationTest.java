@@ -20,25 +20,24 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Kirill Gaevskii
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
-@Ignore("WELD-1624")
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
+@Disabled("WELD-1624")
 public class ExtensionProvidedBeanDefiningAnnotationTest {
 
     @Deployment
@@ -59,11 +58,11 @@ public class ExtensionProvidedBeanDefiningAnnotationTest {
 
     @Test
     public void testCreateBean() {
-        Assert.assertNotNull(mainBean);
+        Assertions.assertNotNull(mainBean);
     }
 
     @Test
     public void testInjectedBeanMustSayHello() {
-        Assert.assertEquals("Hello world!", mainBean.greetingFromBean());
+        Assertions.assertEquals("Hello world!", mainBean.greetingFromBean());
     }
 }

@@ -21,23 +21,22 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class RequestScopedCacheLeakTest {
 
     @ArquillianResource
@@ -64,7 +63,7 @@ public class RequestScopedCacheLeakTest {
         for (int i = 0; i < 100; i++) {
             // now send out normal requests to see if they are affected by the thread's broken state
             String result = sendRequest(webClient, i, false);
-            Assert.assertFalse("Invalid state detected after " + (i + 1) + " requests", result.startsWith("bar"));
+            Assertions.assertFalse(result.startsWith("bar"), "Invalid state detected after " + (i + 1) + " requests");
         }
     }
 

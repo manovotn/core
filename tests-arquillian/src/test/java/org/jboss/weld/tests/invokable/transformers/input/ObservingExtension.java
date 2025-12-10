@@ -8,7 +8,7 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.invoke.Invoker;
 
 import org.jboss.weld.bootstrap.event.WeldProcessManagedBean;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class ObservingExtension implements Extension {
 
@@ -40,7 +40,7 @@ public class ObservingExtension implements Extension {
 
     public void observe(@Observes WeldProcessManagedBean<ActualBean> pmb) {
         Collection<AnnotatedMethod<? super ActualBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(2, invokableMethods.size());
+        Assertions.assertEquals(2, invokableMethods.size());
         for (AnnotatedMethod<? super ActualBean> invokableMethod : invokableMethods) {
             if (invokableMethod.getJavaMember().getName().contains("ping")) {
                 noTransformer = pmb.createInvoker(invokableMethod).build();

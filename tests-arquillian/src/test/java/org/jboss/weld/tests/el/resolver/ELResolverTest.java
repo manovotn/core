@@ -16,23 +16,24 @@
  */
 package org.jboss.weld.tests.el.resolver;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import jakarta.el.ELContext;
 import jakarta.el.ExpressionFactory;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.test.util.el.EL;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test the WeldELResolver and that it collaborates with the standard EL resolver chain.
@@ -40,7 +41,7 @@ import org.junit.runner.RunWith;
  * @author Pete Muir
  * @author Dan Allen
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ELResolverTest {
     @Deployment
     public static JavaArchive createDeployment() {
@@ -68,7 +69,7 @@ public class ELResolverTest {
 
         Object value = exprFactory.createValueExpression(elContext, "#{beer.style}", String.class).getValue(elContext);
 
-        Assert.assertEquals("Belgium Strong Dark Ale", value);
+        Assertions.assertEquals("Belgium Strong Dark Ale", value);
     }
 
     @Test // WELD-874
@@ -103,23 +104,24 @@ public class ELResolverTest {
         ExpressionFactory exprFactory = EL.EXPRESSION_FACTORY;
 
         Object value = exprFactory.createValueExpression(elContext, "#{beerOnTap.style}", String.class).getValue(elContext);
-        Assert.assertEquals("IPA", value);
+        Assertions.assertEquals("IPA", value);
     }
 
-    @Test(expected = OrderException.class)
+    @Test
     // WELD-782
     public void testErrorMessageGood(BeanManagerImpl beanManager) {
         ELContext ctx = EL.createELContext(beanManager);
-        EL.EXPRESSION_FACTORY.createValueExpression(ctx, "#{orderBean.orderId}", Object.class).getValue(ctx);
+        assertThrows(OrderException.class,
+                () -> EL.EXPRESSION_FACTORY.createValueExpression(ctx, "#{orderBean.orderId}", Object.class).getValue(ctx));
     }
 
     @Test
     public void testCompoundName(BeanManagerImpl beanManager) {
         ELContext ctx = EL.createELContext(beanManager);
         Object bean = EL.EXPRESSION_FACTORY.createValueExpression(ctx, "#{com.acme.settings}", Object.class).getValue(ctx);
-        Assert.assertTrue(bean instanceof MyBean);
+        Assertions.assertTrue(bean instanceof MyBean);
         Object foo = EL.EXPRESSION_FACTORY.createValueExpression(ctx, "#{com.acme.settings.foo}", Object.class).getValue(ctx);
-        Assert.assertTrue(foo instanceof String);
-        Assert.assertEquals("foo", foo);
+        Assertions.assertTrue(foo instanceof String);
+        Assertions.assertEquals("foo", foo);
     }
 }

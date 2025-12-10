@@ -19,22 +19,21 @@ package org.jboss.weld.tests.interceptors.circularInvocation.ejb;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Kirill Gaevskii
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class CircularInvocationClassTest {
 
     @Inject
@@ -50,11 +49,11 @@ public class CircularInvocationClassTest {
 
     @Test
     public void testCircularInvocationWithApplicationScopedBean() {
-        Assert.assertEquals(2, foo1.getSomeValueFromBar());
+        Assertions.assertEquals(2, foo1.getSomeValueFromBar());
     }
 
     @Test
     public void testDependentBean() {
-        Assert.assertEquals(2, foo2.getSomeValueFromBar());
+        Assertions.assertEquals(2, foo2.getSomeValueFromBar());
     }
 }

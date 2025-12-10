@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.extensions.lifecycle.processInjectionPoint;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.Bean;

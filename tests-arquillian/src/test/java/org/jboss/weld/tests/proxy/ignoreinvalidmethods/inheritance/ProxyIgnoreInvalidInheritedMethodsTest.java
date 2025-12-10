@@ -3,16 +3,16 @@ package org.jboss.weld.tests.proxy.ignoreinvalidmethods.inheritance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.config.ConfigurationKey;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.util.PropertiesBuilder;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * A bean class implementing a hierarchy of abstract classes where one introduces a method and the other implements it
@@ -20,7 +20,7 @@ import org.junit.runner.RunWith;
  *
  * See WELD-2785
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ProxyIgnoreInvalidInheritedMethodsTest {
 
     @Deployment
@@ -40,11 +40,11 @@ public class ProxyIgnoreInvalidInheritedMethodsTest {
     public void testProxy() {
         // firstly, the test should be able to deploy and execute, i.e. to create the proxy
         // then we verify that interception happens only for one of methods
-        Assert.assertEquals(0, SecureInterceptor.timesInvoked);
+        Assertions.assertEquals(0, SecureInterceptor.timesInvoked);
         implBean.pong();
-        Assert.assertEquals(1, SecureInterceptor.timesInvoked);
+        Assertions.assertEquals(1, SecureInterceptor.timesInvoked);
         implBean.ping();
-        Assert.assertEquals(1, SecureInterceptor.timesInvoked);
+        Assertions.assertEquals(1, SecureInterceptor.timesInvoked);
     }
 
 }

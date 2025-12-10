@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import jakarta.ejb.Stateless;
 import jakarta.enterprise.event.Observes;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 @Stateless
 public class BarBean implements BarRemote {
@@ -30,7 +30,7 @@ public class BarBean implements BarRemote {
 
     @Override
     public void observeSuperGiraffe(@Observes Giraffe giraffe) {
-        Assert.assertNotNull(giraffe);
+        Assertions.assertNotNull(giraffe);
         observations.incrementAndGet();
     }
 

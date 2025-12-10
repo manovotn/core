@@ -4,21 +4,21 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.classDefining.packPrivate.api.Alpha;
 import org.jboss.weld.tests.classDefining.packPrivate.interceptor.MyInterceptor;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * See WELD-2758
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ProxyForInterceptedPackagePrivateBeanTest {
 
     @Deployment
@@ -34,7 +34,7 @@ public class ProxyForInterceptedPackagePrivateBeanTest {
     @Test
     public void testProxyCanBeCreated() {
         Instance<Alpha> select = instance.select(Alpha.class);
-        Assert.assertTrue(select.isResolvable());
-        Assert.assertEquals(MyInterceptor.class.getSimpleName() + Alpha.class.getSimpleName(), select.get().ping());
+        Assertions.assertTrue(select.isResolvable());
+        Assertions.assertEquals(MyInterceptor.class.getSimpleName() + Alpha.class.getSimpleName(), select.get().ping());
     }
 }

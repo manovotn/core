@@ -5,16 +5,16 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ObserverReceptionConfigurationTest {
 
     @Deployment
@@ -34,15 +34,15 @@ public class ObserverReceptionConfigurationTest {
     @Test
     public void testObserverReceptionChanged() {
         // assert initial state
-        Assert.assertEquals(0, ObservingBean.timesObserved);
+        Assertions.assertEquals(0, ObservingBean.timesObserved);
 
         // fire event and assert again, should not be notified
         fooEvent.fire(new Foo());
-        Assert.assertEquals(0, ObservingBean.timesObserved);
+        Assertions.assertEquals(0, ObservingBean.timesObserved);
 
         // trigger bean creation and repeat the test
         bean.ping();
         fooEvent.fire(new Foo());
-        Assert.assertEquals(1, ObservingBean.timesObserved);
+        Assertions.assertEquals(1, ObservingBean.timesObserved);
     }
 }

@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.event.async;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletionException;
@@ -29,13 +27,13 @@ import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Simple testcase for WELD-1793
@@ -43,7 +41,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class FireAsyncTest {
 
     @Deployment
@@ -68,7 +66,7 @@ public class FireAsyncTest {
     public void testAsyncEventExecutedInDifferentThread() throws InterruptedException {
         BlockingQueue<ThreadCapturingMessage> synchronizer = new LinkedBlockingQueue<>();
         event.fireAsync(new ThreadCapturingMessage()).thenAccept(synchronizer::add);
-        assertFalse(synchronizer.poll(2, TimeUnit.SECONDS).receivingThread.equals(Thread.currentThread()));
+        assertNotEquals(synchronizer.poll(2, TimeUnit.SECONDS).receivingThread, Thread.currentThread());
     }
 
     @Test

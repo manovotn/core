@@ -20,18 +20,18 @@ import jakarta.enterprise.inject.spi.DefinitionException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.ShouldThrowException;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test related to WELD-746, verifies inherited observer methods that is not
  * part of their business interface causes DefinitionException
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InheritedObserverMethodNotInBusinessInterfaceValidationTest {
     @Deployment
     @ShouldThrowException(DefinitionException.class)

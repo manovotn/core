@@ -24,7 +24,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -32,20 +32,19 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.config.ConfigurationKey;
 import org.jboss.weld.test.util.Timer;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.util.PropertiesBuilder;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.TextPage;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.util.Cookie;
 
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class ConversationLockTimeoutTest {
 
     private static final String JSESSIONID = "JSESSIONID";
@@ -76,11 +75,11 @@ public class ConversationLockTimeoutTest {
 
         TextPage initPage = client.getPage(url + "inspect?mode=" + InspectServlet.MODE_INIT);
         String cid = extractCid(initPage.getContent());
-        Assert.assertNotNull(cid);
-        Assert.assertFalse(cid.isEmpty());
+        Assertions.assertNotNull(cid);
+        Assertions.assertFalse(cid.isEmpty());
         String jsessionid = client.getCookieManager().getCookie(JSESSIONID).getValue();
-        Assert.assertNotNull(jsessionid);
-        Assert.assertFalse(jsessionid.isEmpty());
+        Assertions.assertNotNull(jsessionid);
+        Assertions.assertFalse(jsessionid.isEmpty());
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         WebRequest longTask = new WebRequest(InspectServlet.MODE_LONG_TASK, url, cid, jsessionid);
@@ -92,8 +91,8 @@ public class ConversationLockTimeoutTest {
         timer.setSleepInterval(100l).setDelay(2, TimeUnit.SECONDS)
                 .addStopCondition(() -> longTaskFuture.isDone() || busyRequestFuture.isDone()).start();
 
-        Assert.assertEquals("OK", longTaskFuture.get());
-        Assert.assertEquals("Conversation locked", busyRequestFuture.get());
+        Assertions.assertEquals("OK", longTaskFuture.get());
+        Assertions.assertEquals("Conversation locked", busyRequestFuture.get());
         executorService.shutdown();
     }
 

@@ -20,19 +20,19 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Tomas Remes
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DisposesMethodCalledOnceTest {
 
     @Inject
@@ -48,42 +48,42 @@ public class DisposesMethodCalledOnceTest {
     public void testDisposerCalledOnce1() {
         ProducerBean.reset();
         beanManager.getEvent().select(String.class).fire("Hello");
-        Assert.assertEquals("Disposer method called multiple times!", 1, ProducerBean.firstDisposerCalled.get());
+        Assertions.assertEquals(1, ProducerBean.firstDisposerCalled.get(), "Disposer method called multiple times!");
     }
 
     @Test
     public void testDisposerCalledOnce2() {
         ProducerBean.reset();
         beanManager.getEvent().select(String.class).fire("Hello");
-        Assert.assertEquals("Disposer method called multiple times!", 1, ProducerBean.secondDisposerCalled.get());
+        Assertions.assertEquals(1, ProducerBean.secondDisposerCalled.get(), "Disposer method called multiple times!");
     }
 
     @Test
     public void testDisposerCalledOnce3() {
         ProducerBean.reset();
         beanManager.getEvent().select(String.class).fire("Hello");
-        Assert.assertEquals("Disposer method called multiple times!", 1, ProducerBean.thirdDisposerCalled.get());
+        Assertions.assertEquals(1, ProducerBean.thirdDisposerCalled.get(), "Disposer method called multiple times!");
     }
 
     @Test
     public void testDisposerCalledOnce4() {
         ProducerBean.reset();
         beanManager.getEvent().select(String.class).fire("Hello");
-        Assert.assertEquals("Disposer method called multiple times!", 1, ProducerBean.forthDisposerCalled.get());
+        Assertions.assertEquals(1, ProducerBean.forthDisposerCalled.get(), "Disposer method called multiple times!");
     }
 
     @Test
     public void testDisposerCalledOnce5() {
         ProducerBean.reset();
         beanManager.getEvent().select(String.class).fire("Hello");
-        Assert.assertEquals("Disposer method called multiple times!", 1, ProducerBean.fifthDisposerCalled.get());
+        Assertions.assertEquals(1, ProducerBean.fifthDisposerCalled.get(), "Disposer method called multiple times!");
     }
 
     @Test
     public void testDisposerCalledOnce6() {
         ProducerBean.reset();
         beanManager.getEvent().select(String.class).fire("Hello");
-        Assert.assertEquals("Disposer method called multiple times!", 1, ProducerBean.sixthDisposerCalled.get());
+        Assertions.assertEquals(1, ProducerBean.sixthDisposerCalled.get(), "Disposer method called multiple times!");
     }
 
 }

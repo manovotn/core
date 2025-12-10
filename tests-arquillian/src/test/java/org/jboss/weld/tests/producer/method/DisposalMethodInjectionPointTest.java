@@ -21,17 +21,17 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DisposalMethodInjectionPointTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -52,9 +52,9 @@ public class DisposalMethodInjectionPointTest {
         Bean<BarConsumer> barConsumerBean = Utils.getBean(beanManager, BarConsumer.class);
         CreationalContext<BarConsumer> ctx = beanManager.createCreationalContext(barConsumerBean);
         BarConsumer barConsumer = barConsumerBean.create(ctx);
-        Assert.assertEquals("bar", BarProducer.getProducedInjection().getName());
+        Assertions.assertEquals("bar", BarProducer.getProducedInjection().getName());
         Bar bar = barConsumer.getBar();
         barConsumerBean.destroy(barConsumer, ctx);
-        Assert.assertEquals(bar, BarProducer.getDisposedBar());
+        Assertions.assertEquals(bar, BarProducer.getDisposedBar());
     }
 }

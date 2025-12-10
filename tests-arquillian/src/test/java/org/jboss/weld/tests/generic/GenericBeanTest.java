@@ -17,19 +17,19 @@
 package org.jboss.weld.tests.generic;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class GenericBeanTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -39,15 +39,15 @@ public class GenericBeanTest {
 
     @Test
     public void testGenericBean(TestBean testBean) {
-        Assert.assertEquals("Hello", testBean.echo("Hello"));
-        Assert.assertEquals(Integer.valueOf(1), testBean.echo(1));
+        Assertions.assertEquals("Hello", testBean.echo("Hello"));
+        Assertions.assertEquals(Integer.valueOf(1), testBean.echo(1));
 
         Subclass subclassInstance = new Subclass();
-        Assert.assertSame(subclassInstance, testBean.echo(subclassInstance));
-        Assert.assertSame(subclassInstance, testBean.echo((BaseClass) subclassInstance));
+        Assertions.assertSame(subclassInstance, testBean.echo(subclassInstance));
+        Assertions.assertSame(subclassInstance, testBean.echo((BaseClass) subclassInstance));
 
         BaseClass baseInstance = new BaseClass();
-        Assert.assertSame(baseInstance, testBean.echo(baseInstance));
+        Assertions.assertSame(baseInstance, testBean.echo(baseInstance));
     }
 
 }

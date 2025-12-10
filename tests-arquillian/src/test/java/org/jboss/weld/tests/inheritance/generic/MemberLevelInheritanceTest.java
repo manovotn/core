@@ -17,9 +17,7 @@
 
 package org.jboss.weld.tests.inheritance.generic;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -28,18 +26,18 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Martin Kouba
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class MemberLevelInheritanceTest {
 
     @Deployment
@@ -109,8 +107,8 @@ public class MemberLevelInheritanceTest {
         assertEquals(parameterizedType.getRawType(), rawType);
 
         Type[] arguments = parameterizedType.getActualTypeArguments();
-        assertEquals(arguments.length, 1);
-        assertTrue(arguments[0].equals(argumentType));
+        assertEquals(1, arguments.length);
+        assertEquals(arguments[0], argumentType);
     }
 
 }

@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.event.async.executor;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -35,13 +33,13 @@ import jakarta.enterprise.event.ObservesAsync;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Simple testcase for {@link Event#fireAsync(Object, Executor)}. See WELD-1793 for details.
@@ -49,7 +47,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class FireAsyncWithExecutorTest {
 
     private static final SynchronousQueue<Response> SYNCHRONIZER = new SynchronousQueue<>();
@@ -68,15 +66,14 @@ public class FireAsyncWithExecutorTest {
     @Test
     public void testGivenExecutorUsed() throws InterruptedException {
         // easily identifiable thread pool
-        Executor executor = Executors.newSingleThreadExecutor(runnable -> {
-            return new Thread(runnable, FireAsyncWithExecutorTest.class.getName());
-        });
+        Executor executor = Executors
+                .newSingleThreadExecutor(runnable -> new Thread(runnable, FireAsyncWithExecutorTest.class.getName()));
         request.fireAsync(new Request(), NotificationOptions.ofExecutor(executor));
         final Response response = SYNCHRONIZER.poll(30, TimeUnit.SECONDS);
         assertTrue(REQUEST_RECEIVED.get());
         assertNotNull(RESPONSE_RECEIVED.get());
         assertEquals(FireAsyncWithExecutorTest.class.getName(), RESPONSE_RECEIVED.get().getThread().getName());
-        assertNotNull("Synchronization failed", response);
+        assertNotNull(response, "Synchronization failed");
         assertEquals(FireAsyncWithExecutorTest.class.getName(), response.getThread().getName());
     }
 

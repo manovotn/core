@@ -1,6 +1,6 @@
 package org.jboss.weld.tests.accessibility.bce.lib;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.build.compatible.spi.Parameters;

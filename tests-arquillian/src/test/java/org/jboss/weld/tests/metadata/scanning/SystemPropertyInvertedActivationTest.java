@@ -3,23 +3,23 @@ package org.jboss.weld.tests.metadata.scanning;
 import static org.jboss.weld.tests.metadata.scanning.SystemPropertyExtension.SET_PROPERTY_1;
 import static org.jboss.weld.tests.metadata.scanning.SystemPropertyExtension.UNSET_PROPERTY_1;
 import static org.jboss.weld.tests.metadata.scanning.Utils.createBeansXml;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.tests.metadata.Qux;
 import org.jboss.weld.tests.metadata.scanning.jboss.Baz;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SystemPropertyInvertedActivationTest {
 
     public static final Asset BEANS_XML = createBeansXml(

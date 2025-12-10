@@ -19,19 +19,20 @@ package org.jboss.weld.tests.event.async.contextClassLoader;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that async observer notification preserves TCCL that the original application had.
@@ -40,7 +41,7 @@ import org.junit.runner.RunWith;
  *
  * @author Matej Novotny
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AsyncEventNotificationPreservesTCCLTest {
 
     @Inject
@@ -61,16 +62,14 @@ public class AsyncEventNotificationPreservesTCCLTest {
         final CountDownLatch latch = new CountDownLatch(1);
         ClassLoader originalCl = Thread.currentThread().getContextClassLoader();
         event.fireAsync(() -> latch.countDown());
-        boolean latchWait = false;
-        try {
-            latchWait = latch.await(3, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Assert.fail("Interrupted while waiting for latch countdown.");
-        }
-        if (!latchWait) {
-            Assert.fail("CountDownLatch didn't reach 0 in time limit.");
+        AtomicBoolean latchWait = new AtomicBoolean(false);
+        Assertions.assertDoesNotThrow(() -> {
+            latchWait.set(latch.await(3, TimeUnit.SECONDS));
+        }, "Interrupted while waiting for latch countdown.");
+        if (!latchWait.get()) {
+            Assertions.fail("CountDownLatch didn't reach 0 in time limit.");
         }
         // assert both TCCL are the same
-        Assert.assertEquals(originalCl, observer.getTccl());
+        Assertions.assertEquals(originalCl, observer.getTccl());
     }
 }

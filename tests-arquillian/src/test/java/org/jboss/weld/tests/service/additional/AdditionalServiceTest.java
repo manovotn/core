@@ -19,7 +19,7 @@ package org.jboss.weld.tests.service.additional;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
@@ -29,9 +29,9 @@ import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.transaction.spi.TransactionServices;
 import org.jboss.weld.util.ServiceLoader;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies, that additional {@link Service} implementations are discovered using {@link ServiceLoader} and registered.
@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AdditionalServiceTest {
 
     @Inject
@@ -68,9 +68,9 @@ public class AdditionalServiceTest {
 
     @Test
     public void testSimpleAdditionalService() {
-        Assert.assertNotNull(manager.getServices().get(AlphaService.class));
-        Assert.assertTrue(manager.getServices().get(AlphaService.class) instanceof AlphaImpl);
-        Assert.assertNull(manager.getServices().get(AlphaImpl.class));
+        Assertions.assertNotNull(manager.getServices().get(AlphaService.class));
+        Assertions.assertTrue(manager.getServices().get(AlphaService.class) instanceof AlphaImpl);
+        Assertions.assertNull(manager.getServices().get(AlphaImpl.class));
     }
 
     @Test
@@ -78,11 +78,11 @@ public class AdditionalServiceTest {
         Bravo1Service bravo1 = manager.getServices().get(Bravo1Service.class);
         Bravo2Service bravo2 = manager.getServices().get(Bravo2Service.class);
         BravoImpl bravo3 = manager.getServices().get(BravoImpl.class);
-        Assert.assertNotNull(bravo1);
-        Assert.assertNotNull(bravo2);
-        Assert.assertNotNull(bravo3);
-        Assert.assertTrue(bravo1 == bravo2);
-        Assert.assertTrue(bravo2 == bravo3);
+        Assertions.assertNotNull(bravo1);
+        Assertions.assertNotNull(bravo2);
+        Assertions.assertNotNull(bravo3);
+        Assertions.assertTrue(bravo1 == bravo2);
+        Assertions.assertTrue(bravo2 == bravo3);
     }
 
     /**
@@ -91,7 +91,7 @@ public class AdditionalServiceTest {
     @Test
     public void testOverridingService() {
         TransactionServices transactionServices = manager.getServices().get(TransactionServices.class);
-        Assert.assertNotNull(transactionServices);
-        Assert.assertTrue(transactionServices instanceof TransactionServices2);
+        Assertions.assertNotNull(transactionServices);
+        Assertions.assertTrue(transactionServices instanceof TransactionServices2);
     }
 }

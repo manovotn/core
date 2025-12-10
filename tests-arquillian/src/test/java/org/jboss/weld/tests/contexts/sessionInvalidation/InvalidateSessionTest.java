@@ -22,17 +22,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -47,8 +46,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
  *
  * @author Pete Muir
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class InvalidateSessionTest {
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
@@ -77,13 +76,13 @@ public class InvalidateSessionTest {
                 "invalidateSessionButton");
         page = invalidateSessionButton.click();
         HtmlInput inputField = getFirstMatchingElement(page, HtmlInput.class, "prop");
-        Assert.assertEquals(Storm.PROPERTY_VALUE, inputField.getValueAttribute());
+        Assertions.assertEquals(Storm.PROPERTY_VALUE, inputField.getValueAttribute());
 
         // Make another request to verify that the session bean value is not the
         // one from the previous invalidated session.
         page = client.getPage(getPath("/storm.xhtml"));
         inputField = getFirstMatchingElement(page, HtmlInput.class, "prop");
-        Assert.assertEquals(SomeBean.DEFAULT_PROPERTY_VALUE, inputField.getValueAttribute());
+        Assertions.assertEquals(SomeBean.DEFAULT_PROPERTY_VALUE, inputField.getValueAttribute());
     }
 
     /*

@@ -20,19 +20,19 @@ package org.jboss.weld.tests.decorators.abstractDecorator;
 import static org.jboss.weld.tests.decorators.abstractDecorator.AbstractDecoratorTestHelper.resetAll;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:mariusb@redhat.com">Marius Bogoevici</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SimpleAbstractDecoratorWithAbstractMethodTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -48,14 +48,14 @@ public class SimpleAbstractDecoratorWithAbstractMethodTest {
     public void testAbstractDecoratorApplied(WindowImpl window) {
         resetAll();
         window.draw();
-        Assert.assertTrue(WindowImpl.drawn);
-        Assert.assertTrue(FrameWithFieldInjectedDelegate.drawn);
-        Assert.assertFalse(FrameWithFieldInjectedDelegateAndAbstractMethod.moved);
+        Assertions.assertTrue(WindowImpl.drawn);
+        Assertions.assertTrue(FrameWithFieldInjectedDelegate.drawn);
+        Assertions.assertFalse(FrameWithFieldInjectedDelegateAndAbstractMethod.moved);
 
         resetAll();
         window.move();
-        Assert.assertTrue(WindowImpl.moved);
-        Assert.assertFalse(FrameWithFieldInjectedDelegate.drawn);
-        Assert.assertTrue(FrameWithFieldInjectedDelegateAndAbstractMethod.moved);
+        Assertions.assertTrue(WindowImpl.moved);
+        Assertions.assertFalse(FrameWithFieldInjectedDelegate.drawn);
+        Assertions.assertTrue(FrameWithFieldInjectedDelegateAndAbstractMethod.moved);
     }
 }

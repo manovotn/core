@@ -8,7 +8,7 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.enterprise.invoke.Invoker;
 
 import org.jboss.weld.bootstrap.event.WeldProcessManagedBean;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class ObservingExtension implements Extension {
 
@@ -45,7 +45,7 @@ public class ObservingExtension implements Extension {
 
     public void observe(@Observes WeldProcessManagedBean<ActualBean> pmb) {
         Collection<AnnotatedMethod<? super ActualBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(1, invokableMethods.size());
+        Assertions.assertEquals(1, invokableMethods.size());
         AnnotatedMethod<? super ActualBean> invokableMethod = invokableMethods.iterator().next();
         noTransformer = pmb.createInvoker(invokableMethod).build();
         transformReturnType1 = pmb.createInvoker(invokableMethod)
@@ -58,7 +58,7 @@ public class ObservingExtension implements Extension {
 
     public void observeExceptionally(@Observes WeldProcessManagedBean<ExceptionalBean> pmb) {
         Collection<AnnotatedMethod<? super ExceptionalBean>> invokableMethods = pmb.getAnnotatedBeanClass().getMethods();
-        Assert.assertEquals(1, invokableMethods.size());
+        Assertions.assertEquals(1, invokableMethods.size());
         AnnotatedMethod<? super ExceptionalBean> invokableMethod = invokableMethods.iterator().next();
 
         transformException1 = pmb.createInvoker(invokableMethod)

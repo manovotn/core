@@ -21,21 +21,21 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Before WELD-2338, this use case resulted in DefinitionException as the OM was recognized as container lifecycle observer
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ObserverInExtensionTest {
 
     @Inject
@@ -52,14 +52,14 @@ public class ObserverInExtensionTest {
     public void testObserversAreRecognizedCorrectly() {
         // firstly, @Observes Object o  should have notifications from container event already
         int cleNotified = Observer.timesCleNotified.get();
-        Assert.assertTrue(cleNotified > 1);
-        Assert.assertEquals(0, Observer.timesNonCleNotified.get());
+        Assertions.assertTrue(cleNotified > 1);
+        Assertions.assertEquals(0, Observer.timesNonCleNotified.get());
 
         // then we fire additional event and see if @Observers @Experimental Object   was notified
         bm.getEvent().select(Payload.class, Experimental.Literal.INSTANCE).fire(new Payload());
-        Assert.assertTrue(Observer.nonCleFooInjected.get());
-        Assert.assertEquals(1, Observer.timesNonCleNotified.get());
+        Assertions.assertTrue(Observer.nonCleFooInjected.get());
+        Assertions.assertEquals(1, Observer.timesNonCleNotified.get());
         // @Observes Object  should get notification as well
-        Assert.assertTrue(cleNotified < Observer.timesCleNotified.get());
+        Assertions.assertTrue(cleNotified < Observer.timesCleNotified.get());
     }
 }

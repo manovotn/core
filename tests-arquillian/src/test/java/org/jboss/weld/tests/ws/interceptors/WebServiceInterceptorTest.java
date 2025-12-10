@@ -29,27 +29,26 @@ import jakarta.xml.ws.Service;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * [JBWS-3441] Support CDI interceptors for POJO JAX-WS services
  *
  * @author <a href="mailto:ropalka@redhat.com">Richard Opalka</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 @RunAsClient
-@Category(Integration.class)
+@Tag("Integration")
 public class WebServiceInterceptorTest {
 
     @ArquillianResource
@@ -86,14 +85,14 @@ public class WebServiceInterceptorTest {
     public void testPojoCall() throws Exception {
         String message = "Hi";
         String response = getPojo().echo(message);
-        Assert.assertEquals("Hi (including POJO interceptor)", response);
+        Assertions.assertEquals("Hi (including POJO interceptor)", response);
     }
 
     @Test
     public void testEjb3Call() throws Exception {
         String message = "Hi";
         String response = getEjb3().echo(message);
-        Assert.assertEquals("Hi (including EJB interceptor)", response);
+        Assertions.assertEquals("Hi (including EJB interceptor)", response);
     }
 
     private static final String BEANS_CONFIG = "<beans><interceptors>"

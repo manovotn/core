@@ -20,17 +20,17 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ProxyTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -47,7 +47,7 @@ public class ProxyTest {
     @Test
     public void testImplementationClassImplementsSerializable() {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("foo"));
-        Assert.assertNotNull(beanManager.getReference(bean, Object.class, beanManager.createCreationalContext(bean)));
+        Assertions.assertNotNull(beanManager.getReference(bean, Object.class, beanManager.createCreationalContext(bean)));
 
     }
 
@@ -55,15 +55,15 @@ public class ProxyTest {
     public void testProxyInvocations() {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("foo"));
         Foo foo = (Foo) beanManager.getReference(bean, Foo.class, beanManager.createCreationalContext(bean));
-        Assert.assertEquals(Foo.MESSAGE, foo.getMsg(0, 0L, 0D, false, 'a', 0F, (short) 0));
-        Assert.assertEquals(Foo.MESSAGE, foo.getRealMsg(0, 0L, 0D, false, 'a', 0F, (short) 0));
+        Assertions.assertEquals(Foo.MESSAGE, foo.getMsg(0, 0L, 0D, false, 'a', 0F, (short) 0));
+        Assertions.assertEquals(Foo.MESSAGE, foo.getRealMsg(0, 0L, 0D, false, 'a', 0F, (short) 0));
     }
 
     @Test
     public void testSelfInvocationInConstructor() {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("baz"));
         Baz baz = (Baz) beanManager.getReference(bean, Baz.class, beanManager.createCreationalContext(bean));
-        Assert.assertEquals(1, baz.getCount());
+        Assertions.assertEquals(1, baz.getCount());
     }
 
     /**
@@ -73,11 +73,11 @@ public class ProxyTest {
     public void testHashCodeImplmentation() {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("baz"));
         Baz baz = (Baz) beanManager.getReference(bean, Baz.class, beanManager.createCreationalContext(bean));
-        Assert.assertTrue(baz.hashCode() == baz.getClass().hashCode());
+        Assertions.assertEquals(baz.hashCode(), baz.getClass().hashCode());
 
         bean = beanManager.resolve(beanManager.getBeans("burt"));
         Burt burt = (Burt) beanManager.getReference(bean, Burt.class, beanManager.createCreationalContext(bean));
-        Assert.assertTrue(burt.hashCode() == burt.getClass().hashCode());
+        Assertions.assertEquals(burt.hashCode(), burt.getClass().hashCode());
     }
 
     @Test
@@ -85,23 +85,23 @@ public class ProxyTest {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("baz"));
         Baz baz1 = (Baz) beanManager.getReference(bean, Baz.class, beanManager.createCreationalContext(bean));
         Baz baz2 = (Baz) beanManager.getReference(bean, Baz.class, beanManager.createCreationalContext(bean));
-        Assert.assertEquals(baz1, baz2);
+        Assertions.assertEquals(baz1, baz2);
 
         bean = beanManager.resolve(beanManager.getBeans("burt"));
         Burt burt1 = (Burt) beanManager.getReference(bean, Burt.class, beanManager.createCreationalContext(bean));
         Burt burt2 = (Burt) beanManager.getReference(bean, Burt.class, beanManager.createCreationalContext(bean));
-        Assert.assertEquals(burt1, burt2);
+        Assertions.assertEquals(burt1, burt2);
     }
 
     @Test
     public void testBeanInstanceDoesNotEscape() {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("wobble"));
         Wobble wobble = (Wobble) beanManager.getReference(bean, Wobble.class, beanManager.createCreationalContext(bean));
-        Assert.assertSame(wobble, wobble.getThis());
+        Assertions.assertSame(wobble, wobble.getThis());
         // package private classes have a diffent code path
         // as they do not use direct bytecode invocation
         bean = beanManager.resolve(beanManager.getBeans("wibble"));
         Wibble wibble = (Wibble) beanManager.getReference(bean, Wibble.class, beanManager.createCreationalContext(bean));
-        Assert.assertSame(wibble, wibble.getThis());
+        Assertions.assertSame(wibble, wibble.getThis());
     }
 }

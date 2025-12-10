@@ -17,19 +17,18 @@
 package org.jboss.weld.tests.resolution.circular.resource;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class ResourceCircularDependencyTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -41,6 +40,6 @@ public class ResourceCircularDependencyTest {
 
     @Test
     public void testResourceProducerField(Baz baz) throws Exception {
-        Assert.assertFalse(baz.getFooDb().contains(new Bar()));
+        Assertions.assertFalse(baz.getFooDb().contains(new Bar()));
     }
 }

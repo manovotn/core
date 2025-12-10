@@ -16,12 +16,12 @@
  */
 package org.jboss.weld.tests.interceptors.binding.inheritance;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -31,8 +31,8 @@ import org.jboss.weld.tests.interceptors.binding.inheritance.Interceptors.BravoI
 import org.jboss.weld.tests.interceptors.binding.inheritance.Interceptors.CharlieInterceptor;
 import org.jboss.weld.tests.interceptors.binding.inheritance.Interceptors.DeltaInterceptor;
 import org.jboss.weld.tests.interceptors.binding.inheritance.Interceptors.EchoInterceptor;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @see CDI-2
@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InheritedInterceptorBindingsTest {
 
     @Inject

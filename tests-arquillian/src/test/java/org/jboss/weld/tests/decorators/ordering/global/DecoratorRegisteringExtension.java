@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.decorators.ordering.global;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 

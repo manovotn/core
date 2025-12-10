@@ -20,13 +20,13 @@ import jakarta.enterprise.inject.spi.DeploymentException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.ShouldThrowException;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Validates that if a decorator which has a non-passivation capable dependency decorates a built-in bean, Weld detects this as
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * @see WELD-1273
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BuiltInBeanPassivationCapabilityValidationTest {
 
     @Deployment

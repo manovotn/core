@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.interceptors.injection.ejb;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.Instance;

@@ -23,26 +23,25 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.BeanDiscoveryMode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.test.util.annotated.TestAnnotatedTypeBuilder;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that interceptors registered via the SPI work correctly
  *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class InterceptorExtensionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -59,8 +58,8 @@ public class InterceptorExtensionTest {
 
     @Test
     public void testInterceptorCalled(NumberSource ng) {
-        Assert.assertEquals(2, ng.value());
-        Assert.assertTrue(IncrementingInterceptor.isDoAroundCalled());
+        Assertions.assertEquals(2, ng.value());
+        Assertions.assertTrue(IncrementingInterceptor.isDoAroundCalled());
     }
 
     @Test
@@ -70,10 +69,10 @@ public class InterceptorExtensionTest {
         CreationalContext<Marathon> creationalContext = beanManager.createCreationalContext(bean);
         Marathon m = (Marathon) bean.create(creationalContext);
 
-        Assert.assertTrue(LifecycleInterceptor.isPostConstructCalled());
-        Assert.assertEquals(42, m.getLength());
+        Assertions.assertTrue(LifecycleInterceptor.isPostConstructCalled());
+        Assertions.assertEquals(42, m.getLength());
         bean.destroy(m, creationalContext);
-        Assert.assertTrue(LifecycleInterceptor.isPreDestroyCalled());
+        Assertions.assertTrue(LifecycleInterceptor.isPreDestroyCalled());
     }
 
 }

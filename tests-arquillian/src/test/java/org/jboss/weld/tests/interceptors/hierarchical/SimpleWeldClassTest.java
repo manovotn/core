@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -33,17 +33,16 @@ import org.jboss.weld.resources.ClassTransformer;
 import org.jboss.weld.resources.ReflectionCacheFactory;
 import org.jboss.weld.resources.SharedObjectCache;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Broken;
 import org.jboss.weld.util.Beans;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SimpleWeldClassTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -54,7 +53,7 @@ public class SimpleWeldClassTest {
     /*
      * description = "WELD-568"
      */
-    @Category(Broken.class)
+    @Tag("Broken")
     @Test
     public void testWeldClassForCovariantReturnType() {
         TypeStore typeStore = new TypeStore();
@@ -62,8 +61,8 @@ public class SimpleWeldClassTest {
                 ReflectionCacheFactory.newInstance(typeStore), RegistrySingletonProvider.STATIC_INSTANCE)
                 .getEnhancedAnnotatedType(Attacker.class, AnnotatedTypeIdentifier.NULL_BDA_ID);
         Collection<EnhancedAnnotatedMethod<?, ? super Attacker>> methods = weldClass.getEnhancedMethods();
-        Assert.assertEquals(4, methods.size());
+        Assertions.assertEquals(4, methods.size());
         List<EnhancedAnnotatedMethod<?, ?>> interceptableMethods = Beans.getInterceptableMethods(weldClass);
-        Assert.assertEquals(4, interceptableMethods.size());
+        Assertions.assertEquals(4, interceptableMethods.size());
     }
 }

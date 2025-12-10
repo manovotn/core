@@ -1,7 +1,6 @@
 package org.jboss.weld.tests.assignability;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Set;
 
@@ -11,20 +10,20 @@ import jakarta.enterprise.util.TypeLiteral;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  */
 @SuppressWarnings("serial")
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AssignabilityTest {
 
     @Inject
@@ -41,14 +40,14 @@ public class AssignabilityTest {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Dao<Order>>() {
         }.getType());
 
-        Assert.assertEquals(1, beans.size());
+        Assertions.assertEquals(1, beans.size());
     }
 
     @Test
     public void testAssignability2() {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Dao<User>>() {
         }.getType());
-        Assert.assertEquals(2, beans.size());
+        Assertions.assertEquals(2, beans.size());
     }
 
     @Test
@@ -56,34 +55,34 @@ public class AssignabilityTest {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Dao<?>>() {
         }.getType());
         System.err.println("beans = " + beans);
-        Assert.assertEquals(2, beans.size());
+        Assertions.assertEquals(2, beans.size());
     }
 
     @Test
     public void testAssignability4() {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Dao<? extends Persistent>>() {
         }.getType());
-        Assert.assertEquals(2, beans.size());
+        Assertions.assertEquals(2, beans.size());
     }
 
     @Test
     public <X extends Persistent> void testAssignability5() {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Dao<X>>() {
         }.getType());
-        Assert.assertEquals(1, beans.size());
+        Assertions.assertEquals(1, beans.size());
     }
 
     @Test
     public void testAssignability6() {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Dao<? extends User>>() {
         }.getType());
-        Assert.assertEquals(2, beans.size());
+        Assertions.assertEquals(2, beans.size());
     }
 
     @Test
     public void testAssignability7() {
         Set<Bean<?>> beans = beanManager.getBeans(Dao.class);
-        Assert.assertEquals(0, beans.size());
+        Assertions.assertEquals(0, beans.size());
     }
 
     /*
@@ -96,7 +95,7 @@ public class AssignabilityTest {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Animal<Object, Object, Object>>() {
         }.getType());
         assertEquals(1, beans.size());
-        assertTrue(beans.iterator().next().getName().equals("zebra"));
+        assertEquals("zebra", beans.iterator().next().getName());
     }
 
     @Test
@@ -104,7 +103,7 @@ public class AssignabilityTest {
         Set<Bean<?>> beans = beanManager.getBeans(new TypeLiteral<Animal<Object, T, Object>>() {
         }.getType());
         assertEquals(1, beans.size());
-        assertTrue(beans.iterator().next().getName().equals("zebra"));
+        assertEquals("zebra", beans.iterator().next().getName());
     }
 
     @Test
@@ -125,6 +124,6 @@ public class AssignabilityTest {
     public void testAssignability12() {
         Set<Bean<?>> beans = beanManager.getBeans(Animal.class);
         assertEquals(1, beans.size());
-        assertTrue(beans.iterator().next().getName().equals("zebra"));
+        assertEquals("zebra", beans.iterator().next().getName());
     }
 }

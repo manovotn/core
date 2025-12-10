@@ -29,17 +29,17 @@ import jakarta.enterprise.inject.spi.Interceptor;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.bootstrap.events.BuilderInterceptorInstance;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InterceptorBuilderTest {
 
     @Inject
@@ -61,35 +61,35 @@ public class InterceptorBuilderTest {
     @Test
     public void testTypeLevelInterceptorFromBuilder() {
         foo.ping();
-        Assert.assertNotNull(extension.getInjectedBean());
-        Assert.assertEquals(Foo.class, extension.getInjectedBean().getBeanClass());
-        Assert.assertTrue(extension.getInterceptedWithMetadata().get());
+        Assertions.assertNotNull(extension.getInjectedBean());
+        Assertions.assertEquals(Foo.class, extension.getInjectedBean().getBeanClass());
+        Assertions.assertTrue(extension.getInterceptedWithMetadata().get());
         List<Interceptor<?>> interceptorList = bm.resolveInterceptors(InterceptionType.AROUND_INVOKE,
                 TypeBinding.TypeBindingLiteral.INSTANCE);
-        Assert.assertEquals(1, interceptorList.size());
-        Assert.assertEquals(BuilderInterceptorInstance.class, interceptorList.get(0).getBeanClass());
+        Assertions.assertEquals(1, interceptorList.size());
+        Assertions.assertEquals(BuilderInterceptorInstance.class, interceptorList.get(0).getBeanClass());
     }
 
     @Test
     public void testMethodLevelInterceptorFromBuilder() {
         foo.methodLevel();
-        Assert.assertTrue(extension.getIntercepted().get());
+        Assertions.assertTrue(extension.getIntercepted().get());
         List<Interceptor<?>> interceptorList = bm.resolveInterceptors(InterceptionType.AROUND_INVOKE,
                 MethodBinding.MethodBindingLiteral.INSTANCE);
-        Assert.assertEquals(1, interceptorList.size());
-        Assert.assertEquals(BuilderInterceptorInstance.class, interceptorList.get(0).getBeanClass());
+        Assertions.assertEquals(1, interceptorList.size());
+        Assertions.assertEquals(BuilderInterceptorInstance.class, interceptorList.get(0).getBeanClass());
     }
 
     @Test
     public void testBuilderInterceptorInstanceIsSerializable() throws Exception {
         Set<Bean<?>> beans = bm.getBeans(Bar.class);
-        Assert.assertFalse(beans.isEmpty());
+        Assertions.assertFalse(beans.isEmpty());
         Bean<?> bean = beans.iterator().next();
         CreationalContext<?> ctx = bm.createCreationalContext(bean);
         Bar instance = (Bar) bm.getReference(bean, Bar.class, ctx);
-        Assert.assertEquals(1, instance.ping());
+        Assertions.assertEquals(1, instance.ping());
         Bar passivatedBar = (Bar) Utils.deserialize(Utils.serialize(bm.getContext(SessionScoped.class).get(bean)));
-        Assert.assertEquals(2, passivatedBar.ping());
+        Assertions.assertEquals(2, passivatedBar.ping());
     }
 
 }

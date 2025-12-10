@@ -16,27 +16,26 @@
  */
 package org.jboss.weld.tests.contexts.conversation.event;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.net.URL;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.TextPage;
 import com.gargoylesoftware.htmlunit.WebClient;
 
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class LongRunningConversationLifecycleEventTest {
 
     @ArquillianResource(Servlet.class)
@@ -57,32 +56,32 @@ public class LongRunningConversationLifecycleEventTest {
 
         {
             TextPage page = client.getPage(url + "/begin");
-            assertTrue(page.getContent(), page.getContent().contains("Initialized conversations:1")); // the current transient conversation
-            assertTrue(page.getContent(), page.getContent().contains("Destroyed conversations:0")); // not destroyed yet
+            assertTrue(page.getContent().contains("Initialized conversations:1"), page.getContent()); // the current transient conversation
+            assertTrue(page.getContent().contains("Destroyed conversations:0"), page.getContent()); // not destroyed yet
         }
 
         {
             TextPage page = client.getPage(url + "/display?cid=org.jboss.weld");
-            assertTrue(page.getContent(), page.getContent().contains("Initialized conversations:1"));
-            assertTrue(page.getContent(), page.getContent().contains("Destroyed conversations:0"));
+            assertTrue(page.getContent().contains("Initialized conversations:1"), page.getContent());
+            assertTrue(page.getContent().contains("Destroyed conversations:0"), page.getContent());
         }
 
         {
             TextPage page = client.getPage(url + "/display?cid=org.jboss.weld");
-            assertTrue(page.getContent(), page.getContent().contains("Initialized conversations:1"));
-            assertTrue(page.getContent(), page.getContent().contains("Destroyed conversations:0"));
+            assertTrue(page.getContent().contains("Initialized conversations:1"), page.getContent());
+            assertTrue(page.getContent().contains("Destroyed conversations:0"), page.getContent());
         }
 
         {
             TextPage page = client.getPage(url + "/end?cid=org.jboss.weld");
-            assertTrue(page.getContent(), page.getContent().contains("Initialized conversations:1"));
-            assertTrue(page.getContent(), page.getContent().contains("Destroyed conversations:0"));
+            assertTrue(page.getContent().contains("Initialized conversations:1"), page.getContent());
+            assertTrue(page.getContent().contains("Destroyed conversations:0"), page.getContent());
         }
 
         {
             TextPage page = client.getPage(url + "/display");
-            assertTrue(page.getContent(), page.getContent().contains("Initialized conversations:2"));
-            assertTrue(page.getContent(), page.getContent().contains("Destroyed conversations:1"));
+            assertTrue(page.getContent().contains("Initialized conversations:2"), page.getContent());
+            assertTrue(page.getContent().contains("Destroyed conversations:1"), page.getContent());
         }
     }
 }

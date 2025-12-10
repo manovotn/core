@@ -20,19 +20,19 @@ package org.jboss.weld.tests.decorators.defaultmethod.notDecorated.generic;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Similar to {@code DecoratingInterfaceWithDefaultMethodTest} but the interface uses generics.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DecoratingInterfaceWithDefaultMethodAndGenericsTest {
 
     @Deployment
@@ -49,7 +49,7 @@ public class DecoratingInterfaceWithDefaultMethodAndGenericsTest {
 
     @Test
     public void testDecoratorOnInterfaceWithDefaultMethod() {
-        Assert.assertEquals("foo", bean.defaultMethod().getString());
-        Assert.assertEquals(DecoratorClass.class.getSimpleName() + SomeBean.class.getSimpleName(), bean.ping());
+        Assertions.assertEquals("foo", bean.defaultMethod().getString());
+        Assertions.assertEquals(DecoratorClass.class.getSimpleName() + SomeBean.class.getSimpleName(), bean.ping());
     }
 }

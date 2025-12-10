@@ -22,31 +22,28 @@ import static jakarta.enterprise.event.TransactionPhase.AFTER_SUCCESS;
 import static jakarta.enterprise.event.TransactionPhase.BEFORE_COMPLETION;
 import static jakarta.enterprise.event.TransactionPhase.IN_PROGRESS;
 import static org.jboss.weld.tests.event.observer.transactional.DogAgent.EVENT_FIRED;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Integration tests for Web Bean events.
  *
  * @author David Allen
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class TransactionalObserversTest {
 
     @Deployment
@@ -63,7 +60,7 @@ public class TransactionalObserversTest {
     @Inject
     private Agent dogAgent;
 
-    @Before
+    @BeforeEach
     public void reset() {
         assertNotNull(dogAgent);
         Actions.clear();

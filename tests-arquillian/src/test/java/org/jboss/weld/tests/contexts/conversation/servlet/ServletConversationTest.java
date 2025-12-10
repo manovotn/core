@@ -16,25 +16,22 @@
  */
 package org.jboss.weld.tests.contexts.conversation.servlet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.TextPage;
@@ -49,8 +46,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
  * @author Jozef Hartinger
  *
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class ServletConversationTest {
 
     @ArquillianResource
@@ -196,7 +193,7 @@ public class ServletConversationTest {
         assertTrue(content2.contains("transient: false"));
         String cid2 = getCid(content2);
 
-        assertFalse(cid1.equals(cid2));
+        assertNotEquals(cid1, cid2);
 
         /*
          * Invalidate the session. This should destroy the currently associated conversation (with cid1) as well as the

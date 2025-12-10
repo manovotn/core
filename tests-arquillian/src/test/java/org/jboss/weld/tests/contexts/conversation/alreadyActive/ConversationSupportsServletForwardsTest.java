@@ -3,17 +3,16 @@ package org.jboss.weld.tests.contexts.conversation.alreadyActive;
 import java.net.URL;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -21,8 +20,8 @@ import com.gargoylesoftware.htmlunit.WebClient;
 /**
  * @author <a href="mailto:lincolnbaxter@gmail.com">Lincoln Baxter, III</a>
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class ConversationSupportsServletForwardsTest {
     @Deployment(testable = false)
     public static WebArchive deployment() {
@@ -47,7 +46,7 @@ public class ConversationSupportsServletForwardsTest {
         try {
             client.getPage(new URL(baseURL, "conversations.xhtml"));
         } catch (FailingHttpStatusCodeException e) {
-            Assert.fail("Expected HTTP status code 200 but was " + e.getStatusCode());
+            Assertions.fail("Expected HTTP status code 200 but was " + e.getStatusCode());
         }
     }
 
@@ -57,7 +56,7 @@ public class ConversationSupportsServletForwardsTest {
         try {
             client.getPage(new URL(baseURL, "missing-page.xhtml"));
         } catch (FailingHttpStatusCodeException e) {
-            Assert.assertEquals(404, e.getStatusCode());
+            Assertions.assertEquals(404, e.getStatusCode());
         }
     }
 
@@ -67,7 +66,7 @@ public class ConversationSupportsServletForwardsTest {
         try {
             client.getPage(new URL(baseURL, "missing-page-error.xhtml"));
         } catch (FailingHttpStatusCodeException e) {
-            Assert.assertEquals(404, e.getStatusCode());
+            Assertions.assertEquals(404, e.getStatusCode());
         }
     }
 }

@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.instance.destroy.normal;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.enterprise.context.spi.AlterableContext;
 import jakarta.enterprise.inject.Instance;
@@ -29,16 +27,15 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for https://issues.jboss.org/browse/CDI-139
@@ -46,7 +43,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DestroyingNormalScopedInstanceTest {
 
     private static final String[] VALUES = { "foo", "bar", "baz" };
@@ -111,7 +108,7 @@ public class DestroyingNormalScopedInstanceTest {
             extension.switchToNonAlterable();
             CustomScopedComponent component = instance.get();
             instance.destroy(component);
-            Assert.fail("expected exception not thrown");
+            Assertions.fail("expected exception not thrown");
         } catch (UnsupportedOperationException expected) {
         } finally {
             extension.switchToAlterable();
@@ -126,12 +123,12 @@ public class DestroyingNormalScopedInstanceTest {
         assertTrue(CustomAlterableContext.isDestroyCalled());
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void testNullParameter(Instance<ApplicationScopedComponent> instance) {
-        instance.destroy(null);
+        assertThrows(NullPointerException.class, () -> instance.destroy(null));
     }
 
-    @Category(Integration.class)
+    @Tag("Integration")
     @Test
     public void testSFSessionBeanDependentDestroy() {
         SFSessionBean.DESTROYED.set(false);

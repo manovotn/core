@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.beanManager.annotatedType;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.security.ProtectionDomain;
 
@@ -27,7 +25,7 @@ import jakarta.enterprise.inject.spi.AnnotatedMethod;
 import jakarta.enterprise.inject.spi.AnnotatedType;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.classfilewriter.AccessFlag;
 import org.jboss.classfilewriter.ClassFactory;
 import org.jboss.classfilewriter.ClassFile;
@@ -40,18 +38,17 @@ import org.jboss.weld.annotated.slim.backed.BackedAnnotatedType;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.resources.ClassTransformer;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.EmbeddedContainer;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author Martin Kouba
  * @see WELD-2062
  */
-@Category(EmbeddedContainer.class)
-@RunWith(Arquillian.class)
+@Tag("EmbeddedContainer")
+@ExtendWith(ArquillianExtension.class)
 public class CreateAnnotatedTypeWithIdTest {
 
     @Deployment

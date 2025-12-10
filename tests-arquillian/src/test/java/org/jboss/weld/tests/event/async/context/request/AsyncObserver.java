@@ -23,7 +23,7 @@ import jakarta.enterprise.event.ObservesAsync;
 import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 @RequestScoped
 public class AsyncObserver {
@@ -32,7 +32,7 @@ public class AsyncObserver {
     private Incrementor incrementor;
 
     public void inc(@ObservesAsync AtomicInteger value, BeanManager manager) {
-        Assert.assertNotNull(manager.getContext(RequestScoped.class));
+        Assertions.assertNotNull(manager.getContext(RequestScoped.class));
         incrementor.inc(value);
     }
 }

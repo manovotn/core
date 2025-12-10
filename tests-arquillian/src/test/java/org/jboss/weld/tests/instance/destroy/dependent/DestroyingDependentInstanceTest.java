@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.instance.destroy.dependent;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,15 +26,14 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test for CDI-139. It verifies that Instance.destroy() can be used to destroy a dependent bean instance.
@@ -42,7 +41,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DestroyingDependentInstanceTest {
 
     @Deployment
@@ -72,7 +71,7 @@ public class DestroyingDependentInstanceTest {
         assertTrue(Interceptor.isDestroyed());
     }
 
-    @Category(Integration.class)
+    @Tag("Integration")
     @Test // test that destroy doesn't fail with exception
     public void testSLSessionBeanDependentInstanceDestroy() {
         Instance<SLSessionBean> sessionBeanInstance = CDI.current().select(SLSessionBean.class);

@@ -21,14 +21,14 @@ import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * The hierarchy has to include interface with default method, abstract class and finally implementing class which does *not*
@@ -38,7 +38,7 @@ import org.junit.runner.RunWith;
  * @see WELD-2501
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DecoratorDefaultMethodTest {
 
     @Inject
@@ -62,12 +62,13 @@ public class DecoratorDefaultMethodTest {
 
         // make sure the interceptor works.
         bean.methodTwo("ape", 1);
-        Assert.assertEquals("A method with default implementation in an interface should be decorated", 1,
-                DecoratorOverridingDefaultMethod.decoratedInvocationCount);
+        Assertions.assertEquals(1,
+                DecoratorOverridingDefaultMethod.decoratedInvocationCount,
+                "A method with default implementation in an interface should be decorated");
         // make sure the method gets intercepted even when it is the *only* overridden method *and* has a default implementation.
         bean.methodOne("ape", "banana");
-        Assert.assertEquals(
-                "A method with default implementation in an interface should be decorated even when the bean does not override it and it is the *only* decorated method",
-                2, DecoratorOverridingDefaultMethod.decoratedInvocationCount);
+        Assertions.assertEquals(
+                2, DecoratorOverridingDefaultMethod.decoratedInvocationCount,
+                "A method with default implementation in an interface should be decorated even when the bean does not override it and it is the *only* decorated method");
     }
 }

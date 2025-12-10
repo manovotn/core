@@ -20,20 +20,20 @@ package org.jboss.weld.tests.observers.extension.ordering;
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.ActionSequence;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * This test manifests behaviour described in WELD-2568.
  * Note that running this with -Dincontainer means Jandex will be used whereas running it without WFLY means no Jandex.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ExtensionObserverOrderingTest {
 
     @Deployment
@@ -46,8 +46,8 @@ public class ExtensionObserverOrderingTest {
     @Test
     public void testObserversAreOrdered() {
         ActionSequence.getSequenceData();
-        Assert.assertTrue(ActionSequence.getSequenceData() != null);
-        Assert.assertEquals(UfoDisbelieverExtension.class.getSimpleName(), ActionSequence.getSequenceData().get(0));
-        Assert.assertEquals(UfoBelieverExtension.class.getSimpleName(), ActionSequence.getSequenceData().get(1));
+        Assertions.assertTrue(ActionSequence.getSequenceData() != null);
+        Assertions.assertEquals(UfoDisbelieverExtension.class.getSimpleName(), ActionSequence.getSequenceData().get(0));
+        Assertions.assertEquals(UfoBelieverExtension.class.getSimpleName(), ActionSequence.getSequenceData().get(1));
     }
 }

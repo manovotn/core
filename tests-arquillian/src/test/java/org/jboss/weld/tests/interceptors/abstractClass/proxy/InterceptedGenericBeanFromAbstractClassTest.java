@@ -19,20 +19,20 @@ package org.jboss.weld.tests.interceptors.abstractClass.proxy;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @see WELD-2470
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InterceptedGenericBeanFromAbstractClassTest {
 
     @Deployment
@@ -47,8 +47,8 @@ public class InterceptedGenericBeanFromAbstractClassTest {
 
     @Test
     public void testProxyCanBeCreated() {
-        Assert.assertNotNull(serviceman);
-        Assert.assertEquals(Car.class.getSimpleName(), serviceman.repair().getClass().getSimpleName());
-        Assert.assertTrue(VeryImportantPhoneCall.INTERCEPTOR_INVOKED);
+        Assertions.assertNotNull(serviceman);
+        Assertions.assertEquals(Car.class.getSimpleName(), serviceman.repair().getClass().getSimpleName());
+        Assertions.assertTrue(VeryImportantPhoneCall.INTERCEPTOR_INVOKED);
     }
 }

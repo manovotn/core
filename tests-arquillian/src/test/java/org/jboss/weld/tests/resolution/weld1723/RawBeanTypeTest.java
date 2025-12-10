@@ -20,14 +20,14 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Testcase for WELD-1723
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * @author Alexander Langer
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 @SuppressWarnings("rawtypes")
 public class RawBeanTypeTest {
 
@@ -54,13 +54,13 @@ public class RawBeanTypeTest {
 
     @Test
     public void testBoundedType() {
-        Assert.assertFalse(foo.isAmbiguous());
-        Assert.assertFalse(foo.isUnsatisfied());
+        Assertions.assertFalse(foo.isAmbiguous());
+        Assertions.assertFalse(foo.isUnsatisfied());
     }
 
     @Test
     public void testUnboundedType() {
-        Assert.assertFalse(bar.isAmbiguous());
-        Assert.assertFalse(bar.isUnsatisfied());
+        Assertions.assertFalse(bar.isAmbiguous());
+        Assertions.assertFalse(bar.isUnsatisfied());
     }
 }

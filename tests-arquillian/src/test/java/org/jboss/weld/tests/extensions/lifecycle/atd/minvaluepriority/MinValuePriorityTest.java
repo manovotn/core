@@ -16,19 +16,19 @@
  */
 package org.jboss.weld.tests.extensions.lifecycle.atd.minvaluepriority;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * This tests the sorting of alternatives by priority when one of the priorities is {@link Integer.MIN_VALUE}.
@@ -37,7 +37,7 @@ import org.junit.runner.RunWith;
  * @author Karl von Randow
  * @see WELD-2628
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class MinValuePriorityTest {
 
     @Deployment
@@ -52,9 +52,9 @@ public class MinValuePriorityTest {
 
     @Test
     public void testInitialAlternatives() {
-        assertEquals(extension.getInitialAlternatives().size(), 2);
-        assertEquals(extension.getInitialAlternatives().get(0), MinValuePriorityAlternative.class);
-        assertEquals(extension.getInitialAlternatives().get(1), NormalAlternative.class);
+        assertEquals(2, extension.getInitialAlternatives().size());
+        assertEquals(MinValuePriorityAlternative.class, extension.getInitialAlternatives().get(0));
+        assertEquals(NormalAlternative.class, extension.getInitialAlternatives().get(1));
     }
 
 }

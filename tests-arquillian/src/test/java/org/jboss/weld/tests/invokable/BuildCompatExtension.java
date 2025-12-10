@@ -25,7 +25,7 @@ import org.jboss.weld.tests.invokable.common.ReturnValueTransformer;
 import org.jboss.weld.tests.invokable.common.SimpleBean;
 import org.jboss.weld.tests.invokable.common.TransformableBean;
 import org.jboss.weld.tests.invokable.common.TrulyExceptionalBean;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class BuildCompatExtension implements BuildCompatibleExtension {
 
@@ -135,7 +135,7 @@ public class BuildCompatExtension implements BuildCompatibleExtension {
     @Registration(types = SimpleBean.class)
     public void createNoTransformationInvokers(BeanInfo b, WeldInvokerFactory invokers) {
         Collection<MethodInfo> invokableMethods = b.declaringClass().methods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (MethodInfo invokableMethod : invokableMethods) {
             if (invokableMethod.name().contains("staticPing")) {
                 staticNoTransformationInvoker = invokers.createInvoker(b, invokableMethod).build();
@@ -158,7 +158,7 @@ public class BuildCompatExtension implements BuildCompatibleExtension {
     @Registration(types = TransformableBean.class)
     public void createArgTransformationInvokers(BeanInfo b, WeldInvokerFactory invokers) {
         Collection<MethodInfo> invokableMethods = b.declaringClass().methods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (MethodInfo invokableMethod : invokableMethods) {
             if (invokableMethod.name().contains("staticPing")) {
                 staticArgTransformingInvoker = invokers.createInvoker(b, invokableMethod)
@@ -185,7 +185,7 @@ public class BuildCompatExtension implements BuildCompatibleExtension {
     @Registration(types = TransformableBean.class)
     public void createInstanceTransformationInvokers(BeanInfo b, WeldInvokerFactory invokers) {
         Collection<MethodInfo> invokableMethods = b.declaringClass().methods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (MethodInfo invokableMethod : invokableMethods) {
             if (invokableMethod.name().contains("ping")) {
                 instanceTransformerInvoker = invokers.createInvoker(b, invokableMethod)
@@ -204,7 +204,7 @@ public class BuildCompatExtension implements BuildCompatibleExtension {
     @Registration(types = TransformableBean.class)
     public void createReturnValueTransformationInvokers(BeanInfo b, WeldInvokerFactory invokers) {
         Collection<MethodInfo> invokableMethods = b.declaringClass().methods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (MethodInfo invokableMethod : invokableMethods) {
             if (invokableMethod.name().contains("ping")) {
                 returnTransformerInvoker = invokers.createInvoker(b, invokableMethod)
@@ -228,7 +228,7 @@ public class BuildCompatExtension implements BuildCompatibleExtension {
     @Registration(types = TrulyExceptionalBean.class)
     public void createExceptionTransformationInvokers(BeanInfo b, WeldInvokerFactory invokers) {
         Collection<MethodInfo> invokableMethods = b.declaringClass().methods();
-        Assert.assertEquals(2, invokableMethods.size());
+        Assertions.assertEquals(2, invokableMethods.size());
         for (MethodInfo invokableMethod : invokableMethods) {
             if (invokableMethod.name().contains("ping")) {
                 exceptionTransformerInvoker = invokers.createInvoker(b, invokableMethod)
@@ -246,7 +246,7 @@ public class BuildCompatExtension implements BuildCompatibleExtension {
     @Registration(types = SimpleBean.class)
     public void createInvocationWrapperInvokers(BeanInfo b, WeldInvokerFactory invokers) {
         Collection<MethodInfo> invokableMethods = b.declaringClass().methods();
-        Assert.assertEquals(4, invokableMethods.size());
+        Assertions.assertEquals(4, invokableMethods.size());
         for (MethodInfo invokableMethod : invokableMethods) {
             if (invokableMethod.name().contains("ping")) {
                 invocationWrapperInvoker = invokers.createInvoker(b, invokableMethod)

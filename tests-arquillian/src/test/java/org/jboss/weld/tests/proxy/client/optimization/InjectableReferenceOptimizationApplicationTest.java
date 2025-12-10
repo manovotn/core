@@ -16,18 +16,18 @@
  */
 package org.jboss.weld.tests.proxy.client.optimization;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author Martin Kouba
  * @see WELD-1659
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InjectableReferenceOptimizationApplicationTest extends InjectableReferenceOptimizationTestBase {
 
     @Test

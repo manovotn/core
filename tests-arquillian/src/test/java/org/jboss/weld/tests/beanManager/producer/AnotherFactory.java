@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.beanManager.producer;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.spi.BeanManager;

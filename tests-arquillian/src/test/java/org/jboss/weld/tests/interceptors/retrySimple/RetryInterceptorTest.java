@@ -18,19 +18,19 @@
 package org.jboss.weld.tests.interceptors.retrySimple;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class RetryInterceptorTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -42,8 +42,8 @@ public class RetryInterceptorTest {
     @Test
     public void testRetry(FailingProcessor processor) {
         System.out.println(processor);
-        Assert.assertEquals(3, processor.tryToProcess());
-        Assert.assertEquals(3, TransactionalInterceptor.invocationCount);
+        Assertions.assertEquals(3, processor.tryToProcess());
+        Assertions.assertEquals(3, TransactionalInterceptor.invocationCount);
     }
 
 }

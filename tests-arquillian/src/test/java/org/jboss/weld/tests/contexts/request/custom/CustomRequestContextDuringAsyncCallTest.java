@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.contexts.request.custom;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -27,17 +27,16 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.context.ejb.EjbRequestContext;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.contexts.request.custom.CustomContextExtension.CustomRequestContext;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * The request context must be active during EJB async calls. If a custom context for {@link RequestScoped} is provided, Weld
@@ -46,8 +45,8 @@ import org.junit.runner.RunWith;
  * @author Martin Kouba
  * @see WELD-1880
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class CustomRequestContextDuringAsyncCallTest {
 
     @Deployment

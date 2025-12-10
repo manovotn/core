@@ -17,19 +17,19 @@
 package org.jboss.weld.tests.decorators.decoratedTypes;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ExtendingDecoratorTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -43,9 +43,9 @@ public class ExtendingDecoratorTest {
         testBean.decoratedMethod();
         testBean.notDecoratedMethod();
 
-        Assert.assertTrue(ExtendingDecorator.decoratedInvoked);
-        Assert.assertFalse(ExtendingDecorator.notDecoratedInvoked);
-        Assert.assertTrue(TestBean.decoratedInvoked);
-        Assert.assertTrue(TestBean.notDecoratedInvoked);
+        Assertions.assertTrue(ExtendingDecorator.decoratedInvoked);
+        Assertions.assertFalse(ExtendingDecorator.notDecoratedInvoked);
+        Assertions.assertTrue(TestBean.decoratedInvoked);
+        Assertions.assertTrue(TestBean.notDecoratedInvoked);
     }
 }

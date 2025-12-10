@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.contexts.request.postConstruct.singleton.complicated;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
@@ -38,7 +38,7 @@ public class Initializer {
 
     @PostConstruct
     void init() {
-        assertEquals(null, value.get().getValue());
+        assertNull(value.get().getValue());
         value.get().setValue("singleton");
     }
 }

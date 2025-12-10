@@ -20,7 +20,7 @@ package org.jboss.weld.tests.classDefining.interfaceOrdering;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -29,16 +29,16 @@ import org.jboss.weld.tests.classDefining.interfaceOrdering.a.A;
 import org.jboss.weld.tests.classDefining.interfaceOrdering.a.One;
 import org.jboss.weld.tests.classDefining.interfaceOrdering.b.B;
 import org.jboss.weld.tests.classDefining.interfaceOrdering.b.Two;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies that a proxy for a producer-created bean starts with the package and class of the most concrete class/interface.
  * This should prevent problems in JPMS where each class/interface can come from various module that don't have
  * bidirectional read between them.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ProducerProxyDefinedInMostSpecificClassTest {
 
     @Deployment
@@ -65,7 +65,7 @@ public class ProducerProxyDefinedInMostSpecificClassTest {
         someB.pingB();
         // then assert its name up to the first occurrence of "$"
         // in this case, we want the package and class name to the that of B which is the most specific interface implemented
-        Assert.assertEquals(B.class.getName(),
+        Assertions.assertEquals(B.class.getName(),
                 someB.getClass().getName().substring(0, someB.getClass().getName().indexOf("$")));
     }
 
@@ -75,6 +75,7 @@ public class ProducerProxyDefinedInMostSpecificClassTest {
         two.pingTwo();
         // then assert its name up to the first occurrence of "$"
         // in this case, we want the package and class name to the that of Two which is the most specific class of the bean
-        Assert.assertEquals(Two.class.getName(), two.getClass().getName().substring(0, two.getClass().getName().indexOf("$")));
+        Assertions.assertEquals(Two.class.getName(),
+                two.getClass().getName().substring(0, two.getClass().getName().indexOf("$")));
     }
 }

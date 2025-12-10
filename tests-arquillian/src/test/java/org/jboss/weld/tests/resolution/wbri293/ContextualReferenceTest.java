@@ -19,20 +19,20 @@ package org.jboss.weld.tests.resolution.wbri293;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Jozef Hartinger
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ContextualReferenceTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -49,8 +49,8 @@ public class ContextualReferenceTest {
         Sheep sheep = Utils.getReference(beanManager, Sheep.class);
         sheep.setAge(10);
         Sheep sheep2 = Utils.getReference(beanManager, Sheep.class);
-        Assert.assertEquals(sheep.getAge(), sheep2.getAge());
-        Assert.assertEquals(sheep, sheep2);
+        Assertions.assertEquals(sheep.getAge(), sheep2.getAge());
+        Assertions.assertEquals(sheep, sheep2);
     }
 
 }

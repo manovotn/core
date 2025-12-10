@@ -16,24 +16,23 @@
  */
 package org.jboss.weld.tests.bootstrap.id.delimiter;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.inject.spi.BeanManager;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.bean.ManagedBean;
 import org.jboss.weld.config.ConfigurationKey;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.util.PropertiesBuilder;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @see WELD-2064 Tests the configuration option -> ROLLING_UPGRADES_ID_DELIMITER
@@ -41,8 +40,8 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  * @author Martin Kouba
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class RollingUpgradesIdDelimiterTest {
 
     private static final String WAR_SUFFIX = ".war";
@@ -78,10 +77,10 @@ public class RollingUpgradesIdDelimiterTest {
 
     private void assertIdentifier(String identifier, String suffix) {
         // resulting ID should have archiveName and suffix, but should NOT have delimiter and version
-        assertTrue("Missing archive name: " + identifier, identifier.contains(ARCHIVE_NAME));
-        assertTrue("Missing suffix: " + identifier, identifier.contains(suffix));
-        assertFalse("Contains delimiter: " + identifier, identifier.contains(DELIMITER));
-        assertFalse("Contains version: " + identifier, identifier.contains(VERSION));
+        assertTrue(identifier.contains(ARCHIVE_NAME), "Missing archive name: " + identifier);
+        assertTrue(identifier.contains(suffix), "Missing suffix: " + identifier);
+        assertFalse(identifier.contains(DELIMITER), "Contains delimiter: " + identifier);
+        assertFalse(identifier.contains(VERSION), "Contains version: " + identifier);
     }
 
 }

@@ -19,23 +19,22 @@ package org.jboss.weld.tests.resolution.circular.self;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Kirill Gaevskii
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class SelfInjectionBeanTest {
 
     @Deployment
@@ -53,21 +52,21 @@ public class SelfInjectionBeanTest {
 
     @Test
     public void testMethodA() {
-        Assert.assertEquals(new Integer(11), bean.methodA(10));
+        Assertions.assertEquals(new Integer(11), bean.methodA(10));
     }
 
     @Test
     public void testMethodB() {
-        Assert.assertEquals(new Integer(10), bean.methodB(10));
+        Assertions.assertEquals(new Integer(10), bean.methodB(10));
     }
 
     @Test
     public void testSingletonMethodA() {
-        Assert.assertEquals(new Integer(11), singletonBean.methodA(10));
+        Assertions.assertEquals(new Integer(11), singletonBean.methodA(10));
     }
 
     @Test
     public void testSingletonMethodB() {
-        Assert.assertEquals(new Integer(10), singletonBean.methodB(10));
+        Assertions.assertEquals(new Integer(10), singletonBean.methodB(10));
     }
 }

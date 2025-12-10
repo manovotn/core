@@ -18,20 +18,20 @@
 package org.jboss.weld.tests.interceptors.circularInvocation;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.bean.proxy.InterceptionDecorationContext;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SelfInvokingClassTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -47,16 +47,16 @@ public class SelfInvokingClassTest {
         SomeBeanDecorator.calls.clear();
         try {
             someBean.methodA();
-            Assert.assertEquals(2, AllPurposeInterceptor.interceptedMethods.size());
-            Assert.assertEquals("methodA", AllPurposeInterceptor.interceptedMethods.get(0).getName());
-            Assert.assertEquals("methodB", AllPurposeInterceptor.interceptedMethods.get(1).getName());
-            Assert.assertEquals(2, SomeBeanDecorator.calls.size());
-            Assert.assertEquals("methodA", SomeBeanDecorator.calls.get(0));
-            Assert.assertEquals("methodB", SomeBeanDecorator.calls.get(1));
+            Assertions.assertEquals(2, AllPurposeInterceptor.interceptedMethods.size());
+            Assertions.assertEquals("methodA", AllPurposeInterceptor.interceptedMethods.get(0).getName());
+            Assertions.assertEquals("methodB", AllPurposeInterceptor.interceptedMethods.get(1).getName());
+            Assertions.assertEquals(2, SomeBeanDecorator.calls.size());
+            Assertions.assertEquals("methodA", SomeBeanDecorator.calls.get(0));
+            Assertions.assertEquals("methodB", SomeBeanDecorator.calls.get(1));
         } catch (Exception e) {
-            Assert.assertTrue(e instanceof UnsupportedOperationException);
+            Assertions.assertTrue(e instanceof UnsupportedOperationException);
         }
-        Assert.assertTrue(InterceptionDecorationContext.empty());
+        Assertions.assertTrue(InterceptionDecorationContext.empty());
     }
 
     @Test
@@ -64,14 +64,14 @@ public class SelfInvokingClassTest {
         AllPurposeInterceptor.interceptedMethods.clear();
         SomeBeanDecorator.calls.clear();
         someBean.methodA();
-        Assert.assertEquals(2, AllPurposeInterceptor.interceptedMethods.size());
-        Assert.assertEquals("methodA", AllPurposeInterceptor.interceptedMethods.get(0).getName());
-        Assert.assertEquals("methodB", AllPurposeInterceptor.interceptedMethods.get(1).getName());
-        Assert.assertEquals(2, SomeBeanDecorator.calls.size());
-        Assert.assertEquals("methodA", SomeBeanDecorator.calls.get(0));
-        Assert.assertEquals("methodB", SomeBeanDecorator.calls.get(1));
+        Assertions.assertEquals(2, AllPurposeInterceptor.interceptedMethods.size());
+        Assertions.assertEquals("methodA", AllPurposeInterceptor.interceptedMethods.get(0).getName());
+        Assertions.assertEquals("methodB", AllPurposeInterceptor.interceptedMethods.get(1).getName());
+        Assertions.assertEquals(2, SomeBeanDecorator.calls.size());
+        Assertions.assertEquals("methodA", SomeBeanDecorator.calls.get(0));
+        Assertions.assertEquals("methodB", SomeBeanDecorator.calls.get(1));
 
-        Assert.assertTrue(InterceptionDecorationContext.empty());
+        Assertions.assertTrue(InterceptionDecorationContext.empty());
     }
 
 }

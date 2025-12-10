@@ -17,19 +17,18 @@
 package org.jboss.weld.tests.ejb.dependent.stateful;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author Steve Millidge
  * @author Martin Kouba
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class DependentSessionBeanNotSharedOptimEnabledTest extends DependentSessionBeanNotSharedTest {
 
     @Deployment

@@ -17,7 +17,7 @@
 package org.jboss.weld.tests.serialization.annotated;
 
 import static org.jboss.weld.util.reflection.Reflections.cast;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.spi.AfterBeanDiscovery;

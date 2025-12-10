@@ -23,14 +23,14 @@ import jakarta.enterprise.inject.spi.ProcessAnnotatedType;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies that {@link ProcessAnnotatedType} is not fired for an annotation registered using
@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
  * @see CDI-320
  * @see WELD-1630
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SyntheticAnnotationTest {
 
     @Inject
@@ -57,6 +57,6 @@ public class SyntheticAnnotationTest {
 
     @Test
     public void testProcessAnnotatedTypeNotFiredForSyntheticAnnotation() {
-        Assert.assertEquals(0, extension.getEventCount());
+        Assertions.assertEquals(0, extension.getEventCount());
     }
 }

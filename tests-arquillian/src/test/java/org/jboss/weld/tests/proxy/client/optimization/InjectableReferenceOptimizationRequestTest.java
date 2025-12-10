@@ -16,22 +16,25 @@
  */
 package org.jboss.weld.tests.proxy.client.optimization;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author Martin Kouba
  * @see WELD-1659
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class InjectableReferenceOptimizationRequestTest extends InjectableReferenceOptimizationTestBase {
 
-    @InSequence(2)
+    @Order(2)
     @Test
     public void testRequestScopedBean(Alpha alpha, Golf golf) {
         assertNotNull(alpha);
@@ -55,7 +58,7 @@ public class InjectableReferenceOptimizationRequestTest extends InjectableRefere
     }
 
     @Test
-    @InSequence(1)
+    @Order(1)
     public void initCustom(Custom custom) {
         assertNotNull(custom);
         // Lazy init @CustomScoped custom

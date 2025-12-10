@@ -17,7 +17,7 @@
 
 package org.jboss.weld.tests.jsf.weld1037;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
@@ -25,16 +25,15 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -43,8 +42,8 @@ import com.gargoylesoftware.htmlunit.WebClientOptions;
 /**
  * @author <a href="mailto:mluksa@redhat.com">Marko Luksa</a>
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class Weld1037Test {
 
     @Deployment
@@ -66,7 +65,7 @@ public class Weld1037Test {
         options.setThrowExceptionOnFailingStatusCode(false);
 
         Page page = client.getPage(url + "/doRedirect.faces");
-        assertEquals("Expected redirect:", HttpServletResponse.SC_MOVED_TEMPORARILY, page.getWebResponse().getStatusCode());
+        assertEquals(HttpServletResponse.SC_MOVED_TEMPORARILY, page.getWebResponse().getStatusCode(), "Expected redirect:");
     }
 
 }

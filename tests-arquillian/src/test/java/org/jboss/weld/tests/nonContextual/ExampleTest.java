@@ -24,16 +24,16 @@ import jakarta.enterprise.inject.spi.InjectionTarget;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ExampleTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -49,12 +49,12 @@ public class ExampleTest {
         NonContextual<External> nonContextual = new NonContextual<External>(beanManager, External.class);
 
         External external = new External();
-        Assert.assertNull(external.bean);
+        Assertions.assertNull(external.bean);
         nonContextual.postConstruct(external);
-        Assert.assertNotNull(external.bean);
+        Assertions.assertNotNull(external.bean);
         nonContextual.preDestroy(external);
         // preDestroy doesn't cause any dis-injection
-        Assert.assertNotNull(external.bean);
+        Assertions.assertNotNull(external.bean);
     }
 
     @Test
@@ -62,11 +62,9 @@ public class ExampleTest {
         NonContextual<External> nonContextual = new NonContextual<External>(beanManager, External.class);
 
         for (InjectionPoint point : nonContextual.it.getInjectionPoints()) {
-            try {
+            Assertions.assertDoesNotThrow(() -> {
                 beanManager.validate(point);
-            } catch (Exception e) {
-                Assert.fail("Should have been valid");
-            }
+            }, "Should have been valid");
         }
     }
 

@@ -16,8 +16,7 @@
  */
 package org.jboss.weld.tests.producer.disposer.decorated;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Default;
@@ -26,19 +25,19 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.ActionSequence;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DecoratedProducerMethodTest {
 
     @Deployment
@@ -103,7 +102,7 @@ public class DecoratedProducerMethodTest {
         publicWorker.destroy(lazyPublic);
         packPrivateWorker.destroy(lazyPackPrivate);
 
-        assertTrue(ActionSequence.getSequenceSize() == 4);
+        assertEquals(4, ActionSequence.getSequenceSize());
         ActionSequence.assertSequenceDataContainsAll(PublicWorker.class.getName() + "-" + expectedFieldValue);
         ActionSequence.assertSequenceDataContainsAll(ProtectedWorker.class.getName() + "-" + expectedFieldValue);
         ActionSequence.assertSequenceDataContainsAll(PackagePrivateWorker.class.getName() + "-" + expectedFieldValue);

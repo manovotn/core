@@ -20,17 +20,17 @@ package org.jboss.weld.tests.ejb;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EJBCallTest {
     @Deployment
     public static JavaArchive createTestArchive() {
@@ -44,8 +44,8 @@ public class EJBCallTest {
     SomeService someService;
 
     @Test
-    @Ignore("WELD-1086")
+    @Disabled("WELD-1086")
     public void testStatelessCall() {
-        Assert.assertEquals("test", someService.someMethod());
+        Assertions.assertEquals("test", someService.someMethod());
     }
 }

@@ -19,21 +19,21 @@ package org.jboss.weld.tests.decorators.weld1597;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Tomas Remes
  */
-@RunWith(Arquillian.class)
-@Ignore
+@ExtendWith(ArquillianExtension.class)
+@Disabled
 public class Weld1597Test {
 
     @Inject
@@ -49,7 +49,7 @@ public class Weld1597Test {
     public void test() {
         DecoratedInterfaceImpl decoratedInterface = (DecoratedInterfaceImpl) notDecoratedInterface.getBean();
         decoratedInterface.testDecorator();
-        Assert.assertEquals("Decorator called more than once!", 1, TestDecorator.decoratorCallCount);
+        Assertions.assertEquals(1, TestDecorator.decoratorCallCount, "Decorator called more than once!");
     }
 
 }

@@ -1,12 +1,12 @@
 package org.jboss.weld.tests.interceptors.bridgemethods.managed;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -14,14 +14,14 @@ import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.interceptors.bridgemethods.common.BaseService;
 import org.jboss.weld.tests.interceptors.bridgemethods.common.SomeInterceptor;
 import org.jboss.weld.tests.interceptors.bridgemethods.common.SpecialService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ManagedBeanBridgeMethodTest {
 
     @Deployment
@@ -49,7 +49,7 @@ public class ManagedBeanBridgeMethodTest {
         this.baseService = baseService;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         SomeInterceptor.invocationCount = 0;
     }
@@ -69,7 +69,7 @@ public class ManagedBeanBridgeMethodTest {
             fail("Expected ClassCastException");
         } catch (ClassCastException e) {
         }
-        assertEquals("ClassCastException should be thrown before interceptor is invoked", 0, SomeInterceptor.invocationCount);
+        assertEquals(0, SomeInterceptor.invocationCount, "ClassCastException should be thrown before interceptor is invoked");
     }
 
     @Test

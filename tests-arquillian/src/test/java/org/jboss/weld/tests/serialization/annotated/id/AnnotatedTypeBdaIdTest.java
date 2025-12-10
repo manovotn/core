@@ -23,7 +23,7 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -34,11 +34,10 @@ import org.jboss.weld.annotated.slim.AnnotatedTypeIdentifier;
 import org.jboss.weld.annotated.slim.SlimAnnotatedType.SerializationProxy;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies, that when {@link BeanManager#createAnnotatedType(Class)} is called on two different bean managers for the same
@@ -50,8 +49,8 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class AnnotatedTypeBdaIdTest {
 
     @Inject
@@ -76,7 +75,7 @@ public class AnnotatedTypeBdaIdTest {
 
     @Test
     public void testAnnotatedTypeIdsEqual() {
-        Assert.assertEquals(factory1.produce(), factory2.produce());
+        Assertions.assertEquals(factory1.produce(), factory2.produce());
     }
 
     @Test
@@ -85,7 +84,7 @@ public class AnnotatedTypeBdaIdTest {
                 UnknownClass.class, UnknownClass.class, manager.getId());
         SerializationProxy<?> proxy = new SerializationProxy<Object>(identifier);
         Object result = Utils.deserialize(Utils.serialize(proxy));
-        Assert.assertNotNull(result);
-        Assert.assertTrue(result instanceof AnnotatedType<?>);
+        Assertions.assertNotNull(result);
+        Assertions.assertTrue(result instanceof AnnotatedType<?>);
     }
 }

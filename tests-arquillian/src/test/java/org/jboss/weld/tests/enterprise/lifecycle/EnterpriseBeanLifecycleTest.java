@@ -22,19 +22,18 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.BeanDiscoveryMode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.util.reflection.Reflections;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Sections
@@ -50,8 +49,8 @@ import org.junit.runner.RunWith;
  *         <p/>
  *         Spec version: Public Release Draft 2
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EnterpriseBeanLifecycleTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -73,28 +72,28 @@ public class EnterpriseBeanLifecycleTest {
     @Test
     public void testCreateSFSB(GrossStadt frankfurt) {
         Bean<KleinStadt> stadtBean = Utils.getBean(beanManager, KleinStadt.class);
-        Assert.assertNotNull("Expected a bean for stateful session bean Kassel", stadtBean);
+        Assertions.assertNotNull(stadtBean, "Expected a bean for stateful session bean Kassel");
         CreationalContext<KleinStadt> creationalContext = new MockCreationalContext<KleinStadt>();
         KleinStadt stadtInstance = stadtBean.create(creationalContext);
-        Assert.assertNotNull("Expected instance to be created by container", stadtInstance);
-        Assert.assertTrue("PostConstruct should be invoked when bean instance is created", frankfurt.isKleinStadtCreated());
+        Assertions.assertNotNull(stadtInstance, "Expected instance to be created by container");
+        Assertions.assertTrue(frankfurt.isKleinStadtCreated(), "PostConstruct should be invoked when bean instance is created");
         frankfurt.resetCreatedFlags();
 
         // Create a second one to make sure create always does create a new session bean
         KleinStadt anotherStadtInstance = stadtBean.create(creationalContext);
-        Assert.assertNotNull("Expected second instance of session bean", anotherStadtInstance);
-        Assert.assertTrue(frankfurt.isKleinStadtCreated());
-        Assert.assertNotSame("create() should not return same bean as before", anotherStadtInstance, stadtInstance);
+        Assertions.assertNotNull(anotherStadtInstance, "Expected second instance of session bean");
+        Assertions.assertTrue(frankfurt.isKleinStadtCreated());
+        Assertions.assertNotSame(anotherStadtInstance, stadtInstance, "create() should not return same bean as before");
 
         // Verify that the instance returned is a proxy by checking for all local interfaces
-        Assert.assertTrue(stadtInstance instanceof KleinStadt);
-        Assert.assertTrue(stadtInstance instanceof SchoeneStadt);
+        Assertions.assertTrue(stadtInstance instanceof KleinStadt);
+        Assertions.assertTrue(stadtInstance instanceof SchoeneStadt);
     }
 
     @Test
     public void testDestroyDoesntTryToRemoveSLSB() {
         Bean<BeanLocal> bean = Utils.getBean(beanManager, BeanLocal.class);
-        Assert.assertNotNull("Expected a bean for stateless session bean BeanLocal", bean);
+        Assertions.assertNotNull(bean, "Expected a bean for stateless session bean BeanLocal");
         CreationalContext<BeanLocal> creationalContext = beanManager.createCreationalContext(bean);
         BeanLocal instance = bean.create(creationalContext);
         bean.destroy(instance, creationalContext);

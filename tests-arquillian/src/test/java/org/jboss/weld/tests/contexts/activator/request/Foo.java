@@ -22,7 +22,7 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.weld.context.activator.ActivateRequestContext;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 @Dependent
 public class Foo {
@@ -35,7 +35,7 @@ public class Foo {
 
     @ActivateRequestContext
     public int ping() {
-        Assert.assertTrue("RequestScoped is not active!", beanManager.getContext(RequestScoped.class).isActive());
+        Assertions.assertTrue(beanManager.getContext(RequestScoped.class).isActive(), "RequestScoped is not active!");
         return 1;
     }
 

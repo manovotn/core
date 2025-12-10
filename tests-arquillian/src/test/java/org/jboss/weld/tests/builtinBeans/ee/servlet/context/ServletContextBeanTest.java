@@ -21,7 +21,7 @@ import java.net.URL;
 import jakarta.servlet.ServletContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -30,11 +30,10 @@ import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.TextPage;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -47,8 +46,8 @@ import com.gargoylesoftware.htmlunit.WebClient;
  * @see WELD-1621
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class ServletContextBeanTest {
 
     @ArquillianResource(FooServlet.class)
@@ -74,13 +73,13 @@ public class ServletContextBeanTest {
     public void testFirstArchive() throws Exception {
         WebClient client = new WebClient();
         TextPage page = client.getPage(fooUrl);
-        Assert.assertEquals("/foo;/foo", page.getContent());
+        Assertions.assertEquals("/foo;/foo", page.getContent());
     }
 
     @Test
     public void testSecondArchive() throws Exception {
         WebClient client = new WebClient();
         TextPage page = client.getPage(barUrl);
-        Assert.assertEquals("/bar;/bar", page.getContent());
+        Assertions.assertEquals("/bar;/bar", page.getContent());
     }
 }

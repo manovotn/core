@@ -16,26 +16,23 @@
  */
 package org.jboss.weld.tests.injectionPoint.enterprise;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class SessionBeanInjectionPointTest {
 
     @Inject
@@ -50,7 +47,7 @@ public class SessionBeanInjectionPointTest {
 
     @Test
     public void testInjectionPointInSLSB() throws Exception {
-        assertTrue("InjectPoint was null in " + Bar.class, client.getBar().isIPAvailable());
+        assertTrue(client.getBar().isIPAvailable(), "InjectPoint was null in " + Bar.class);
         assertNotNull(client.getBar().getInjectionPointMetadata());
         assertEquals(Bar.class, client.getBar().getInjectionPointType());
         assertEquals(TestClient.class.getDeclaredField("bar"), client.getBar().getInjectionPointMember());
@@ -58,7 +55,7 @@ public class SessionBeanInjectionPointTest {
 
     @Test
     public void testInjectionPointInSingletonBean() throws Exception {
-        assertTrue("InjectPoint was null in " + Baz.class, client.getBaz().isIPAvailable());
+        assertTrue(client.getBaz().isIPAvailable(), "InjectPoint was null in " + Baz.class);
         assertNotNull(client.getBaz().getInjectionPointMetadata());
         assertEquals(Baz.class, client.getBaz().getInjectionPointType());
         assertEquals(TestClient.class.getDeclaredField("baz"), client.getBaz().getInjectionPointMember());
@@ -67,7 +64,7 @@ public class SessionBeanInjectionPointTest {
     @Test
     public void testInjectionPointInSFSB() throws Exception {
         InjectionPoint fooIp = client.getFoo().getInjectionPoint();
-        assertNotNull("InjectPoint was null in " + Foo.class, fooIp);
+        assertNotNull(fooIp, "InjectPoint was null in " + Foo.class);
         assertEquals(Foo.class, fooIp.getType());
         assertEquals(TestClient.class.getDeclaredField("foo"), fooIp.getMember());
 

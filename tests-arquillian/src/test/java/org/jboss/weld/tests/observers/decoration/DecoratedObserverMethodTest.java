@@ -16,25 +16,25 @@
  */
 package org.jboss.weld.tests.observers.decoration;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.ActionSequence;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DecoratedObserverMethodTest {
 
     @Deployment
@@ -69,7 +69,7 @@ public class DecoratedObserverMethodTest {
         packPrivateWorker.doStuff();
         ActionSequence.assertSequenceDataContainsAll(PrivateWorker.class.getName(), ProtectedWorker.class.getName(),
                 PublicWorker.class.getName(), PackagePrivateWorker.class.getName(), WorkerDecorator.class.getName());
-        assertTrue(ActionSequence.getSequenceSize() == 8);
+        assertEquals(8, ActionSequence.getSequenceSize());
         ActionSequence.reset();
 
         // fire event to trigger observers

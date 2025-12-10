@@ -23,17 +23,17 @@ import java.util.concurrent.TimeUnit;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.interceptors.thread.ThreadPool;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AsyncInterceptorTest {
 
     @Deployment
@@ -47,18 +47,18 @@ public class AsyncInterceptorTest {
 
     @Test
     public void testNonVoidMethod() throws InterruptedException, ExecutionException {
-        Assert.assertTrue(Thread.currentThread() != bean.simpleInvokeAsync().get());
+        Assertions.assertTrue(Thread.currentThread() != bean.simpleInvokeAsync().get());
     }
 
     @Test
     public void testVoidMethod() throws InterruptedException, ExecutionException {
         SynchronousQueue<Thread> synchronizer = new SynchronousQueue<Thread>();
         bean.voidInvokeAsync(synchronizer);
-        Assert.assertTrue(Thread.currentThread() != synchronizer.poll());
+        Assertions.assertTrue(Thread.currentThread() != synchronizer.poll());
     }
 
     @Test
     public void testWithInterceptor() throws Exception {
-        Assert.assertEquals(Integer.valueOf(3), bean.invokeAsyncWithOtherInterceptors(0).get(5, TimeUnit.SECONDS));
+        Assertions.assertEquals(Integer.valueOf(3), bean.invokeAsyncWithOtherInterceptors(0).get(5, TimeUnit.SECONDS));
     }
 }

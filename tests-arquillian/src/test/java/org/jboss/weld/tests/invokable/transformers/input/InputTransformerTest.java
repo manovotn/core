@@ -4,16 +4,16 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InputTransformerTest {
 
     @Deployment
@@ -34,16 +34,16 @@ public class InputTransformerTest {
         Beta result;
         // test initial state without transformers
         result = (Beta) extension.getNoTransformer().invoke(bean, new Object[] { 0 });
-        Assert.assertEquals("0", result.ping());
-        Assert.assertEquals(Integer.valueOf(0), result.getInteger());
+        Assertions.assertEquals("0", result.ping());
+        Assertions.assertEquals(Integer.valueOf(0), result.getInteger());
 
         // apply transformers, invoke method params are now String instead of original Number
         result = (Beta) extension.getTransformArg1().invoke(bean, new Object[] { "42" });
-        Assert.assertEquals("42", result.ping());
-        Assert.assertEquals(Integer.valueOf(0), result.getInteger());
+        Assertions.assertEquals("42", result.ping());
+        Assertions.assertEquals(Integer.valueOf(0), result.getInteger());
         result = (Beta) extension.getTransformArg2().invoke(bean, new Object[] { "42" });
-        Assert.assertEquals("42", result.ping());
-        Assert.assertEquals(Integer.valueOf(0), result.getInteger());
+        Assertions.assertEquals("42", result.ping());
+        Assertions.assertEquals(Integer.valueOf(0), result.getInteger());
     }
 
     @Test
@@ -51,15 +51,15 @@ public class InputTransformerTest {
         Beta result;
         // test initial state without transformers
         result = (Beta) extension.getNoTransformer().invoke(bean, new Object[] { 0 });
-        Assert.assertEquals("0", result.ping());
-        Assert.assertEquals(Integer.valueOf(0), result.getInteger());
+        Assertions.assertEquals("0", result.ping());
+        Assertions.assertEquals(Integer.valueOf(0), result.getInteger());
 
         // apply transformers, instance parameter is now null
         result = (Beta) extension.getTransformInstance1().invoke(null, new Object[] { 42 });
-        Assert.assertEquals("42", result.ping());
-        Assert.assertEquals(Integer.valueOf(100), result.getInteger());
+        Assertions.assertEquals("42", result.ping());
+        Assertions.assertEquals(Integer.valueOf(100), result.getInteger());
         result = (Beta) extension.getTransformInstance2().invoke(null, new Object[] { 42 });
-        Assert.assertEquals("42", result.ping());
-        Assert.assertEquals(Integer.valueOf(100), result.getInteger());
+        Assertions.assertEquals("42", result.ping());
+        Assertions.assertEquals(Integer.valueOf(100), result.getInteger());
     }
 }

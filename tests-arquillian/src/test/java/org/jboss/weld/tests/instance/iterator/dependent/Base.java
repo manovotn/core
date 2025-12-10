@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.instance.iterator.dependent;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.lang.reflect.Type;
 

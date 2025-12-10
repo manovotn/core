@@ -20,18 +20,17 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.test.util.annotated.TestAnnotatedTypeBuilder;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that it is possible to add multiple beans with the same java class type
@@ -39,8 +38,8 @@ import org.junit.runner.RunWith;
  *
  * @author Stuart Douglas <stuart@baileyroberts.com.au>
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class MultipleBeansTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -58,11 +57,12 @@ public class MultipleBeansTest {
     // WELD-406
     public void testFormatterRegistered() {
         // test that we have added two beans with the same qualifiers
-        Assert.assertEquals(2, Utils.getBeans(beanManager, BlogFormatter.class).size());
+        Assertions.assertEquals(2, Utils.getBeans(beanManager, BlogFormatter.class).size());
         // test that the beans which have different producer methods produce
         // different values
-        Assert.assertEquals("+Bob's content+", Utils.getReference(beanManager, String.class, new FormattedBlogLiteral("Bob")));
-        Assert.assertEquals("+Barry's content+",
+        Assertions.assertEquals("+Bob's content+",
+                Utils.getReference(beanManager, String.class, new FormattedBlogLiteral("Bob")));
+        Assertions.assertEquals("+Barry's content+",
                 Utils.getReference(beanManager, String.class, new FormattedBlogLiteral("Barry")));
     }
 
@@ -72,9 +72,9 @@ public class MultipleBeansTest {
         // test that the two different BlogConsumers have been registered
         // correctly
         BlogConsumer consumer = Utils.getReference(beanManager, BlogConsumer.class, new ConsumerLiteral("Barry"));
-        Assert.assertEquals("+Barry's content+", consumer.blogContent);
+        Assertions.assertEquals("+Barry's content+", consumer.blogContent);
         consumer = Utils.getReference(beanManager, BlogConsumer.class, new ConsumerLiteral("Bob"));
-        Assert.assertEquals("+Bob's content+", consumer.blogContent);
+        Assertions.assertEquals("+Bob's content+", consumer.blogContent);
     }
 
     /**
@@ -84,7 +84,7 @@ public class MultipleBeansTest {
     @Test
     // WELD-406
     public void testTwoBeansExactlyTheSame() {
-        Assert.assertEquals(2, beanManager.getBeans(UselessBean.class).size());
+        Assertions.assertEquals(2, beanManager.getBeans(UselessBean.class).size());
     }
 
 }

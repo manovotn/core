@@ -23,7 +23,7 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -31,9 +31,9 @@ import org.jboss.weld.bean.WeldBean;
 import org.jboss.weld.proxy.WeldClientProxy;
 import org.jboss.weld.proxy.WeldConstruct;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * A test set covering WELD-1914. All our subclasses/proxies should implement {@link WeldContruct} and client proxies should
@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class WeldInternalConstructsTest {
 
     @Deployment
@@ -64,21 +64,21 @@ public class WeldInternalConstructsTest {
         clientProxyBean.ping();
 
         // injected bean should be instance of WeldConstruct and WeldClientProxy
-        Assert.assertTrue(clientProxyBean instanceof WeldConstruct);
-        Assert.assertTrue(clientProxyBean instanceof WeldClientProxy);
+        Assertions.assertTrue(clientProxyBean instanceof WeldConstruct);
+        Assertions.assertTrue(clientProxyBean instanceof WeldClientProxy);
 
         // cast to WeldClientProxy and test the methods
         WeldClientProxy wcp = (WeldClientProxy) clientProxyBean;
         WeldClientProxy.Metadata cm = wcp.getMetadata();
         Object contextualInstance = cm.getContextualInstance();
         // kind of indirect check that this is the actual contextual instance
-        Assert.assertTrue(contextualInstance instanceof ClientProxyBean);
-        Assert.assertFalse(contextualInstance instanceof WeldConstruct);
+        Assertions.assertTrue(contextualInstance instanceof ClientProxyBean);
+        Assertions.assertFalse(contextualInstance instanceof WeldConstruct);
 
         Bean<?> bean = cm.getBean();
         Set<Bean<?>> beans = bm.getBeans(ClientProxyBean.class);
-        Assert.assertEquals(1, beans.size());
-        Assert.assertEquals(((WeldBean) beans.iterator().next()).getIdentifier().asString(),
+        Assertions.assertEquals(1, beans.size());
+        Assertions.assertEquals(((WeldBean) beans.iterator().next()).getIdentifier().asString(),
                 ((WeldBean) bean).getIdentifier().asString());
     }
 
@@ -86,33 +86,33 @@ public class WeldInternalConstructsTest {
     public void testInterceptedDependentBean() {
         InterceptedDependentBean interceptedBean = holder.getInterceptedDependentBean();
         // trigger interception and assert it works
-        Assert.assertTrue(interceptedBean.ping());
+        Assertions.assertTrue(interceptedBean.ping());
 
         // should be instance of WeldConstruct but NOT WeldClientProxy
-        Assert.assertTrue(interceptedBean instanceof WeldConstruct);
-        Assert.assertFalse(interceptedBean instanceof WeldClientProxy);
+        Assertions.assertTrue(interceptedBean instanceof WeldConstruct);
+        Assertions.assertFalse(interceptedBean instanceof WeldClientProxy);
     }
 
     @Test
     public void testDecoratedDependentBean() {
         DecoratedDependentBean decoratedBean = holder.getDecoratedDependentBean();
         // trigger decoration and assert it works
-        Assert.assertTrue(decoratedBean.ping());
+        Assertions.assertTrue(decoratedBean.ping());
 
         // should be instance of WeldConstruct but NOT WeldClientProxy
-        Assert.assertTrue(decoratedBean instanceof WeldConstruct);
-        Assert.assertFalse(decoratedBean instanceof WeldClientProxy);
+        Assertions.assertTrue(decoratedBean instanceof WeldConstruct);
+        Assertions.assertFalse(decoratedBean instanceof WeldClientProxy);
     }
 
     @Test
     public void testDecoratedProxiedBean() {
         DecoratedProxiedBean decoratedBean = holder.getDecoratedProxiedBean();
         // trigger decoration and assert it works
-        Assert.assertTrue(decoratedBean.ping());
+        Assertions.assertTrue(decoratedBean.ping());
 
         // should be instance of WeldConstruct and WeldClientProxy
-        Assert.assertTrue(decoratedBean instanceof WeldConstruct);
-        Assert.assertTrue(decoratedBean instanceof WeldClientProxy);
+        Assertions.assertTrue(decoratedBean instanceof WeldConstruct);
+        Assertions.assertTrue(decoratedBean instanceof WeldClientProxy);
 
         // cast to WeldClientProxy and test the methods
         WeldClientProxy wcp = (WeldClientProxy) decoratedBean;
@@ -120,15 +120,15 @@ public class WeldInternalConstructsTest {
 
         Object contextualInstance = cm.getContextualInstance();
         // kind of indirect check that this is the actual contextual instance
-        Assert.assertTrue(contextualInstance instanceof DecoratedProxiedBean);
-        Assert.assertFalse(contextualInstance instanceof WeldClientProxy);
+        Assertions.assertTrue(contextualInstance instanceof DecoratedProxiedBean);
+        Assertions.assertFalse(contextualInstance instanceof WeldClientProxy);
         // NOTE - contextual instance is still a Weld subclass because of interception/decoration
-        Assert.assertTrue(contextualInstance instanceof WeldConstruct);
+        Assertions.assertTrue(contextualInstance instanceof WeldConstruct);
 
         Bean<?> bean = cm.getBean();
         Set<Bean<?>> beans = bm.getBeans(DecoratedProxiedBean.class);
-        Assert.assertEquals(1, beans.size());
-        Assert.assertEquals(((WeldBean) beans.iterator().next()).getIdentifier().asString(),
+        Assertions.assertEquals(1, beans.size());
+        Assertions.assertEquals(((WeldBean) beans.iterator().next()).getIdentifier().asString(),
                 ((WeldBean) bean).getIdentifier().asString());
     }
 
@@ -136,11 +136,11 @@ public class WeldInternalConstructsTest {
     public void testInterceptedProxiedBean() {
         InterceptedProxiedBean interceptedBean = holder.getInterceptedProxiedBean();
         // trigger interception and assert it works
-        Assert.assertTrue(interceptedBean.ping());
+        Assertions.assertTrue(interceptedBean.ping());
 
         // should be instance of WeldConstruct and WeldClientProxy
-        Assert.assertTrue(interceptedBean instanceof WeldConstruct);
-        Assert.assertTrue(interceptedBean instanceof WeldClientProxy);
+        Assertions.assertTrue(interceptedBean instanceof WeldConstruct);
+        Assertions.assertTrue(interceptedBean instanceof WeldClientProxy);
 
         // cast to WeldClientProxy and test the methods
         WeldClientProxy wcp = (WeldClientProxy) interceptedBean;
@@ -148,15 +148,15 @@ public class WeldInternalConstructsTest {
 
         Object contextualInstance = cm.getContextualInstance();
         // kind of indirect check that this is the actual contextual instance
-        Assert.assertTrue(contextualInstance instanceof InterceptedProxiedBean);
-        Assert.assertFalse(contextualInstance instanceof WeldClientProxy);
+        Assertions.assertTrue(contextualInstance instanceof InterceptedProxiedBean);
+        Assertions.assertFalse(contextualInstance instanceof WeldClientProxy);
         // NOTE - contextual instance is still a Weld subclass because of interception/decoration
-        Assert.assertTrue(contextualInstance instanceof WeldConstruct);
+        Assertions.assertTrue(contextualInstance instanceof WeldConstruct);
 
         Bean<?> bean = cm.getBean();
         Set<Bean<?>> beans = bm.getBeans(InterceptedProxiedBean.class);
-        Assert.assertEquals(1, beans.size());
-        Assert.assertEquals(((WeldBean) beans.iterator().next()).getIdentifier().asString(),
+        Assertions.assertEquals(1, beans.size());
+        Assertions.assertEquals(((WeldBean) beans.iterator().next()).getIdentifier().asString(),
                 ((WeldBean) bean).getIdentifier().asString());
     }
 }

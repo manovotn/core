@@ -18,7 +18,7 @@
 package org.jboss.weld.tests.interceptors.lhotse;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePaths;
 import org.jboss.shrinkwrap.api.BeanArchive;
@@ -28,21 +28,20 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.BeansXml;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.interceptors.lhotse.fst.TDAO;
 import org.jboss.weld.tests.interceptors.lhotse.fst.TxInterceptor;
 import org.jboss.weld.tests.interceptors.lhotse.snd.CDAO;
 import org.jboss.weld.tests.interceptors.lhotse.snd.Client;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:ales.justin@jboss.org">Ales Justin</a>
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class SplitInterceptorsTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -68,7 +67,7 @@ public class SplitInterceptorsTest {
         TxInterceptor.used = false;
 
         Client c = new Client();
-        Assert.assertTrue(cdao.save(c));
-        Assert.assertTrue(TxInterceptor.used);
+        Assertions.assertTrue(cdao.save(c));
+        Assertions.assertTrue(TxInterceptor.used);
     }
 }

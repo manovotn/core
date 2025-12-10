@@ -16,22 +16,22 @@
  */
 package org.jboss.weld.tests.extensions.lifecycle.weld1884;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.Optional;
 
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EventsNotFiredForAnonymousClassTest {
 
     @Deployment
@@ -44,13 +44,13 @@ public class EventsNotFiredForAnonymousClassTest {
     @Test
     public void processBeanAttributesEventNotFiredForAnonymousClass() {
         Optional<Class<?>> optionalValue = TestExtension.pbaFiredvalues.stream().filter(c -> c.isAnonymousClass()).findFirst();
-        assertFalse("ProcessBeanAtttributes event fired for " + optionalValue.orElse(null), optionalValue.isPresent());
+        assertFalse(optionalValue.isPresent(), "ProcessBeanAtttributes event fired for " + optionalValue.orElse(null));
     }
 
     @Test
     public void processBeanEventNotFiredForAnonymousClass() {
         Optional<Class<?>> optionalValue = TestExtension.pbFiredValues.stream().filter(c -> c.isAnonymousClass()).findFirst();
-        assertFalse("ProcessBean event fired for " + optionalValue.orElse(null), optionalValue.isPresent());
+        assertFalse(optionalValue.isPresent(), "ProcessBean event fired for " + optionalValue.orElse(null));
     }
 
 }

@@ -1,9 +1,7 @@
 package org.jboss.weld.tests.enterprise.lifecycle;
 
 import static org.jboss.weld.test.util.Utils.getActiveContext;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 
@@ -40,16 +38,16 @@ public class RemoteClient extends HttpServlet {
             RequestContext requestContext = getActiveContext(beanManager, RequestContext.class);
             Bean<KleinStadt> stadtBean = Utils.getBean(beanManager, KleinStadt.class);
             if (pathInfo.equals("/request1")) {
-                assertNotNull("Expected a bean for stateful session bean Kassel", stadtBean);
+                assertNotNull(stadtBean, "Expected a bean for stateful session bean Kassel");
                 CreationalContext<KleinStadt> creationalContext = beanManager.createCreationalContext(stadtBean);
                 KleinStadt kassel = requestContext.get(stadtBean, creationalContext);
                 stadtBean.destroy(kassel, creationalContext);
 
-                assertTrue("Expected SFSB bean to be destroyed", frankfurt.isKleinStadtDestroyed());
+                assertTrue(frankfurt.isKleinStadtDestroyed(), "Expected SFSB bean to be destroyed");
                 return;
             } else if (pathInfo.equals("/request2")) {
                 KleinStadt kassel = requestContext.get(stadtBean);
-                assertNull("SFSB bean should not exist after being destroyed", kassel);
+                assertNull(kassel, "SFSB bean should not exist after being destroyed");
                 return;
             }
         } catch (AssertionError e) {

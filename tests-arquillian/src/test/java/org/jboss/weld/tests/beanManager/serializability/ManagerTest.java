@@ -30,18 +30,18 @@ import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ManagerTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -117,10 +117,10 @@ public class ManagerTest {
     public void testRootManagerSerializability() throws Exception {
         String rootManagerId = beanManager.getId();
         BeanManagerImpl deserializedRootManager = (BeanManagerImpl) Utils.deserialize(Utils.serialize(beanManager));
-        Assert.assertEquals(rootManagerId, deserializedRootManager.getId());
-        Assert.assertEquals(1, beanManager.getBeans(Foo.class).size());
-        Assert.assertEquals(1, deserializedRootManager.getBeans(Foo.class).size());
-        Assert.assertEquals(
+        Assertions.assertEquals(rootManagerId, deserializedRootManager.getId());
+        Assertions.assertEquals(1, beanManager.getBeans(Foo.class).size());
+        Assertions.assertEquals(1, deserializedRootManager.getBeans(Foo.class).size());
+        Assertions.assertEquals(
                 deserializedRootManager.getBeans(Foo.class).iterator().next(),
                 beanManager.getBeans(Foo.class).iterator().next());
     }

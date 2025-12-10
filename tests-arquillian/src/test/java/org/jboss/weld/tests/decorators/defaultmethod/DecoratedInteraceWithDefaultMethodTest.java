@@ -17,16 +17,16 @@
 package org.jboss.weld.tests.decorators.defaultmethod;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DecoratedInteraceWithDefaultMethodTest {
 
     @Deployment
@@ -41,20 +41,20 @@ public class DecoratedInteraceWithDefaultMethodTest {
         // safety-check: make sure that decorated method is decorated when invoked standalone
         BeanDecorator.reset();
         bean.doDecorated();
-        Assert.assertEquals(1, BeanDecorator.decoratedInvocationCount);
+        Assertions.assertEquals(1, BeanDecorator.decoratedInvocationCount);
 
         // safety-check: make sure that decorated method is not decorated when invoked from undecorated method
         BeanDecorator.reset();
         bean.doUndecorated();
-        Assert.assertEquals(0, BeanDecorator.decoratedInvocationCount);
+        Assertions.assertEquals(0, BeanDecorator.decoratedInvocationCount);
     }
 
     @Test
     public void testDefaultMethodGetsIntercepted(DecoratedBean bean) {
         DecoratorWhichOnlyOverridesMethodWithDefaultImpl.reset();
         bean.defaultDecorated();
-        Assert.assertEquals(
-                "A method with default implementation in an interface should be decorated even when the bean does not override it and it is the *only* decorated method",
-                1, DecoratorWhichOnlyOverridesMethodWithDefaultImpl.decoratedInvocationCount);
+        Assertions.assertEquals(
+                1, DecoratorWhichOnlyOverridesMethodWithDefaultImpl.decoratedInvocationCount,
+                "A method with default implementation in an interface should be decorated even when the bean does not override it and it is the *only* decorated method");
     }
 }

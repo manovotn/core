@@ -1,32 +1,31 @@
 package org.jboss.weld.tests.interceptors.bridgemethods.ejb;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.interceptors.bridgemethods.common.BaseService;
 import org.jboss.weld.tests.interceptors.bridgemethods.common.SomeInterceptor;
 import org.jboss.weld.tests.interceptors.bridgemethods.common.SpecialService;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EJBBridgeMethodTest {
 
     @Deployment
@@ -51,7 +50,7 @@ public class EJBBridgeMethodTest {
         this.baseService = baseService;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         SomeInterceptor.invocationCount = 0;
     }
@@ -76,7 +75,7 @@ public class EJBBridgeMethodTest {
     }
 
     @SuppressWarnings("unchecked")
-    @Ignore
+    @Disabled
     @Test
     public void testBaseServiceWithInvalidArgumentType() {
         try {
@@ -88,7 +87,7 @@ public class EJBBridgeMethodTest {
                 throw e;
             }
         }
-        assertEquals("ClassCastException should be thrown before interceptor is invoked", 0, SomeInterceptor.invocationCount);
+        assertEquals(0, SomeInterceptor.invocationCount, "ClassCastException should be thrown before interceptor is invoked");
     }
 
     @Test

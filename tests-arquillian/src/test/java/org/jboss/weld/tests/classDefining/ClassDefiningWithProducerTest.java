@@ -20,7 +20,7 @@ package org.jboss.weld.tests.classDefining;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -28,15 +28,15 @@ import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.classDefining.a.BeanWithProducer;
 import org.jboss.weld.tests.classDefining.b.BeanInterface;
 import org.jboss.weld.tests.classDefining.c.AppScopedBean;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that we are able to define a proxy class for producer method that returns a type from different package.
  * In JDK 11+ this means we need to perform lookup in correct module.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ClassDefiningWithProducerTest {
 
     @Deployment
@@ -54,7 +54,7 @@ public class ClassDefiningWithProducerTest {
     @Test
     public void testProxyDefinitionWorks() {
         // invoke the method
-        Assert.assertEquals(666, bean.ping());
-        Assert.assertEquals(666, bean.pingNested());
+        Assertions.assertEquals(666, bean.ping());
+        Assertions.assertEquals(666, bean.pingNested());
     }
 }

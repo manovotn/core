@@ -18,23 +18,22 @@
 package org.jboss.weld.tests.interceptors.injectionWithMethodExclusions;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class InjectionWithExclusionsOnMethodsTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -44,18 +43,18 @@ public class InjectionWithExclusionsOnMethodsTest {
 
     @Test
     public void testBeanWithExcludeDefaultInterceptorsInjected(Simple simple) throws Exception {
-        Assert.assertNotNull(simple.getHelper());
+        Assertions.assertNotNull(simple.getHelper());
 
         Counter.count = 0;
         EjbInterceptor.count = 0;
         EjbInterceptor2.count = 0;
         EjbInterceptor3.count = 0;
         EjbInterceptor4.count = 0;
-        Assert.assertNotNull(simple.getHelper());
-        Assert.assertEquals(1, EjbInterceptor.count);
-        Assert.assertEquals(2, EjbInterceptor2.count);
-        Assert.assertEquals(0, EjbInterceptor3.count);
-        Assert.assertEquals(0, EjbInterceptor4.count);
+        Assertions.assertNotNull(simple.getHelper());
+        Assertions.assertEquals(1, EjbInterceptor.count);
+        Assertions.assertEquals(2, EjbInterceptor2.count);
+        Assertions.assertEquals(0, EjbInterceptor3.count);
+        Assertions.assertEquals(0, EjbInterceptor4.count);
 
         Counter.count = 0;
         EjbInterceptor.count = 0;
@@ -63,10 +62,10 @@ public class InjectionWithExclusionsOnMethodsTest {
         EjbInterceptor3.count = 0;
         EjbInterceptor4.count = 0;
         simple.doSomething();
-        Assert.assertEquals(1, EjbInterceptor.count);
-        Assert.assertEquals(2, EjbInterceptor2.count);
-        Assert.assertEquals(3, EjbInterceptor3.count);
-        Assert.assertEquals(4, EjbInterceptor4.count);
+        Assertions.assertEquals(1, EjbInterceptor.count);
+        Assertions.assertEquals(2, EjbInterceptor2.count);
+        Assertions.assertEquals(3, EjbInterceptor3.count);
+        Assertions.assertEquals(4, EjbInterceptor4.count);
 
         simple.getHelper().help();
     }
@@ -78,11 +77,11 @@ public class InjectionWithExclusionsOnMethodsTest {
         EjbInterceptor2.count = 0;
         EjbInterceptor3.count = 0;
         EjbInterceptor4.count = 0;
-        Assert.assertNotNull(simple.getHelper());
-        Assert.assertEquals(1, EjbInterceptor.count);
-        Assert.assertEquals(2, EjbInterceptor2.count);
-        Assert.assertEquals(0, EjbInterceptor3.count);
-        Assert.assertEquals(0, EjbInterceptor4.count);
+        Assertions.assertNotNull(simple.getHelper());
+        Assertions.assertEquals(1, EjbInterceptor.count);
+        Assertions.assertEquals(2, EjbInterceptor2.count);
+        Assertions.assertEquals(0, EjbInterceptor3.count);
+        Assertions.assertEquals(0, EjbInterceptor4.count);
 
         Counter.count = 0;
         EjbInterceptor.count = 0;
@@ -90,10 +89,10 @@ public class InjectionWithExclusionsOnMethodsTest {
         EjbInterceptor3.count = 0;
         EjbInterceptor4.count = 0;
         simple.doSomething();
-        Assert.assertEquals(0, EjbInterceptor.count);
-        Assert.assertEquals(0, EjbInterceptor2.count);
-        Assert.assertEquals(1, EjbInterceptor3.count);
-        Assert.assertEquals(2, EjbInterceptor4.count);
+        Assertions.assertEquals(0, EjbInterceptor.count);
+        Assertions.assertEquals(0, EjbInterceptor2.count);
+        Assertions.assertEquals(1, EjbInterceptor3.count);
+        Assertions.assertEquals(2, EjbInterceptor4.count);
 
         simple.getHelper().help();
     }

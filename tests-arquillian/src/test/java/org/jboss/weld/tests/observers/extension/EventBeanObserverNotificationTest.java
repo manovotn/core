@@ -22,10 +22,10 @@ import jakarta.enterprise.event.Event;
 import jakarta.enterprise.inject.Any;
 import jakarta.inject.Inject;
 
-import org.jboss.arquillian.junit.Arquillian;
-import org.junit.runner.RunWith;
+import org.jboss.arquillian.junit5.ArquillianExtension;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EventBeanObserverNotificationTest extends AbstractObserverNotificationTestSuperclass {
 
     @Inject

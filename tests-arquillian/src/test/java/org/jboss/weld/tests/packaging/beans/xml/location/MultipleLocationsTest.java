@@ -17,13 +17,12 @@
 package org.jboss.weld.tests.packaging.beans.xml.location;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.impl.BeansXml;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that "WEB-INF/beans.xml" takes precedence over "WEB-INF/classes/META-INF/beans.xml" if both locations are used. This
@@ -32,8 +31,8 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class MultipleLocationsTest extends AbstractBeansXmlLocationTest {
 
     @Deployment

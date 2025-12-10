@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.injectionPoint.weld1823;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePaths;
@@ -32,16 +32,15 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /*
  *@author Kirill Gaevskii
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class Weld1823Test {
 
     @Deployment(testable = false)
@@ -56,6 +55,6 @@ public class Weld1823Test {
         final URL url = new URL(baseURL, "ProducerNullIPServlet");
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(url.openStream()));
-        assertEquals(reader.readLine(), "Test Sucessful!");
+        assertEquals("Test Sucessful!", reader.readLine());
     }
 }

@@ -17,11 +17,7 @@
 package org.jboss.weld.tests.beanManager.producer;
 
 import static org.jboss.weld.util.reflection.Reflections.cast;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Set;
 
@@ -37,18 +33,18 @@ import jakarta.enterprise.inject.spi.Producer;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.util.reflection.Reflections;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SyntheticProducerTest {
 
     @Inject
@@ -130,7 +126,7 @@ public class SyntheticProducerTest {
             } else if (parameter.getPosition() == 1) {
                 assertEquals(SpaceSuit.class, Reflections.getRawType(parameter.getBaseType()));
             } else {
-                Assert.fail("Unexpected injection point " + ip);
+                Assertions.fail("Unexpected injection point " + ip);
             }
             assertFalse(ip.isDelegate());
             assertFalse(ip.isTransient());
@@ -138,40 +134,38 @@ public class SyntheticProducerTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidProducerMethod1() {
         AnnotatedMethod<? super Factory> method = this.<Factory, AnnotatedMethod<Factory>> getAnnotatedMember(Factory.class,
                 "invalidProducerMethod1");
-        manager.getProducerFactory(method, null).createProducer(null);
+        assertThrows(IllegalArgumentException.class, () -> manager.getProducerFactory(method, null).createProducer(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidProducerMethod2() {
-        // method is not static but no declaringBean is provided
         AnnotatedMethod<? super Factory> method = this.<Factory, AnnotatedMethod<Factory>> getAnnotatedMember(Factory.class,
                 "invalidProducerMethod2");
-        manager.getProducerFactory(method, null).createProducer(null);
+        assertThrows(IllegalArgumentException.class, () -> manager.getProducerFactory(method, null).createProducer(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidProducerField1() {
         AnnotatedField<? super Factory> field = this.<Factory, AnnotatedField<Factory>> getAnnotatedMember(Factory.class,
                 "INVALID_FIELD1");
-        manager.getProducerFactory(field, null).createProducer(null);
+        assertThrows(IllegalArgumentException.class, () -> manager.getProducerFactory(field, null).createProducer(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidProducerField2() {
         AnnotatedField<? super Factory> field = this.<Factory, AnnotatedField<Factory>> getAnnotatedMember(Factory.class,
                 "INVALID_FIELD2");
-        manager.getProducerFactory(field, null).createProducer(null);
+        assertThrows(IllegalArgumentException.class, () -> manager.getProducerFactory(field, null).createProducer(null));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testInvalidProducerField3() {
-        // field is not static but no declaringBean is provided
         AnnotatedField<? super Factory> field = this.<Factory, AnnotatedField<Factory>> getAnnotatedMember(Factory.class,
                 "INVALID_FIELD3");
-        manager.getProducerFactory(field, null).createProducer(null);
+        assertThrows(IllegalArgumentException.class, () -> manager.getProducerFactory(field, null).createProducer(null));
     }
 }

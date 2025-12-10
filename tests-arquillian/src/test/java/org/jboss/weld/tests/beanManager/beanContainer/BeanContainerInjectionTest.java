@@ -8,19 +8,19 @@ import jakarta.enterprise.inject.spi.BeanContainer;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Simple test which verifies that we can provide {@link BeanContainer} as a built-in bean
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanContainerInjectionTest {
 
     @Deployment
@@ -42,7 +42,7 @@ public class BeanContainerInjectionTest {
 
         // dynamic resolution, verify type, explicit qualifier and test scope
         Instance<BeanContainer> beanContainerInstance = instance.select(BeanContainer.class, Default.Literal.INSTANCE);
-        Assert.assertTrue(beanContainerInstance.isResolvable());
-        Assert.assertEquals(beanContainerInstance.getHandle().getBean().getScope(), Dependent.class);
+        Assertions.assertTrue(beanContainerInstance.isResolvable());
+        Assertions.assertEquals(Dependent.class, beanContainerInstance.getHandle().getBean().getScope());
     }
 }

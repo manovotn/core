@@ -17,7 +17,7 @@
 package org.jboss.weld.tests.contexts.passivating.custom;
 
 import static org.jboss.weld.util.reflection.Reflections.cast;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;

@@ -17,9 +17,7 @@
 package org.jboss.weld.tests.beanManager.bean;
 
 import static org.jboss.weld.util.reflection.Reflections.cast;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;

@@ -18,19 +18,19 @@
 package org.jboss.weld.tests.decorators.generic;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class PartialDecoratorTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -43,10 +43,10 @@ public class PartialDecoratorTest {
     public void testDecoratorDoesNotDecorateOutsideDecoratedTypes(TestBean testBean) {
         testBean.invoke();
 
-        Assert.assertTrue(PartialDecorator.decoratedInvoked);
-        Assert.assertFalse(PartialDecorator.notDecoratedInvoked);
-        Assert.assertTrue(StringPartialDecorator.invoked);
-        Assert.assertTrue(GenericBean.decoratedInvoked);
-        Assert.assertTrue(GenericBean.notDecoratedInvoked);
+        Assertions.assertTrue(PartialDecorator.decoratedInvoked);
+        Assertions.assertFalse(PartialDecorator.notDecoratedInvoked);
+        Assertions.assertTrue(StringPartialDecorator.invoked);
+        Assertions.assertTrue(GenericBean.decoratedInvoked);
+        Assertions.assertTrue(GenericBean.notDecoratedInvoked);
     }
 }

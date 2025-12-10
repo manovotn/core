@@ -17,10 +17,7 @@
 package org.jboss.weld.tests.extensions.lifecycle.processInjectionPoint;
 
 import static org.jboss.weld.tests.util.BeanUtilities.verifyQualifierTypes;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -31,17 +28,17 @@ import jakarta.enterprise.inject.spi.InjectionPoint;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.util.BeanUtilities;
 import org.jboss.weld.util.reflection.Reflections;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ProcessInjectionPointFiredTest {
 
     @Inject

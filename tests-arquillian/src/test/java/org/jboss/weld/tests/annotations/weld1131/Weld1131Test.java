@@ -3,19 +3,19 @@ package org.jboss.weld.tests.annotations.weld1131;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class Weld1131Test {
 
     @Deployment
@@ -30,13 +30,13 @@ public class Weld1131Test {
     @Test
     public void testMethodAnnotations() throws Exception {
         MyAnnotation myAnnotation = foo.getClass().getMethod("getBar").getAnnotation(MyAnnotation.class);
-        Assert.assertNotNull(myAnnotation);
+        Assertions.assertNotNull(myAnnotation);
     }
 
     @Test
     public void testTypeAnnotations() throws Exception {
         MyAnnotation myAnnotation = foo.getClass().getAnnotation(MyAnnotation.class);
-        Assert.assertNull(myAnnotation); // not a hard requirement
+        Assertions.assertNull(myAnnotation); // not a hard requirement
     }
 
 }

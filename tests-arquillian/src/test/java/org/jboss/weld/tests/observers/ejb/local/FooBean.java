@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.observers.ejb.local;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

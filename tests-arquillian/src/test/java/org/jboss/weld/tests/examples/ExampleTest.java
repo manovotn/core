@@ -17,16 +17,16 @@
 package org.jboss.weld.tests.examples;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ExampleTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -36,18 +36,18 @@ public class ExampleTest {
 
     @Test
     public void testGameGenerator(Game game1, Game game2, Generator gen1, Generator gen2) throws Exception {
-        Assert.assertNotSame(game1, game2);
-        Assert.assertNotSame(game1.getNumber(), game2.getNumber());
+        Assertions.assertNotSame(game1, game2);
+        Assertions.assertNotSame(game1.getNumber(), game2.getNumber());
 
-        Assert.assertNotNull(gen1.getRandom());
-        Assert.assertEquals(gen1.getRandom(), gen2.getRandom());
+        Assertions.assertNotNull(gen1.getRandom());
+        Assertions.assertEquals(gen1.getRandom(), gen2.getRandom());
     }
 
     @Test
     public void testSentenceTranslator(TextTranslator tt1) throws Exception {
         try {
             tt1.translate("hello world");
-            Assert.fail();
+            Assertions.fail();
         } catch (UnsupportedOperationException uoe) {
             //expected
         }

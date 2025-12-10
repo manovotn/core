@@ -19,14 +19,14 @@ package org.jboss.weld.tests.metadata.anonymousAndLocalClass;
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Test requires PAT observes for all types and a local and anonymous class.In this case Weld will detect an observer for every
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * @see WELD-2498
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class NoMetadataForAnonymousAndLocalClassesTest {
 
     @Deployment
@@ -49,7 +49,7 @@ public class NoMetadataForAnonymousAndLocalClassesTest {
 
     @Test
     public void testNoATObserved() {
-        Assert.assertEquals(0, OmniseeingExtension.ANONYMOUS_CLASS_OBSERVED);
-        Assert.assertEquals(0, OmniseeingExtension.LOCAL_CLASS_OBSERVED);
+        Assertions.assertEquals(0, OmniseeingExtension.ANONYMOUS_CLASS_OBSERVED);
+        Assertions.assertEquals(0, OmniseeingExtension.LOCAL_CLASS_OBSERVED);
     }
 }

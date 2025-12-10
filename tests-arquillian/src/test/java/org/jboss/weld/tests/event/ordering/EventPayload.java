@@ -1,7 +1,7 @@
 package org.jboss.weld.tests.event.ordering;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ public class EventPayload {
             fail("observers: " + observers.size() + ", expected: " + expectedObservers.length);
         }
         for (int i = 0; i < expectedObservers.length; i++) {
-            assertEquals("Observers at index " + i + "do not match", expectedObservers[i], observers.get(i));
+            assertEquals(expectedObservers[i], observers.get(i), "Observers at index " + i + "do not match");
         }
     }
 

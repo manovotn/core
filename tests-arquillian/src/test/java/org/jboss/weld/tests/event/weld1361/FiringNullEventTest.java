@@ -16,17 +16,19 @@
  */
 package org.jboss.weld.tests.event.weld1361;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @see https://issues.jboss.org/browse/WELD-1361
@@ -34,7 +36,7 @@ import org.junit.runner.RunWith;
  * @author Matus Abaffy
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class FiringNullEventTest {
 
     @Inject
@@ -46,8 +48,8 @@ public class FiringNullEventTest {
                 .addClass(FiringNullEventTest.class);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void test() {
-        event.fire(null);
+        assertThrows(IllegalArgumentException.class, () -> event.fire(null));
     }
 }

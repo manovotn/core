@@ -16,34 +16,30 @@
  */
 package org.jboss.weld.tests.scope;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import org.hamcrest.Description;
-import org.hamcrest.SelfDescribing;
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.ComparisonFailure;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class RemoteScopeTest {
 
     @Deployment(testable = false)
@@ -51,7 +47,7 @@ public class RemoteScopeTest {
         return ShrinkWrap.create(WebArchive.class, Utils.getDeploymentNameAsHash(RemoteScopeTest.class, Utils.ARCHIVE_TYPE.WAR))
                 .addClasses(Bar.class, Foo.class, RemoteClient.class, Special.class, Temp.class, TempConsumer.class,
                         TempProducer.class, Useless.class)
-                .addClasses(Utils.class, Assert.class, Description.class, SelfDescribing.class, ComparisonFailure.class)
+                .addClasses(Utils.class, Assertions.class)
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
     }
 
@@ -62,9 +58,9 @@ public class RemoteScopeTest {
     public void testScopeOfProducerMethod(@ArquillianResource URL baseURL) throws Exception {
         WebClient client = new WebClient();
         Page page = client.getPage(new URL(baseURL, "request1"));
-        assertEquals(page.getWebResponse().getStatusCode(), HttpServletResponse.SC_OK);
+        assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
         page = client.getPage(new URL(baseURL, "request2"));
-        assertEquals(page.getWebResponse().getStatusCode(), HttpServletResponse.SC_OK);
+        assertEquals(HttpServletResponse.SC_OK, page.getWebResponse().getStatusCode());
     }
 
 }

@@ -21,17 +21,17 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.repeatable.RepeatableQualifier.Literal;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EventWithRepeatableQualifierTest {
 
     private static final String EVENT = "event";
@@ -49,36 +49,36 @@ public class EventWithRepeatableQualifierTest {
     public void testWithBeanManager(BeanManager manager) {
         observer.reset();
         manager.getEvent().select(String.class, new Literal("foo"), new Literal("bar")).fire(EVENT);
-        Assert.assertTrue(observer.getAll().contains(EVENT));
-        Assert.assertTrue(observer.getFoo().contains(EVENT));
-        Assert.assertTrue(observer.getFooBar().contains(EVENT));
-        Assert.assertFalse(observer.getFooBarBaz().contains(EVENT));
-        Assert.assertFalse(observer.getFooQux().contains(EVENT));
+        Assertions.assertTrue(observer.getAll().contains(EVENT));
+        Assertions.assertTrue(observer.getFoo().contains(EVENT));
+        Assertions.assertTrue(observer.getFooBar().contains(EVENT));
+        Assertions.assertFalse(observer.getFooBarBaz().contains(EVENT));
+        Assertions.assertFalse(observer.getFooQux().contains(EVENT));
         observer.reset();
         manager.getEvent().select(String.class, new Literal("foo"), new Literal("bar"), new Literal("baz")).fire(EVENT);
-        Assert.assertTrue(observer.getAll().contains(EVENT));
-        Assert.assertTrue(observer.getFoo().contains(EVENT));
-        Assert.assertTrue(observer.getFooBar().contains(EVENT));
-        Assert.assertTrue(observer.getFooBarBaz().contains(EVENT));
-        Assert.assertFalse(observer.getFooQux().contains(EVENT));
+        Assertions.assertTrue(observer.getAll().contains(EVENT));
+        Assertions.assertTrue(observer.getFoo().contains(EVENT));
+        Assertions.assertTrue(observer.getFooBar().contains(EVENT));
+        Assertions.assertTrue(observer.getFooBarBaz().contains(EVENT));
+        Assertions.assertFalse(observer.getFooQux().contains(EVENT));
     }
 
     @Test
     public void testWithEvent(Event<String> event) {
         observer.reset();
         event.select(new Literal("foo"), new Literal("bar")).fire(EVENT);
-        Assert.assertTrue(observer.getAll().contains(EVENT));
-        Assert.assertTrue(observer.getFoo().contains(EVENT));
-        Assert.assertTrue(observer.getFooBar().contains(EVENT));
-        Assert.assertFalse(observer.getFooBarBaz().contains(EVENT));
-        Assert.assertFalse(observer.getFooQux().contains(EVENT));
+        Assertions.assertTrue(observer.getAll().contains(EVENT));
+        Assertions.assertTrue(observer.getFoo().contains(EVENT));
+        Assertions.assertTrue(observer.getFooBar().contains(EVENT));
+        Assertions.assertFalse(observer.getFooBarBaz().contains(EVENT));
+        Assertions.assertFalse(observer.getFooQux().contains(EVENT));
         observer.reset();
         event.select(new Literal("foo"), new Literal("bar"), new Literal("baz")).fire(EVENT);
-        Assert.assertTrue(observer.getAll().contains(EVENT));
-        Assert.assertTrue(observer.getFoo().contains(EVENT));
-        Assert.assertTrue(observer.getFooBar().contains(EVENT));
-        Assert.assertTrue(observer.getFooBarBaz().contains(EVENT));
-        Assert.assertFalse(observer.getFooQux().contains(EVENT));
+        Assertions.assertTrue(observer.getAll().contains(EVENT));
+        Assertions.assertTrue(observer.getFoo().contains(EVENT));
+        Assertions.assertTrue(observer.getFooBar().contains(EVENT));
+        Assertions.assertTrue(observer.getFooBarBaz().contains(EVENT));
+        Assertions.assertFalse(observer.getFooQux().contains(EVENT));
     }
 
 }

@@ -20,16 +20,16 @@ package org.jboss.weld.tests.classDefining.inherited;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.classDefining.inherited.base.AncestorInterface;
 import org.jboss.weld.tests.classDefining.inherited.extending.MyInterface;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that you can create a proxy (specifically under JDK 11) from producer that returns a hierarchical interface
@@ -38,7 +38,7 @@ import org.junit.runner.RunWith;
  * One of the proxies is built on an interface extending Principal, this is deliberate as that lies in java.* package
  * which gets special treatment.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ProxyForHierarchicalInterfaceTypeTest {
 
     @Deployment
@@ -58,16 +58,16 @@ public class ProxyForHierarchicalInterfaceTypeTest {
     public void testProxyDefinitionWorks() {
         // invoke the method, the verification lies mainly in not getting errors when creating proxy
         MyInterface interfaceBean = this.bean.getProducedInterfaceBean();
-        Assert.assertEquals(MyInterface.class.getSimpleName(), interfaceBean.anotherPing());
-        Assert.assertEquals(AncestorInterface.class.getSimpleName(), interfaceBean.ping());
+        Assertions.assertEquals(MyInterface.class.getSimpleName(), interfaceBean.anotherPing());
+        Assertions.assertEquals(AncestorInterface.class.getSimpleName(), interfaceBean.ping());
         // assert that the proxy from hierarchical interface starts with package and class of the most specific interface we know of
-        Assert.assertTrue(interfaceBean.getClass().getName()
+        Assertions.assertTrue(interfaceBean.getClass().getName()
                 .startsWith("org.jboss.weld.tests.classDefining.inherited.extending.MyInterface"));
 
         AMuchBetterPrincipal principal = this.bean.getPrincipal();
-        Assert.assertEquals(AMuchBetterPrincipal.class.getSimpleName(), principal.getName());
+        Assertions.assertEquals(AMuchBetterPrincipal.class.getSimpleName(), principal.getName());
         // assert that the proxy created from Principal and custom class has the package of custom class
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 principal.getClass().getName().startsWith("org.jboss.weld.tests.classDefining.inherited.AMuchBetterPrincipal"));
     }
 }

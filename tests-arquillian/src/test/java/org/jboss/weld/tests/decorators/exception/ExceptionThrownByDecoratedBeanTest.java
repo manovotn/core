@@ -19,16 +19,16 @@ package org.jboss.weld.tests.decorators.exception;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ExceptionThrownByDecoratedBeanTest {
 
     @Inject
@@ -45,7 +45,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testCheckedExceptionPropagatedThroughDecoratorCall() {
         try {
             foo.throwCheckedException1();
-            Assert.fail();
+            Assertions.fail();
         } catch (CheckedException expected) {
         }
     }
@@ -54,7 +54,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testCheckedExceptionThrownByDecorator() {
         try {
             foo.throwCheckedException2();
-            Assert.fail();
+            Assertions.fail();
         } catch (CheckedException expected) {
         }
     }
@@ -63,7 +63,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testCheckedExceptionPropagated() {
         try {
             foo.throwCheckedException3();
-            Assert.fail();
+            Assertions.fail();
         } catch (CheckedException expected) {
         }
     }
@@ -72,7 +72,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testCheckedExceptionPropagatedThroughAbstractDecoratorMethod() {
         try {
             foo.throwCheckedException4();
-            Assert.fail();
+            Assertions.fail();
         } catch (CheckedException expected) {
         }
     }
@@ -81,7 +81,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testRuntimeExceptionPropagatedThroughDecoratorCall() {
         try {
             foo.throwRuntimeException1();
-            Assert.fail();
+            Assertions.fail();
         } catch (CustomRuntimeException expected) {
         }
     }
@@ -90,7 +90,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testRuntimeExceptionThrownByDecorator() {
         try {
             foo.throwRuntimeException2();
-            Assert.fail();
+            Assertions.fail();
         } catch (CustomRuntimeException expected) {
         }
     }
@@ -99,7 +99,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testRuntimeExceptionPropagated() {
         try {
             foo.throwRuntimeException3();
-            Assert.fail();
+            Assertions.fail();
         } catch (CustomRuntimeException expected) {
         }
     }
@@ -108,7 +108,7 @@ public class ExceptionThrownByDecoratedBeanTest {
     public void testRuntimeExceptionPropagatedThroughAbstractDecoratorMethod() {
         try {
             foo.throwRuntimeException4();
-            Assert.fail();
+            Assertions.fail();
         } catch (CustomRuntimeException expected) {
         }
     }

@@ -26,21 +26,20 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EEResourceProducerFieldPassivationCapableTest {
     @Deployment // changed to .war, from .jar
     public static Archive<?> deploy() {
@@ -57,30 +56,30 @@ public class EEResourceProducerFieldPassivationCapableTest {
     }
 
     @Test
-    @Ignore("Will work once we start testing with WFLY 11+, as there will be fix for JBTM-2449")
+    @Disabled("Will work once we start testing with WFLY 11+, as there will be fix for JBTM-2449")
     public void testResource(@Produced UserTransaction userTransaction) throws Throwable {
         // invoke deserialization with special class loader as the underlying class will not be otherwise visible to Weld
         UserTransaction userTransaction1 = Utils.deserialize(Utils.serialize(userTransaction),
                 userTransaction.getClass().getClassLoader());
-        Assert.assertTrue(checkUserTransaction(userTransaction1));
+        Assertions.assertTrue(checkUserTransaction(userTransaction1));
     }
 
     @Test
     public void testEntityManager(@Produced EntityManager entityManager) throws Throwable {
         EntityManager entityManager1 = Utils.deserialize(Utils.serialize(entityManager));
-        Assert.assertTrue(checkEntityManager(entityManager1));
+        Assertions.assertTrue(checkEntityManager(entityManager1));
     }
 
     @Test
     public void testEntityManagerFactory(@Produced EntityManagerFactory entityManagerFactory) throws Throwable {
         EntityManagerFactory entityManagerFactory1 = Utils.deserialize(Utils.serialize(entityManagerFactory));
-        Assert.assertTrue(checkEntityManagerFactory(entityManagerFactory1));
+        Assertions.assertTrue(checkEntityManagerFactory(entityManagerFactory1));
     }
 
     @Test
     public void testRemoteEjb(@Produced HorseRemote horse) throws Throwable {
         HorseRemote horse1 = Utils.deserialize(Utils.serialize(horse));
-        Assert.assertTrue(checkRemoteEjb(horse1));
+        Assertions.assertTrue(checkRemoteEjb(horse1));
     }
 
     @Test

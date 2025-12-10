@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.instance.destroy.normal;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;

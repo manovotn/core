@@ -16,19 +16,21 @@
  */
 package org.jboss.weld.tests.decorators.unwrapException;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:lightguard.jp@gmail.com">Jason Porter</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class UnwrappingUncheckedExceptionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -40,8 +42,8 @@ public class UnwrappingUncheckedExceptionTest {
     /**
      * WELD-747
      */
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void assertExceptionIsUnwrapped(Simple bean) {
-        bean.speak();
+        assertThrows(UnsupportedOperationException.class, () -> bean.speak());
     }
 }

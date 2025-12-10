@@ -1,7 +1,7 @@
 package org.jboss.weld.tests.interceptors.signature;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
 
@@ -29,10 +29,10 @@ public abstract class AbstractSignatureTestBase {
     }
 
     protected void assertNotInvoked(boolean invoked) {
-        assertFalse("interceptor method should not have been invoked, but it was", invoked);
+        assertFalse(invoked, "interceptor method should not have been invoked, but it was");
     }
 
     protected void assertInvoked(boolean invoked) {
-        assertTrue("interceptor method should have been invoked, but it wasn't", invoked);
+        assertTrue(invoked, "interceptor method should have been invoked, but it wasn't");
     }
 }

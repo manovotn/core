@@ -16,9 +16,7 @@
  */
 package org.jboss.weld.tests.interceptors.context.bindings;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.annotation.Annotation;
 import java.util.Set;
@@ -26,13 +24,13 @@ import java.util.Set;
 import jakarta.enterprise.inject.Instance;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests now deprecated functionality, can be altered/removed once we no longer provide
@@ -40,7 +38,7 @@ import org.junit.runner.RunWith;
  * <p/>
  * See https://issues.redhat.com/browse/WELD-2756
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InvocationContextInterceptorBindingsTest {
 
     @Deployment

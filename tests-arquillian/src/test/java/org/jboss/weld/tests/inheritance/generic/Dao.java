@@ -17,8 +17,8 @@
 
 package org.jboss.weld.tests.inheritance.generic;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.inject.Vetoed;

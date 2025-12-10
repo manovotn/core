@@ -21,17 +21,17 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.literal.NamedLiteral;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ExperimentalProcessObserverMethodTest {
 
     @Inject
@@ -46,7 +46,7 @@ public class ExperimentalProcessObserverMethodTest {
 
     @Test
     public void testVeto() {
-        Assert.assertEquals(0, manager.resolveObserverMethods("foo", Experimental.Literal.INSTANCE).size());
+        Assertions.assertEquals(0, manager.resolveObserverMethods("foo", Experimental.Literal.INSTANCE).size());
     }
 
     @Test
@@ -73,11 +73,11 @@ public class ExperimentalProcessObserverMethodTest {
                 return 0D;
             }
         };
-        Assert.assertEquals(0, manager.resolveObserverMethods(number, Experimental.Literal.INSTANCE).size());
-        Assert.assertEquals(0,
+        Assertions.assertEquals(0, manager.resolveObserverMethods(number, Experimental.Literal.INSTANCE).size());
+        Assertions.assertEquals(0,
                 manager.resolveObserverMethods(number, Experimental.Literal.INSTANCE, new NamedLiteral("experimental")).size());
-        Assert.assertEquals(0, manager.resolveObserverMethods(0, Experimental.Literal.INSTANCE).size());
-        Assert.assertEquals(1,
+        Assertions.assertEquals(0, manager.resolveObserverMethods(0, Experimental.Literal.INSTANCE).size());
+        Assertions.assertEquals(1,
                 manager.resolveObserverMethods(0, Experimental.Literal.INSTANCE, new NamedLiteral("experimental")).size());
     }
 }

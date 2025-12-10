@@ -21,20 +21,20 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that registering a synthetic enabled alternative via {@code Bean<T>} that implements {@code Prioritized} will
  * fire {@code ProcessBean} event.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class CustomPrioritizedBeanFiresProcessBeanEventTest {
 
     @Deployment
@@ -50,8 +50,8 @@ public class CustomPrioritizedBeanFiresProcessBeanEventTest {
 
     @Test
     public void testBeanTriggeredEvents() {
-        Assert.assertEquals(2, MyExtension.PB_TRIGGERED);
-        Assert.assertEquals(1, MyExtension.PSB_TRIGGERED);
-        Assert.assertEquals(FooBean.class.getSimpleName(), foo.ping());
+        Assertions.assertEquals(2, MyExtension.PB_TRIGGERED);
+        Assertions.assertEquals(1, MyExtension.PSB_TRIGGERED);
+        Assertions.assertEquals(FooBean.class.getSimpleName(), foo.ping());
     }
 }

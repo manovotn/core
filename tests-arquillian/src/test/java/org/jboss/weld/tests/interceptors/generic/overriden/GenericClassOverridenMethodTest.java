@@ -19,14 +19,14 @@ package org.jboss.weld.tests.interceptors.generic.overriden;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests interception within abstract class hierarchy with overriding and generics
@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
  * @see WELD-2514
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class GenericClassOverridenMethodTest {
 
     @Deployment
@@ -53,6 +53,6 @@ public class GenericClassOverridenMethodTest {
     public void testInterceptionWorks() {
         serviceInjectedAsSuperclass.serviceDoSomething(null);
         serviceInjectedAsImpl.serviceDoSomething(null);
-        Assert.assertEquals(2, TestInterceptor.INTERCEPTOR_INVOKED);
+        Assertions.assertEquals(2, TestInterceptor.INTERCEPTOR_INVOKED);
     }
 }

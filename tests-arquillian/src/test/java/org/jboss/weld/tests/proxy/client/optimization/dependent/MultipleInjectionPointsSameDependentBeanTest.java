@@ -16,18 +16,18 @@
  */
 package org.jboss.weld.tests.proxy.client.optimization.dependent;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.config.ConfigurationKey;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.util.PropertiesBuilder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * This test should verify that enabled injectable reference lookup optimization does not break multiple injection points of the
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * @author Martin Kouba
  * @see WELD-1810
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class MultipleInjectionPointsSameDependentBeanTest {
 
     @Deployment
@@ -52,8 +52,8 @@ public class MultipleInjectionPointsSameDependentBeanTest {
 
     @Test
     public void testOptimizationDoesNotAffectDependentBeans(FooRequest fooRequest, FooApplication fooApplication) {
-        assertFalse(fooRequest.getBar1().getId().equals(fooRequest.getBar2().getId()));
-        assertFalse(fooApplication.getBar1().getId().equals(fooApplication.getBar2().getId()));
+        assertNotEquals(fooRequest.getBar1().getId(), fooRequest.getBar2().getId());
+        assertNotEquals(fooApplication.getBar1().getId(), fooApplication.getBar2().getId());
     }
 
 }

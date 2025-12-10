@@ -17,14 +17,14 @@
 package org.jboss.weld.tests.observers.privateMethod.withInterception;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * A private observer method on an intercepted application scoped bean.
@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
  * @see https://issues.jboss.org/browse/WELD-2443
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class PrivateObserverWithAnotherInterceptedMethodTest {
 
     @Deployment
@@ -45,8 +45,8 @@ public class PrivateObserverWithAnotherInterceptedMethodTest {
     @Test
     public void testThis() {
         //noop needed, app scoped is initialized automatically which triggers the chain
-        Assert.assertTrue(SomeInterceptor.INTERCEPTOR_TRIGGERED);
-        Assert.assertTrue(FirstBean.OBSERVER_TRIGGERED);
-        Assert.assertTrue(SecondBean.OBSERVER_TRIGGERED);
+        Assertions.assertTrue(SomeInterceptor.INTERCEPTOR_TRIGGERED);
+        Assertions.assertTrue(FirstBean.OBSERVER_TRIGGERED);
+        Assertions.assertTrue(SecondBean.OBSERVER_TRIGGERED);
     }
 }

@@ -21,16 +21,15 @@ import jakarta.enterprise.inject.spi.Unmanaged;
 import jakarta.enterprise.inject.spi.Unmanaged.UnmanagedInstance;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Testcase for WELD-1963
@@ -38,8 +37,8 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class InterceptorResourceInjectionTest {
 
     @Deployment
@@ -50,7 +49,7 @@ public class InterceptorResourceInjectionTest {
 
     @Test
     public void testWithManagedBean(InterceptedBean bean) {
-        Assert.assertNotNull(bean.ping(null));
+        Assertions.assertNotNull(bean.ping(null));
     }
 
     @Test
@@ -58,7 +57,7 @@ public class InterceptorResourceInjectionTest {
         Unmanaged<InterceptedBean> unmanaged = new Unmanaged<>(manager, InterceptedBean.class);
         UnmanagedInstance<InterceptedBean> instance = unmanaged.newInstance();
         InterceptedBean reference = instance.produce().inject().postConstruct().get();
-        Assert.assertNotNull(reference.ping(null));
+        Assertions.assertNotNull(reference.ping(null));
         instance.preDestroy().dispose();
     }
 }

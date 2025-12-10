@@ -16,10 +16,7 @@
  */
 package org.jboss.weld.tests.instance.enhanced;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -29,7 +26,7 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -37,15 +34,15 @@ import org.jboss.weld.inject.WeldInstance;
 import org.jboss.weld.inject.WeldInstance.Handler;
 import org.jboss.weld.test.util.ActionSequence;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class WeldInstanceTest {
 
     @Deployment
@@ -81,7 +78,7 @@ public class WeldInstanceTest {
         // Test try-with-resource
         try (Handler<Alpha> alpha2 = instance.getHandler()) {
             alpha2Id = alpha2.get().getId();
-            assertFalse(alpha1.get().getId().equals(alpha2Id));
+            assertNotEquals(alpha1.get().getId(), alpha2Id);
         }
 
         List<String> sequence = ActionSequence.getSequenceData();
@@ -124,7 +121,7 @@ public class WeldInstanceTest {
         // try to invoke Handle.get() again; this should throw an exception
         try {
             alphaHandle.get();
-            Assert.fail("Invoking Handle.get() after destroying contextual instance should throw an exception.");
+            Assertions.fail("Invoking Handle.get() after destroying contextual instance should throw an exception.");
         } catch (IllegalStateException e) {
             // expected
         }

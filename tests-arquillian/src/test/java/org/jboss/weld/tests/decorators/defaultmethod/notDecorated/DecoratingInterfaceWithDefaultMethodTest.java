@@ -20,14 +20,14 @@ package org.jboss.weld.tests.decorators.defaultmethod.notDecorated;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Decorator on an interface that only decorated non-default method. Contains a variant for standard and
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  *
  * See also WELD-2647
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DecoratingInterfaceWithDefaultMethodTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -51,8 +51,8 @@ public class DecoratingInterfaceWithDefaultMethodTest {
 
     @Test
     public void testDecoratorOnInterfaceWithDefaultMethod() {
-        Assert.assertEquals(InterfaceWithDefaultMethod.class.getSimpleName(), bean.defaultPing());
-        Assert.assertEquals(AbstractDecorator.class.getSimpleName() + FooBean.class.getSimpleName()
+        Assertions.assertEquals(InterfaceWithDefaultMethod.class.getSimpleName(), bean.defaultPing());
+        Assertions.assertEquals(AbstractDecorator.class.getSimpleName() + FooBean.class.getSimpleName()
                 + NonAbstractDecorator.class.getSimpleName(), bean.decoratedMethod());
     }
 }

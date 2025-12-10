@@ -3,17 +3,17 @@ package org.jboss.weld.tests.proxy.observer;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ObserverInjectionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -29,9 +29,9 @@ public class ObserverInjectionTest {
      */
     @Test
     public void testInjectionHappens(SampleObserver sampleObserver) {
-        Assert.assertFalse(sampleObserver.isInjectionAndObservationOccured());
+        Assertions.assertFalse(sampleObserver.isInjectionAndObservationOccured());
         beanManager.getEvent().select(Baz.class).fire(new Baz());
-        Assert.assertTrue(sampleObserver.isInjectionAndObservationOccured());
+        Assertions.assertTrue(sampleObserver.isInjectionAndObservationOccured());
     }
 
 }

@@ -20,20 +20,20 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Dan Allen
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class NamedBeanTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -49,7 +49,7 @@ public class NamedBeanTest {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("namedBeanWithBinding"));
         NamedBeanWithBinding instance = (NamedBeanWithBinding) beanManager.getReference(bean, Object.class,
                 beanManager.createCreationalContext(bean));
-        Assert.assertNotNull(instance);
+        Assertions.assertNotNull(instance);
     }
 
     /*
@@ -57,7 +57,7 @@ public class NamedBeanTest {
      */
     @Test
     public void testNamedInjectedFieldUsesFieldName(NamedBeanConsumer consumer) {
-        Assert.assertNotNull(consumer.getFoo());
+        Assertions.assertNotNull(consumer.getFoo());
     }
 
 }

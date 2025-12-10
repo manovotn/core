@@ -18,19 +18,19 @@
 package org.jboss.weld.tests.decorators.resolution;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BasicDecoratorResolutionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -42,12 +42,12 @@ public class BasicDecoratorResolutionTest {
     @Test
     public void testBasicDecoratorInvocation(@Simple SimpleBean simpleBean) {
         String result = simpleBean.hello("world");
-        Assert.assertEquals("simple-Hello, world-simple", result);
+        Assertions.assertEquals("simple-Hello, world-simple", result);
     }
 
     @Test
     public void testComplexDecoratorInvocation(@Complex ComplexBean complexBean) {
         String result = complexBean.hello("world");
-        Assert.assertEquals("simple-complex-Sophisticated Hello, world-complex-simple", result);
+        Assertions.assertEquals("simple-complex-Sophisticated Hello, world-complex-simple", result);
     }
 }

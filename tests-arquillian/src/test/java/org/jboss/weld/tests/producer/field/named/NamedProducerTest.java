@@ -22,17 +22,16 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlElement;
@@ -47,8 +46,8 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
  *
  * @author Pete Muir
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class NamedProducerTest {
     @Deployment(testable = false)
     public static WebArchive createDeployment() {
@@ -75,7 +74,7 @@ public class NamedProducerTest {
 
         HtmlPage page = client.getPage(getPath("/view.jsf"));
         // Check the page rendered ok
-        Assert.assertNotNull(getFirstMatchingElement(page, HtmlSubmitInput.class, "saveButton"));
+        Assertions.assertNotNull(getFirstMatchingElement(page, HtmlSubmitInput.class, "saveButton"));
     }
 
     /*
@@ -91,9 +90,9 @@ public class NamedProducerTest {
         HtmlTextInput employeeFieldName = getFirstMatchingElement(page, HtmlTextInput.class, "employeeFieldName");
         HtmlTextInput employeeMethodName = getFirstMatchingElement(page, HtmlTextInput.class, "employeeMethodName");
 
-        Assert.assertNotNull(employeeFieldName);
-        Assert.assertNotNull(employeeMethodName);
-        Assert.assertNotNull(saveButton);
+        Assertions.assertNotNull(employeeFieldName);
+        Assertions.assertNotNull(employeeMethodName);
+        Assertions.assertNotNull(saveButton);
 
         employeeFieldName.setValueAttribute("Pete");
         employeeMethodName.setValueAttribute("Gavin");

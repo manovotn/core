@@ -17,14 +17,14 @@
 package org.jboss.weld.tests.producer.field;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Simple test which invokes a method directly on a normal scoped producer
@@ -33,7 +33,7 @@ import org.junit.runner.RunWith;
  *
  * @author David Allen
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ProducerBeanInvocationTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -46,8 +46,8 @@ public class ProducerBeanInvocationTest {
      */
     @Test
     public void test(Qux bar, QuxProducer producer, @Baz Qux bazBar) {
-        Assert.assertEquals("qux", bar.getBar());
-        Assert.assertTrue(producer.ping());
-        Assert.assertEquals("baz", bazBar.getBar());
+        Assertions.assertEquals("qux", bar.getBar());
+        Assertions.assertTrue(producer.ping());
+        Assertions.assertEquals("baz", bazBar.getBar());
     }
 }

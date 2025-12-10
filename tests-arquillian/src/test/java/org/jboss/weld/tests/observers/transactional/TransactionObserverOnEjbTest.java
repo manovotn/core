@@ -27,22 +27,21 @@ import jakarta.inject.Inject;
 import jakarta.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * WELD-936 Tests that transaction observer notifications on EJB's work correctly when no request scope is active
  */
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class TransactionObserverOnEjbTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -68,11 +67,11 @@ public class TransactionObserverOnEjbTest {
             public void run() {
                 try {
                     userTransaction.begin();
-                    Assert.assertFalse(ostrich.isHeadInSand());
+                    Assertions.assertFalse(ostrich.isHeadInSand());
                     ostrich.foxNearby();
-                    Assert.assertTrue(ostrich.isHeadInSand());
+                    Assertions.assertTrue(ostrich.isHeadInSand());
                     userTransaction.commit();
-                    Assert.assertFalse(ostrich.isHeadInSand());
+                    Assertions.assertFalse(ostrich.isHeadInSand());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }

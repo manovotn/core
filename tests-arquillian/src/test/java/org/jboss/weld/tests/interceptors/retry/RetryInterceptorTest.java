@@ -18,21 +18,20 @@
 package org.jboss.weld.tests.interceptors.retry;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Broken;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class RetryInterceptorTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -42,16 +41,16 @@ public class RetryInterceptorTest {
     }
 
     @Test
-    @Category(Broken.class) // WELD-1244
+    @Tag("Broken") // WELD-1244
     public void testRetry(Processor processor) {
         FailingProcessor.intercepts = 0;
         RetryInterceptor.invocationCount = 0;
         System.out.println(processor);
-        Assert.assertEquals(3, processor.tryToProcess());
-        Assert.assertEquals(1, TransactionalInterceptor.invocationCount);
-        Assert.assertEquals(3, RetryInterceptor.invocationCount);
-        Assert.assertEquals(3, SecuredInterceptor.invocationCount);
-        Assert.assertEquals(3, FailingProcessor.intercepts);
+        Assertions.assertEquals(3, processor.tryToProcess());
+        Assertions.assertEquals(1, TransactionalInterceptor.invocationCount);
+        Assertions.assertEquals(3, RetryInterceptor.invocationCount);
+        Assertions.assertEquals(3, SecuredInterceptor.invocationCount);
+        Assertions.assertEquals(3, FailingProcessor.intercepts);
     }
 
 }

@@ -5,16 +5,16 @@ import jakarta.enterprise.invoke.Invoker;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InvokableExceptionsTest {
 
     @Deployment
@@ -185,12 +185,13 @@ public class InvokableExceptionsTest {
     private void assertException(ThrowingRunnable runnable, Class<? extends Exception> exceptionType, String messageContains) {
         try {
             runnable.run();
-            Assert.fail("No exception thrown");
+            Assertions.fail("No exception thrown");
         } catch (Exception e) {
             if (!exceptionType.isInstance(e)) {
                 throw new AssertionError("Expected " + exceptionType + " but got " + e, e);
             }
-            Assert.assertTrue("Exception message did not contain " + messageContains, e.getMessage().contains(messageContains));
+            Assertions.assertTrue(e.getMessage().contains(messageContains),
+                    "Exception message did not contain " + messageContains);
         }
     }
 

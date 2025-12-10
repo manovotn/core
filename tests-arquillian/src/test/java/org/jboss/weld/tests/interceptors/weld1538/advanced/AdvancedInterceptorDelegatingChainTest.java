@@ -19,14 +19,14 @@ package org.jboss.weld.tests.interceptors.weld1538.advanced;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Testcase for WELD-1538
@@ -34,7 +34,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AdvancedInterceptorDelegatingChainTest {
 
     @Inject
@@ -49,6 +49,6 @@ public class AdvancedInterceptorDelegatingChainTest {
 
     @Test
     public void testInterceptorDelegation() {
-        Assert.assertEquals(111, foo.foo());
+        Assertions.assertEquals(111, foo.foo());
     }
 }

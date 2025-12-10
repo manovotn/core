@@ -21,16 +21,16 @@ import jakarta.inject.Inject;
 import jakarta.persistence.PersistenceContext;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ManagerAnnotationTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -45,7 +45,7 @@ public class ManagerAnnotationTest {
      */
     @Test
     public void testIsQualifier() throws Exception {
-        Assert.assertFalse(beanManager.isQualifier(PersistenceContext.class));
+        Assertions.assertFalse(beanManager.isQualifier(PersistenceContext.class));
     }
 
     /*
@@ -53,7 +53,7 @@ public class ManagerAnnotationTest {
      */
     @Test
     public void testIsInterceptorBinding() throws Exception {
-        Assert.assertFalse(beanManager.isInterceptorBinding(PersistenceContext.class));
+        Assertions.assertFalse(beanManager.isInterceptorBinding(PersistenceContext.class));
     }
 
     /*
@@ -61,7 +61,7 @@ public class ManagerAnnotationTest {
      */
     @Test
     public void testIsNormalScope() throws Exception {
-        Assert.assertFalse(beanManager.isNormalScope(PersistenceContext.class));
+        Assertions.assertFalse(beanManager.isNormalScope(PersistenceContext.class));
     }
 
     /*
@@ -69,7 +69,7 @@ public class ManagerAnnotationTest {
      */
     @Test
     public void testIsPassivatingScope() throws Exception {
-        Assert.assertFalse(beanManager.isPassivatingScope(PersistenceContext.class));
+        Assertions.assertFalse(beanManager.isPassivatingScope(PersistenceContext.class));
     }
 
     /*
@@ -77,7 +77,7 @@ public class ManagerAnnotationTest {
      */
     @Test
     public void testIsScope() throws Exception {
-        Assert.assertFalse(beanManager.isScope(PersistenceContext.class));
+        Assertions.assertFalse(beanManager.isScope(PersistenceContext.class));
     }
 
     /*
@@ -85,7 +85,7 @@ public class ManagerAnnotationTest {
      */
     @Test
     public void testIsStereotype() throws Exception {
-        Assert.assertFalse(beanManager.isStereotype(PersistenceContext.class));
+        Assertions.assertFalse(beanManager.isStereotype(PersistenceContext.class));
     }
 
 }

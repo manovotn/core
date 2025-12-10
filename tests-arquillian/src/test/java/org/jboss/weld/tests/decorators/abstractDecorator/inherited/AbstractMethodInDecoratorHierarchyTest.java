@@ -19,14 +19,14 @@ package org.jboss.weld.tests.decorators.abstractDecorator.inherited;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verifies, that Weld does not fail if there is an abstract method in the decorator hierarchy that is not part
@@ -35,7 +35,7 @@ import org.junit.runner.RunWith;
  * @see WELD-1603
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AbstractMethodInDecoratorHierarchyTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -49,6 +49,6 @@ public class AbstractMethodInDecoratorHierarchyTest {
     @Test
     public void testAbstractDecoratorApplied() {
         simpleClass.decorateMe();
-        Assert.assertTrue(SimpleClass.decoratorCalled);
+        Assertions.assertTrue(SimpleClass.decoratorCalled);
     }
 }

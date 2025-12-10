@@ -16,15 +16,15 @@
  */
 package org.jboss.weld.tests.servlet.dispatch;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.jboss.arquillian.test.api.ArquillianResource;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.Page;
@@ -37,7 +37,7 @@ public abstract class AbstractDispatchingTestCase {
 
     protected final WebClient client = new WebClient();
 
-    @Before
+    @BeforeEach
     public void reset() throws FailingHttpStatusCodeException, MalformedURLException, IOException {
         client.getPage(contextPath + "main/reset");
     }

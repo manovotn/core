@@ -26,20 +26,20 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
  * @version $Revision: 1.1 $
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ExampleTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -56,7 +56,7 @@ public class ExampleTest {
 
         assertNoAnnotations(type);
 
-        Assert.assertEquals(1, type.getConstructors().size());
+        Assertions.assertEquals(1, type.getConstructors().size());
         for (AnnotatedConstructor<Bean> ctor : type.getConstructors()) {
             assertNoAnnotations(ctor);
 
@@ -65,7 +65,7 @@ public class ExampleTest {
             }
         }
 
-        Assert.assertEquals(1, type.getMethods().size());
+        Assertions.assertEquals(1, type.getMethods().size());
         for (AnnotatedMethod<? super Bean> method : type.getMethods()) {
             assertNoAnnotations(method);
 
@@ -74,13 +74,13 @@ public class ExampleTest {
             }
         }
 
-        Assert.assertEquals(1, type.getFields().size());
+        Assertions.assertEquals(1, type.getFields().size());
         for (AnnotatedField<? super Bean> field : type.getFields()) {
             assertNoAnnotations(field);
         }
     }
 
     private void assertNoAnnotations(Annotated annotated) {
-        Assert.assertEquals(0, annotated.getAnnotations().size());
+        Assertions.assertEquals(0, annotated.getAnnotations().size());
     }
 }

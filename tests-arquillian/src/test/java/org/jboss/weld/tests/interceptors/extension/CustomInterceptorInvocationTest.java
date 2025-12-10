@@ -16,20 +16,20 @@
  */
 package org.jboss.weld.tests.interceptors.extension;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 import jakarta.interceptor.Interceptor;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Registers an extension-provided implementation of the {@link Interceptor} interface and verifies that the implementation is
@@ -40,7 +40,7 @@ import org.junit.runner.RunWith;
  * @author <a href="http://community.jboss.org/people/jharting">Jozef Hartinger</a>
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class CustomInterceptorInvocationTest {
 
     @Inject

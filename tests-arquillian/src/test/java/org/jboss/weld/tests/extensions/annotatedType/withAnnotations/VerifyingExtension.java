@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.extensions.annotatedType.withAnnotations;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.beans.ConstructorProperties;
 

@@ -17,19 +17,19 @@
 package org.jboss.weld.tests.resolution.wbri279;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author pmuir
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class Weld279Test {
     @Deployment
     public static Archive<?> deploy() {
@@ -42,6 +42,6 @@ public class Weld279Test {
      */
     @Test
     public void testLookupOfGenericTypeSubclass(SomeBean bean) {
-        Assert.assertEquals(IntegerFactory.VALUE.toString(), bean.getObjectAsString());
+        Assertions.assertEquals(IntegerFactory.VALUE.toString(), bean.getObjectAsString());
     }
 }

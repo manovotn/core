@@ -21,21 +21,21 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Startup;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Simple test observing {@link Startup} and {@link jakarta.enterprise.event.Shutdown} events.
  * Note that we cannot properly verify shutdown events in these tests because the entirety of the test happens
  * before container attempts shutdown.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class StartupShutdownEventTest {
 
     @Deployment
@@ -46,12 +46,12 @@ public class StartupShutdownEventTest {
 
     @Test
     public void testEventsObserved() {
-        Assert.assertTrue(ObservingBean.OBSERVED_STARTING_EVENTS.size() == 2);
-        Assert.assertTrue(ObservingBean.OBSERVED_STARTING_EVENTS.get(0).equals(ApplicationScoped.class.getSimpleName()));
-        Assert.assertTrue(ObservingBean.OBSERVED_STARTING_EVENTS.get(1).equals(Startup.class.getSimpleName()));
+        Assertions.assertEquals(2, ObservingBean.OBSERVED_STARTING_EVENTS.size());
+        Assertions.assertEquals(ObservingBean.OBSERVED_STARTING_EVENTS.get(0), ApplicationScoped.class.getSimpleName());
+        Assertions.assertEquals(ObservingBean.OBSERVED_STARTING_EVENTS.get(1), Startup.class.getSimpleName());
 
         // Note that we cannot assert that shutdown event was invoked because entirety of this test class
         // happens before shutdown
-        Assert.assertTrue(ObservingBean.OBSERVED_SHUTDOWN_EVENTS.isEmpty());
+        Assertions.assertTrue(ObservingBean.OBSERVED_SHUTDOWN_EVENTS.isEmpty());
     }
 }

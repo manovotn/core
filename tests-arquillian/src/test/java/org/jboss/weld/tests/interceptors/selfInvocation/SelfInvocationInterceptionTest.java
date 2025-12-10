@@ -21,16 +21,16 @@ import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SelfInvocationInterceptionTest {
 
     @Deployment
@@ -51,7 +51,7 @@ public class SelfInvocationInterceptionTest {
         // should not trigger interceptor
         MyOtherInterceptor.resetCounter();
         event.select(String.class).fire("bar");
-        Assert.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
+        Assertions.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class SelfInvocationInterceptionTest {
         // should not trigger interceptor
         MyOtherInterceptor.resetCounter();
         event.select(Integer.class).fire(1);
-        Assert.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
+        Assertions.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SelfInvocationInterceptionTest {
         // should not trigger interceptor
         MyOtherInterceptor.resetCounter();
         event.select(Double.class).fire(1.0);
-        Assert.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
+        Assertions.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class SelfInvocationInterceptionTest {
         // should not trigger interceptor
         MyOtherInterceptor.resetCounter();
         event.select(Float.class).fire(1.0f);
-        Assert.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
+        Assertions.assertEquals(0, MyOtherInterceptor.TIMES_INVOKED);
     }
 
     @Test
@@ -86,7 +86,7 @@ public class SelfInvocationInterceptionTest {
         MyInterceptor.resetCounter();
         bean.invokePrivateInterceptedDirectly();
         // should not trigger interceptor
-        Assert.assertEquals(0, MyInterceptor.TIMES_INVOKED);
+        Assertions.assertEquals(0, MyInterceptor.TIMES_INVOKED);
     }
 
     @Test
@@ -94,6 +94,6 @@ public class SelfInvocationInterceptionTest {
         MyInterceptor.resetCounter();
         bean.invokePrivateInterceptedViaProxy();
         // should work
-        Assert.assertEquals(1, MyInterceptor.TIMES_INVOKED);
+        Assertions.assertEquals(1, MyInterceptor.TIMES_INVOKED);
     }
 }

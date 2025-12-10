@@ -21,12 +21,12 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.BeforeBeanDiscovery;
 import jakarta.enterprise.inject.spi.Extension;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 public class QuickExtension implements Extension {
 
     public void beforeBeanDiscovery(@Observes BeforeBeanDiscovery event, BeanManager manager) {
-        Assert.assertFalse(manager.isQualifier(Quick.class));
+        Assertions.assertFalse(manager.isQualifier(Quick.class));
         event.addQualifier(Quick.class);
     }
 

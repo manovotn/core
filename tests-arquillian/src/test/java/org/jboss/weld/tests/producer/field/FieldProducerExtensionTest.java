@@ -8,14 +8,14 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Field producer should not be inherited into bean subclass. In this scenario, a CDI extension modifies the type
@@ -23,7 +23,7 @@ import org.junit.runner.RunWith;
  *
  * See https://issues.redhat.com/browse/WELD-2773
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class FieldProducerExtensionTest {
 
     @Deployment
@@ -42,14 +42,14 @@ public class FieldProducerExtensionTest {
     @Test
     public void test() {
         // assert extension works
-        Assert.assertEquals(2, MyExtension.extensionTriggered);
+        Assertions.assertEquals(2, MyExtension.extensionTriggered);
         // assert producer works
-        Assert.assertNotNull(foo);
+        Assertions.assertNotNull(foo);
 
         // assert both beans are there
         List<? extends Instance.Handle<FieldProducerBean>> collect = instance.select(FieldProducerBean.class).handlesStream()
                 .collect(Collectors.toList());
-        Assert.assertEquals(2, collect.size());
+        Assertions.assertEquals(2, collect.size());
     }
 
     public static class Foo {

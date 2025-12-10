@@ -1,7 +1,6 @@
 package org.jboss.weld.tests.util;
 
 import org.jboss.arquillian.container.spi.client.container.DeploymentExceptionTransformer;
-import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
 import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
@@ -18,8 +17,6 @@ public class WeldExtension implements LoadableExtension {
     private static final String MANAGED_CONTAINER_DEFAULT_EXCEPTION_TRANSFORMER_CLASS = "org.jboss.as.arquillian.container.ExceptionTransformer";
 
     public void register(ExtensionBuilder builder) {
-
-        builder.service(AuxiliaryArchiveAppender.class, CategoryArchiveAppender.class);
 
         if (Validate.classExists(MANAGED_CONTAINER_CLASS) || Validate.classExists(REMOTE_CONTAINER_CLASS)) {
             // Override the default NOOP exception transformer

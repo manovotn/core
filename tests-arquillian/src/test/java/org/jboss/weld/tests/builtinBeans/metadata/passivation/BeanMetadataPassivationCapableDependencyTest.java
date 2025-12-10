@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.builtinBeans.metadata.passivation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.Decorator;
@@ -26,14 +26,14 @@ import jakarta.enterprise.inject.spi.Interceptor;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.util.bean.ForwardingBeanAttributes;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * This test verifies that injected {@link Bean}, {@link Interceptor} and {@link Decorator} objects are passivation capable
@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanMetadataPassivationCapableDependencyTest {
 
     @Inject

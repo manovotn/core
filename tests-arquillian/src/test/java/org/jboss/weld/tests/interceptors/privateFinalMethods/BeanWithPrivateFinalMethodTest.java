@@ -20,14 +20,14 @@ package org.jboss.weld.tests.interceptors.privateFinalMethods;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that for classes which have private final methods an interceptor subclass can be created.
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * The point of the test is not to see deployment exception, the actual test is just to ensure that interceptor
  * was enabled and does something.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanWithPrivateFinalMethodTest {
 
     @Deployment
@@ -51,9 +51,9 @@ public class BeanWithPrivateFinalMethodTest {
     @Test
     public void testSubclassGenerationIgnoresPrivateFinalMethod() {
         // test interception works, e.g. that subclass was created
-        Assert.assertEquals(0, MyInterceptor.INTERCEPTOR_INVOKED);
+        Assertions.assertEquals(0, MyInterceptor.INTERCEPTOR_INVOKED);
         bean.protectedMethod();
-        Assert.assertEquals(1, MyInterceptor.INTERCEPTOR_INVOKED);
+        Assertions.assertEquals(1, MyInterceptor.INTERCEPTOR_INVOKED);
     }
 
 }

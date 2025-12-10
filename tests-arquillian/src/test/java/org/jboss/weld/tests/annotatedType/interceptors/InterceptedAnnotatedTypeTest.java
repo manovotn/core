@@ -5,16 +5,16 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InterceptedAnnotatedTypeTest {
 
     @Inject
@@ -35,12 +35,12 @@ public class InterceptedAnnotatedTypeTest {
 
     @Test
     public void test() throws Exception {
-        Assert.assertTrue(defaultBox.isIntercepted());
-        Assert.assertFalse(additionalBox.isIntercepted());
+        Assertions.assertTrue(defaultBox.isIntercepted());
+        Assertions.assertFalse(additionalBox.isIntercepted());
 
         // test after deserialization
 
-        Assert.assertTrue(Utils.<Box> deserialize(Utils.serialize(defaultBox)).isIntercepted());
-        Assert.assertFalse(Utils.<Box> deserialize(Utils.serialize(additionalBox)).isIntercepted());
+        Assertions.assertTrue(Utils.<Box> deserialize(Utils.serialize(defaultBox)).isIntercepted());
+        Assertions.assertFalse(Utils.<Box> deserialize(Utils.serialize(additionalBox)).isIntercepted());
     }
 }

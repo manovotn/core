@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.injectionPoint.observer;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;

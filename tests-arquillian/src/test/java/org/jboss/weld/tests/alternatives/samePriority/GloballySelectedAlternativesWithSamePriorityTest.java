@@ -20,15 +20,15 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Having two globally enabled alternatives with same priority should result in ambiguous resolution.
@@ -37,7 +37,7 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class GloballySelectedAlternativesWithSamePriorityTest {
 
     @Deployment
@@ -55,7 +55,7 @@ public class GloballySelectedAlternativesWithSamePriorityTest {
 
     @Test
     public void testThatAmbiguousExceptionIsThrown() {
-        Assert.assertFalse(fooInstance.isUnsatisfied());
-        Assert.assertTrue(fooInstance.isAmbiguous());
+        Assertions.assertFalse(fooInstance.isUnsatisfied());
+        Assertions.assertTrue(fooInstance.isAmbiguous());
     }
 }

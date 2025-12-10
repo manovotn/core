@@ -20,7 +20,7 @@ import jakarta.interceptor.AroundConstruct;
 import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 @Interceptor
 @CharlieBinding
@@ -30,12 +30,12 @@ public class CharlieInterceptor1 extends AbstractInterceptor {
     public void aroundConstruct(InvocationContext ctx) {
         try {
             ctx.proceed();
-            Assert.fail();
+            Assertions.fail();
         } catch (CharlieException expected) {
             invoked();
             throw expected;
         } catch (Exception e) {
-            Assert.fail();
+            Assertions.fail();
         }
     }
 

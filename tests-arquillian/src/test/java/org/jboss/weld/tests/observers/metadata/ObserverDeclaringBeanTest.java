@@ -27,19 +27,19 @@ import jakarta.enterprise.inject.spi.ObserverMethod;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests metadata obtainable for a given observer method
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ObserverDeclaringBeanTest {
 
     @Deployment
@@ -55,16 +55,16 @@ public class ObserverDeclaringBeanTest {
     @Test
     public void testMetadataForStandardEvent() {
         EventPayload payload = new EventPayload();
-        Assert.assertFalse(FirstObserver.OBSERVER_NOTIFIED);
+        Assertions.assertFalse(FirstObserver.OBSERVER_NOTIFIED);
         bm.getEvent().fire(payload);
-        Assert.assertTrue(FirstObserver.OBSERVER_NOTIFIED);
+        Assertions.assertTrue(FirstObserver.OBSERVER_NOTIFIED);
 
         Set<ObserverMethod<? super EventPayload>> observerMethods = bm.resolveObserverMethods(payload);
-        Assert.assertTrue(observerMethods.size() == 1);
+        Assertions.assertEquals(1, observerMethods.size());
         Bean<?> declaringBean = observerMethods.iterator().next().getDeclaringBean();
-        Assert.assertTrue(declaringBean.isAlternative());
-        Assert.assertEquals(Dependent.class, declaringBean.getScope());
-        Assert.assertEquals(FirstObserver.class, declaringBean.getBeanClass());
+        Assertions.assertTrue(declaringBean.isAlternative());
+        Assertions.assertEquals(Dependent.class, declaringBean.getScope());
+        Assertions.assertEquals(FirstObserver.class, declaringBean.getBeanClass());
     }
 
     // specification doesn't say what should happen in this case, the behavior is Weld-specific
@@ -72,12 +72,12 @@ public class ObserverDeclaringBeanTest {
     public void testMetadataForSyntheticEvent() {
         String stringLoad = "payload";
 
-        Assert.assertEquals(0, ObserverRegisteringExtension.TIMES_OBSERVERS_NOTIFIED);
+        Assertions.assertEquals(0, ObserverRegisteringExtension.TIMES_OBSERVERS_NOTIFIED);
         bm.getEvent().fire(stringLoad);
-        Assert.assertEquals(1, ObserverRegisteringExtension.TIMES_OBSERVERS_NOTIFIED);
+        Assertions.assertEquals(1, ObserverRegisteringExtension.TIMES_OBSERVERS_NOTIFIED);
 
         Set<ObserverMethod<? super Object>> observerMethods = bm.resolveObserverMethods(stringLoad);
-        Assert.assertTrue(observerMethods.size() == 1);
-        Assert.assertNull(observerMethods.iterator().next().getDeclaringBean());
+        Assertions.assertEquals(1, observerMethods.size());
+        Assertions.assertNull(observerMethods.iterator().next().getDeclaringBean());
     }
 }

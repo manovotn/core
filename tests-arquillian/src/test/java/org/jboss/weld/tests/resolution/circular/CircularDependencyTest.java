@@ -19,18 +19,18 @@ package org.jboss.weld.tests.resolution.circular;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.config.ConfigurationKey;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.util.PropertiesBuilder;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class CircularDependencyTest {
 
     @Inject
@@ -48,8 +48,8 @@ public class CircularDependencyTest {
     @Test
     public void testCircularInjectionBetweenAppScopedAndDependentBeans() throws Exception {
         foo.getName();
-        Assert.assertTrue(Foo.success);
-        Assert.assertTrue(Bar.success);
+        Assertions.assertTrue(Foo.success);
+        Assertions.assertTrue(Bar.success);
     }
 
     @Test

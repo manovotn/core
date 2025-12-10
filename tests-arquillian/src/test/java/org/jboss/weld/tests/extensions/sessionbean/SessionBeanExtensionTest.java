@@ -20,19 +20,18 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class SessionBeanExtensionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -47,8 +46,8 @@ public class SessionBeanExtensionTest {
      */
     @Test
     public void testPossibleToVetoSessionBean(BeanManager beanManager) {
-        Assert.assertEquals(1, beanManager.getBeans(MotorBikeBean.class).size());
-        Assert.assertEquals(0, beanManager.getBeans(BusBean.class).size());
+        Assertions.assertEquals(1, beanManager.getBeans(MotorBikeBean.class).size());
+        Assertions.assertEquals(0, beanManager.getBeans(BusBean.class).size());
 
     }
 

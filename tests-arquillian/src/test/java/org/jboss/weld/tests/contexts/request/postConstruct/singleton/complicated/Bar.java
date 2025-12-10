@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.contexts.request.postConstruct.singleton.complicated;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.Dependent;
@@ -30,7 +30,7 @@ public class Bar {
 
     @PostConstruct
     void init() {
-        assertEquals(null, value.getValue());
+        assertNull(value.getValue());
         value.setValue("bar");
     }
 }

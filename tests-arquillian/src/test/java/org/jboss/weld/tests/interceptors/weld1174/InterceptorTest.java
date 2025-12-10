@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.interceptors.weld1174;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,22 +24,21 @@ import java.util.List;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="ron.sigal@jboss.com">Ron Sigal</a>
  * @author <a href="mailto:mluksa@redhat.com">Marko Luksa</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InterceptorTest {
 
     @Deployment
@@ -55,7 +54,7 @@ public class InterceptorTest {
     @Inject
     InterceptedSessionBean interceptedSessionBean;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         VisitList.reset();
     }
@@ -67,7 +66,7 @@ public class InterceptorTest {
     }
 
     @Test
-    @Category(Integration.class)
+    @Tag("Integration")
     public void testInterceptorOrderOnSessionBean() throws Exception {
         interceptedSessionBean.test();
         assertInterceptorsWereInvokedInCorrectOrder();

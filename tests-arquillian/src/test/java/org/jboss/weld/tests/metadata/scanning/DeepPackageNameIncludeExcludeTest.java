@@ -5,7 +5,7 @@ import static org.jboss.weld.tests.metadata.scanning.Utils.createBeansXml;
 import jakarta.enterprise.inject.spi.BeanManager;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.Asset;
@@ -13,10 +13,10 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.tests.metadata.Qux;
 import org.jboss.weld.tests.metadata.scanning.jboss.Baz;
 import org.jboss.weld.tests.metadata.scanning.jboss.Garply;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DeepPackageNameIncludeExcludeTest {
 
     public static final Asset BEANS_XML = createBeansXml(

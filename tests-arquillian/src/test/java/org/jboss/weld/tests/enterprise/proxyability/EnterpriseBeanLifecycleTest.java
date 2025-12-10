@@ -17,19 +17,18 @@
 package org.jboss.weld.tests.enterprise.proxyability;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EnterpriseBeanLifecycleTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -42,6 +41,6 @@ public class EnterpriseBeanLifecycleTest {
      */
     @Test
     public void testSLSBInjectedIntoPassivatingManagedBean(SimpleBean bean) {
-        Assert.assertEquals("This is my message from my stateless bean", bean.getMessage());
+        Assertions.assertEquals("This is my message from my stateless bean", bean.getMessage());
     }
 }

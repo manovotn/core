@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.observers.extension;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
@@ -32,8 +32,8 @@ import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public abstract class AbstractObserverNotificationTestSuperclass {
 
@@ -48,7 +48,7 @@ public abstract class AbstractObserverNotificationTestSuperclass {
                 .addAsServiceProvider(Extension.class, ObserverExtension.class);
     }
 
-    @Before
+    @BeforeEach
     public void before() {
         reset();
     }

@@ -22,20 +22,19 @@ import java.nio.file.Paths;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.proxy.signed.insideJar.Alpha;
 import org.jboss.weld.tests.proxy.signed.insideJar.Beta;
 import org.jboss.weld.tests.proxy.signed.insideJar.CharlieFace;
 import org.jboss.weld.tests.proxy.signed.insideJar.CharlieImpl;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * IMPORTANT: The classes under package "org.jboss.weld.tests.proxy.signed.insideJar" have been MANUALLY put into a JAR, which
@@ -44,8 +43,8 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class ProxyCreationForSignedClassesTest {
 
     @Deployment
@@ -76,11 +75,11 @@ public class ProxyCreationForSignedClassesTest {
 
     @Test
     public void testProxyCanBeCreatedForAllBeans() {
-        Assert.assertNotNull(alpha);
-        Assert.assertEquals(Alpha.class.getSimpleName(), alpha.ping());
-        Assert.assertNotNull(beta);
-        Assert.assertEquals("PackagePrivate", beta.ping());
-        Assert.assertNotNull(charlie);
-        Assert.assertEquals(CharlieImpl.class.getSimpleName(), charlie.ping());
+        Assertions.assertNotNull(alpha);
+        Assertions.assertEquals(Alpha.class.getSimpleName(), alpha.ping());
+        Assertions.assertNotNull(beta);
+        Assertions.assertEquals("PackagePrivate", beta.ping());
+        Assertions.assertNotNull(charlie);
+        Assertions.assertEquals(CharlieImpl.class.getSimpleName(), charlie.ping());
     }
 }

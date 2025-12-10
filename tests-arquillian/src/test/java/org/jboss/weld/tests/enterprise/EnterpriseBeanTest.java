@@ -17,13 +17,13 @@
  */
 package org.jboss.weld.tests.enterprise;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import jakarta.ejb.EJBException;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.BeanDiscoveryMode;
@@ -31,15 +31,14 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.bean.SessionBean;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.util.BeanPassivator;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EnterpriseBeanTest {
 
     @Deployment
@@ -65,7 +64,7 @@ public class EnterpriseBeanTest {
                 return;
             }
         }
-        Assert.fail("Expected a BowlerHatException to be thrown");
+        Assertions.fail("Expected a BowlerHatException to be thrown");
     }
 
     /*
@@ -80,7 +79,7 @@ public class EnterpriseBeanTest {
                 return;
             }
         }
-        Assert.fail("Expected a BowlerHatException to be in the cause stack");
+        Assertions.fail("Expected a BowlerHatException to be in the cause stack");
     }
 
     /*
@@ -90,7 +89,7 @@ public class EnterpriseBeanTest {
     public void testEJBRemoteInterfacesOkForObservers(Scottish scottish) {
         Feed feed = new Feed();
         beanManager.getEvent().select(Feed.class).fire(feed);
-        Assert.assertEquals(feed, scottish.getFeed());
+        Assertions.assertEquals(feed, scottish.getFeed());
     }
 
     /*
@@ -98,7 +97,7 @@ public class EnterpriseBeanTest {
      */
     @Test
     public void testGenericEJBWorks(ResultClient client) {
-        Assert.assertEquals("pete", client.lookupPete().getUsername());
+        Assertions.assertEquals("pete", client.lookupPete().getUsername());
     }
 
     /*
@@ -107,8 +106,8 @@ public class EnterpriseBeanTest {
     @Test
     public void testPassivationOfEjbs(HelloAction action) {
         action.executeRequest();
-        Assert.assertEquals("hello", action.getHello());
-        Assert.assertEquals("goodbye", action.getGoodBye());
+        Assertions.assertEquals("hello", action.getHello());
+        Assertions.assertEquals("goodbye", action.getGoodBye());
     }
 
     /*
@@ -117,8 +116,8 @@ public class EnterpriseBeanTest {
     @Test
     public void testNoInterfaceView(Castle castle) {
         castle.ping();
-        Assert.assertTrue(castle.isPinged());
-        Assert.assertTrue(Utils.getBean(beanManager, Castle.class) instanceof SessionBean<?>);
+        Assertions.assertTrue(castle.isPinged());
+        Assertions.assertTrue(Utils.getBean(beanManager, Castle.class) instanceof SessionBean<?>);
     }
 
     @Test

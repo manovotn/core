@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.contexts.activator.request;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -29,16 +29,16 @@ import java.util.concurrent.TimeoutException;
 import jakarta.enterprise.context.ContextNotActiveException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class RequestScopedActiveInterceptorTest {
 
     @Deployment
@@ -49,12 +49,12 @@ public class RequestScopedActiveInterceptorTest {
 
     private ExecutorService executorService;
 
-    @Before
+    @BeforeEach
     public void init() {
         this.executorService = Executors.newFixedThreadPool(1);
     }
 
-    @After
+    @AfterEach
     public void destroy() {
         executorService.shutdown();
     }

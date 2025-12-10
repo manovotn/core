@@ -21,21 +21,21 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanDiscoveryMode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.impl.BeansXml;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Kirill Gaevskii
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class NotifyObserverTest {
 
     @Deployment
@@ -52,8 +52,8 @@ public class NotifyObserverTest {
 
     @Test
     public void testIfNotifyObserverReceptionIfExists(CustomScopedBean customScopedBean) {
-        Assert.assertFalse(customScopedBean.isObserverCalled());
+        Assertions.assertFalse(customScopedBean.isObserverCalled());
         event.fire(this);
-        Assert.assertTrue(customScopedBean.isObserverCalled());
+        Assertions.assertTrue(customScopedBean.isObserverCalled());
     }
 }

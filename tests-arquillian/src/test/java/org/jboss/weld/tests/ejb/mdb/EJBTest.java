@@ -26,21 +26,20 @@ import jakarta.jms.QueueSession;
 import jakarta.jms.Session;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
 import org.jboss.weld.tests.util.WildFly8EEResourceManager;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class EJBTest {
     public static final String MESSAGE = "Hello!";
 
@@ -63,8 +62,8 @@ public class EJBTest {
         sender.send(session.createTextMessage(MESSAGE));
 
         control.getLatch().await();
-        Assert.assertTrue(control.isMessageDelivered());
-        Assert.assertTrue(control.isContextSet());
+        Assertions.assertTrue(control.isMessageDelivered());
+        Assertions.assertTrue(control.isContextSet());
     }
 
 }

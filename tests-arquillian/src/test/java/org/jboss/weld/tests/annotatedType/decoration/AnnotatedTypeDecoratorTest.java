@@ -25,20 +25,20 @@ import jakarta.enterprise.inject.spi.InjectionTarget;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="kabir.khan@jboss.com">Kabir Khan</a>
  * @version $Revision: 1.1 $
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AnnotatedTypeDecoratorTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -60,31 +60,31 @@ public class AnnotatedTypeDecoratorTest {
 
         NonContextual<NotAnnotated> nonContextual = new NonContextual<NotAnnotated>(beanManager, type);
         NotAnnotated instance = nonContextual.create();
-        Assert.assertNotNull(instance);
+        Assertions.assertNotNull(instance);
         nonContextual.postConstruct(instance);
 
-        Assert.assertNotNull(instance.getFromField());
-        Assert.assertNotNull(NotAnnotated.getFromConstructor());
-        Assert.assertNotNull(NotAnnotated.getFromInitializer());
+        Assertions.assertNotNull(instance.getFromField());
+        Assertions.assertNotNull(NotAnnotated.getFromConstructor());
+        Assertions.assertNotNull(NotAnnotated.getFromInitializer());
     }
 
     private void checkAnnotations(AnnotatedType<NotAnnotated> type, TypeChecker checker) {
         checker.assertAnnotations(type);
 
-        Assert.assertEquals(1, type.getConstructors().size());
+        Assertions.assertEquals(1, type.getConstructors().size());
 
         checker.assertAnnotations(type.getConstructors().iterator().next());
         checker.assertAnnotations(type.getConstructors().iterator().next().getParameters().get(0));
 
-        Assert.assertEquals(3, type.getFields().size());
+        Assertions.assertEquals(3, type.getFields().size());
         for (AnnotatedField<? super NotAnnotated> field : type.getFields()) {
             if (field.getJavaMember().getName().equals("fromField")) {
                 checker.assertAnnotations(field);
             } else {
-                Assert.assertEquals(0, field.getAnnotations().size());
+                Assertions.assertEquals(0, field.getAnnotations().size());
             }
         }
-        Assert.assertEquals(5, type.getMethods().size());
+        Assertions.assertEquals(5, type.getMethods().size());
         checker.assertAnnotations(type.getMethods().iterator().next());
     }
 
@@ -95,7 +95,7 @@ public class AnnotatedTypeDecoratorTest {
     class NoAnnotationsChecker implements TypeChecker {
 
         public void assertAnnotations(Annotated annotated) {
-            Assert.assertEquals(0, annotated.getAnnotations().size());
+            Assertions.assertEquals(0, annotated.getAnnotations().size());
         }
     }
 
@@ -103,11 +103,11 @@ public class AnnotatedTypeDecoratorTest {
 
         public void assertAnnotations(Annotated annotated) {
             if (annotated instanceof MockAnnotatedCallable) {
-                Assert.assertEquals(1, annotated.getAnnotations().size());
-                Assert.assertTrue(annotated.isAnnotationPresent(Inject.class));
+                Assertions.assertEquals(1, annotated.getAnnotations().size());
+                Assertions.assertTrue(annotated.isAnnotationPresent(Inject.class));
             } else if (annotated instanceof MockAnnotatedField<?>) {
-                Assert.assertEquals(1, annotated.getAnnotations().size());
-                Assert.assertTrue(annotated.isAnnotationPresent(Inject.class));
+                Assertions.assertEquals(1, annotated.getAnnotations().size());
+                Assertions.assertTrue(annotated.isAnnotationPresent(Inject.class));
             }
         }
     }

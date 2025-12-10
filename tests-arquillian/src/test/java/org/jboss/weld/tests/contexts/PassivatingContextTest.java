@@ -23,18 +23,18 @@ import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.metadata.cache.MetaAnnotationStore;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class PassivatingContextTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -51,7 +51,7 @@ public class PassivatingContextTest {
      */
     @Test
     public void testIsSessionScopePassivating() {
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 beanManager.getServices().get(MetaAnnotationStore.class).getScopeModel(SessionScoped.class).isPassivating());
     }
 
@@ -61,7 +61,7 @@ public class PassivatingContextTest {
      */
     @Test
     public void testIsConversationScopePassivating() {
-        Assert.assertTrue(beanManager.getServices().get(MetaAnnotationStore.class).getScopeModel(ConversationScoped.class)
+        Assertions.assertTrue(beanManager.getServices().get(MetaAnnotationStore.class).getScopeModel(ConversationScoped.class)
                 .isPassivating());
     }
 
@@ -71,7 +71,7 @@ public class PassivatingContextTest {
      */
     @Test
     public void testIsApplicationScopeNonPassivating() {
-        Assert.assertFalse(beanManager.getServices().get(MetaAnnotationStore.class).getScopeModel(ApplicationScoped.class)
+        Assertions.assertFalse(beanManager.getServices().get(MetaAnnotationStore.class).getScopeModel(ApplicationScoped.class)
                 .isPassivating());
     }
 
@@ -81,7 +81,7 @@ public class PassivatingContextTest {
      */
     @Test
     public void testIsRequestScopeNonPassivating() {
-        Assert.assertFalse(
+        Assertions.assertFalse(
                 beanManager.getServices().get(MetaAnnotationStore.class).getScopeModel(RequestScoped.class).isPassivating());
     }
 

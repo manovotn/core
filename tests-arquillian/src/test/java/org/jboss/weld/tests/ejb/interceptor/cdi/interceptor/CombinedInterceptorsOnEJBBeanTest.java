@@ -19,16 +19,15 @@ package org.jboss.weld.tests.ejb.interceptor.cdi.interceptor;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests a corner case where user declares an EJB interceptor but also annotates it with @Interceptor and enables it via
@@ -36,8 +35,8 @@ import org.junit.runner.RunWith;
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class CombinedInterceptorsOnEJBBeanTest {
 
     @Deployment
@@ -54,7 +53,7 @@ public class CombinedInterceptorsOnEJBBeanTest {
     public void testBothInterceptorsAreInvoked() {
         service.ok();
         service.notOk();
-        Assert.assertEquals(1, CDIInterceptor.INVOKED);
-        Assert.assertEquals(1, EJBInterceptor.INVOKED);
+        Assertions.assertEquals(1, CDIInterceptor.INVOKED);
+        Assertions.assertEquals(1, EJBInterceptor.INVOKED);
     }
 }

@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.contexts;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import jakarta.enterprise.context.ContextNotActiveException;
 import jakarta.enterprise.context.Conversation;
@@ -25,7 +25,7 @@ import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -34,11 +34,11 @@ import org.jboss.weld.context.RequestContext;
 import org.jboss.weld.context.http.HttpConversationContext;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ContextTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -66,52 +66,52 @@ public class ContextTest {
             protected void work() {
                 try {
                     Utils.getReference(beanManager, Conversation.class).getId();
-                    Assert.fail("Expected ContextNotActiveException, but no exception was thrown");
+                    Assertions.fail("Expected ContextNotActiveException, but no exception was thrown");
                 } catch (ContextNotActiveException e) {
                     // Expected
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Assert.fail("Expected ContextNotActiveException, but another exception was thrown: " + e);
+                    Assertions.fail("Expected ContextNotActiveException, but another exception was thrown: " + e);
                 }
                 try {
                     Utils.getReference(beanManager, Conversation.class).getTimeout();
-                    Assert.fail();
+                    Assertions.fail();
                 } catch (ContextNotActiveException e) {
                     // Expected
                 } catch (Exception e) {
-                    Assert.fail();
+                    Assertions.fail();
                 }
                 try {
                     Utils.getReference(beanManager, Conversation.class).begin();
-                    Assert.fail();
+                    Assertions.fail();
                 } catch (ContextNotActiveException e) {
                     // Expected
                 } catch (Exception e) {
-                    Assert.fail();
+                    Assertions.fail();
                 }
                 try {
                     Utils.getReference(beanManager, Conversation.class).begin("foo");
-                    Assert.fail();
+                    Assertions.fail();
                 } catch (ContextNotActiveException e) {
                     // Expected
                 } catch (Exception e) {
-                    Assert.fail();
+                    Assertions.fail();
                 }
                 try {
                     Utils.getReference(beanManager, Conversation.class).end();
-                    Assert.fail();
+                    Assertions.fail();
                 } catch (ContextNotActiveException e) {
                     // Expected
                 } catch (Exception e) {
-                    Assert.fail();
+                    Assertions.fail();
                 }
                 try {
                     Utils.getReference(beanManager, Conversation.class).isTransient();
-                    Assert.fail();
+                    Assertions.fail();
                 } catch (ContextNotActiveException e) {
                     // Expected
                 } catch (Exception e) {
-                    Assert.fail();
+                    Assertions.fail();
                 }
                 try {
                     Utils.getReference(beanManager, Conversation.class).setTimeout(0);
@@ -119,7 +119,7 @@ public class ContextTest {
                 } catch (ContextNotActiveException e) {
                     // Expected
                 } catch (Exception e) {
-                    Assert.fail();
+                    Assertions.fail();
                 }
             }
         }.run();

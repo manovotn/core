@@ -17,10 +17,7 @@
 
 package org.jboss.weld.tests.instance.enhanced;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Iterator;
 import java.util.List;
@@ -31,17 +28,17 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.enterprise.inject.spi.BeanManager;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.ActionSequence;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InstanceHandleTest {
 
     @Deployment
@@ -78,7 +75,7 @@ public class InstanceHandleTest {
         // Test try-with-resource
         try (Instance.Handle<Alpha> alpha2 = instance.getHandle()) {
             alpha2Id = alpha2.get().getId();
-            assertFalse(alpha1.get().getId().equals(alpha2Id));
+            assertNotEquals(alpha1.get().getId(), alpha2Id);
         }
 
         List<String> sequence = ActionSequence.getSequenceData();
@@ -121,7 +118,7 @@ public class InstanceHandleTest {
         // try to invoke Handle.get() again; this should throw an exception
         try {
             alphaHandle.get();
-            Assert.fail("Invoking Handle.get() after destroying contextual instance should throw an exception.");
+            Assertions.fail("Invoking Handle.get() after destroying contextual instance should throw an exception.");
         } catch (IllegalStateException e) {
             // expected
         }

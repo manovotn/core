@@ -20,20 +20,19 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
-@Category(Integration.class) // all EJB tests need to use this category because the arquillian-weld-ee container does not implement EjbDescriptor.isPassivationCapable()
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration") // all EJB tests need to use this category because the arquillian-weld-ee container does not implement EjbDescriptor.isPassivationCapable()
 public class EnterpriseBeanDefinitionTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -51,6 +50,6 @@ public class EnterpriseBeanDefinitionTest {
     @Test
     public void testSuperInterfacesAreBeanTypes() {
         Bean<?> bean = Utils.getBean(beanManager, Dog.class);
-        Assert.assertTrue(Utils.typeSetMatches(bean.getTypes(), Object.class, Dog.class, Animal.class));
+        Assertions.assertTrue(Utils.typeSetMatches(bean.getTypes(), Object.class, Dog.class, Animal.class));
     }
 }

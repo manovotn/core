@@ -40,14 +40,14 @@ import jakarta.enterprise.inject.spi.ObserverMethod;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * This test verifies, that a container lifecycle event method invocation throws {@link IllegalStateException} if performed
@@ -58,7 +58,7 @@ import org.junit.runner.RunWith;
  *
  *         See also WELD-1614
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class ContainerLifecycleEventInvocationOutsideObserverTest {
 
     @Inject
@@ -79,7 +79,7 @@ public class ContainerLifecycleEventInvocationOutsideObserverTest {
         void run() {
             try {
                 execute();
-                Assert.fail("Expected exception not thrown");
+                Assertions.fail("Expected exception not thrown");
             } catch (IllegalStateException expected) {
             }
         }

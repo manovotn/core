@@ -17,7 +17,7 @@
 
 package org.jboss.weld.tests.extensions.lifecycle.processBeanAttributes.notfired;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.lang.reflect.Type;
 import java.security.Principal;
@@ -38,21 +38,20 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author <a href="mailto:mluksa@redhat.com">Marko Luksa</a>
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class ProcessBeanAttributesNotFiredTest {
 
     @Deployment
@@ -64,8 +63,8 @@ public class ProcessBeanAttributesNotFiredTest {
 
     @Test
     public void testProcessBeanAttributesNotFiredForProgrammaticallyAddedBeans() {
-        assertFalse("ProcessBeanAttributes was called for built-in bean",
-                MyExtension.observedNames.contains(MyExtension.PROGRAMMATICALLY_ADDED_BEAN_NAME));
+        assertFalse(MyExtension.observedNames.contains(MyExtension.PROGRAMMATICALLY_ADDED_BEAN_NAME),
+                "ProcessBeanAttributes was called for built-in bean");
     }
 
     @Test
@@ -75,7 +74,7 @@ public class ProcessBeanAttributesNotFiredTest {
                 Interceptor.class, UserTransaction.class, Principal.class, HttpServletRequest.class, HttpSession.class,
                 Conversation.class, ServletContext.class };
         for (Type type : types) {
-            assertFalse("ProcessBeanAttributes was called for built-in bean " + type, MyExtension.observedTypes.contains(type));
+            assertFalse(MyExtension.observedTypes.contains(type), "ProcessBeanAttributes was called for built-in bean " + type);
         }
     }
 }

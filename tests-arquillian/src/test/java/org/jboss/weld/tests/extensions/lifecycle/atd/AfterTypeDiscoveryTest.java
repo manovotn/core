@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.extensions.lifecycle.atd;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -27,14 +27,14 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.ActionSequence;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * This only tests operations on {@link AfterTypeDiscovery} alternatives, interceptors and decorators collections.
@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
  * @author Martin Kouba
  * @see WELD-1660
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AfterTypeDiscoveryTest {
 
     @Deployment
@@ -60,10 +60,10 @@ public class AfterTypeDiscoveryTest {
 
     @Test
     public void testInitialAlternatives() {
-        assertEquals(extension.getInitialAlternatives().size(), 3);
-        assertEquals(extension.getInitialAlternatives().get(0), AlphaAlternative.class);
-        assertEquals(extension.getInitialAlternatives().get(1), BravoAlternative.class);
-        assertEquals(extension.getInitialAlternatives().get(2), EchoAlternative.class);
+        assertEquals(3, extension.getInitialAlternatives().size());
+        assertEquals(AlphaAlternative.class, extension.getInitialAlternatives().get(0));
+        assertEquals(BravoAlternative.class, extension.getInitialAlternatives().get(1));
+        assertEquals(EchoAlternative.class, extension.getInitialAlternatives().get(2));
     }
 
     @Test
@@ -95,10 +95,10 @@ public class AfterTypeDiscoveryTest {
 
     @Test
     public void testInitialDecorators() {
-        assertEquals(extension.getInitialDecorators().size(), 3);
-        assertEquals(extension.getInitialDecorators().get(0), AlphaDecorator.class);
-        assertEquals(extension.getInitialDecorators().get(1), BravoDecorator.class);
-        assertEquals(extension.getInitialDecorators().get(2), EchoDecorator.class);
+        assertEquals(3, extension.getInitialDecorators().size());
+        assertEquals(AlphaDecorator.class, extension.getInitialDecorators().get(0));
+        assertEquals(BravoDecorator.class, extension.getInitialDecorators().get(1));
+        assertEquals(EchoDecorator.class, extension.getInitialDecorators().get(2));
     }
 
     @Test

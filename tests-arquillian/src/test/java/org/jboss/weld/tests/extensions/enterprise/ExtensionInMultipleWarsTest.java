@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.extensions.enterprise;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.IOException;
 import java.net.URL;
@@ -24,7 +24,7 @@ import java.net.URL;
 import jakarta.enterprise.inject.spi.Extension;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -33,16 +33,15 @@ import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.WebClient;
 
-@Category(Integration.class)
-@RunWith(Arquillian.class)
+@Tag("Integration")
+@ExtendWith(ArquillianExtension.class)
 public class ExtensionInMultipleWarsTest {
 
     @Deployment(testable = false)
@@ -72,6 +71,6 @@ public class ExtensionInMultipleWarsTest {
         WebClient client = new WebClient();
         String result1 = client.getPage(contextPath1 + "servlet1").getWebResponse().getContentAsString();
         String result2 = client.getPage(contextPath2 + "servlet2").getWebResponse().getContentAsString();
-        assertFalse(result1.equals(result2));
+        assertNotEquals(result1, result2);
     }
 }

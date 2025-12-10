@@ -17,21 +17,21 @@
 package org.jboss.weld.tests.stereotypes.alternative.enablement;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Verify that a stereotype with @Alternative can be enabled by placing @Priority on the respective bean
  *
  * @author <a href="mailto:manovotn@redhat.com">Matej Novotny</a>
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class AlternativeStereotypeWithPriorityTest {
 
     @Deployment
@@ -42,6 +42,6 @@ public class AlternativeStereotypeWithPriorityTest {
 
     @Test
     public void testStereotypeGloballyEnabledByPriority(SomeInterface bean) {
-        Assert.assertEquals(AlternativeImpl.class.getSimpleName(), bean.ping());
+        Assertions.assertEquals(AlternativeImpl.class.getSimpleName(), bean.ping());
     }
 }

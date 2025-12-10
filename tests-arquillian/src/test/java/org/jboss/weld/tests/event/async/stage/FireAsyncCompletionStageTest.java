@@ -16,8 +16,8 @@
  */
 package org.jboss.weld.tests.event.async.stage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -27,25 +27,24 @@ import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.bootstrap.api.Service;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.EmbeddedContainer;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
  * @author Martin Kouba
  *
  */
-@Category(EmbeddedContainer.class)
-@RunWith(Arquillian.class)
+@Tag("EmbeddedContainer")
+@ExtendWith(ArquillianExtension.class)
 public class FireAsyncCompletionStageTest {
 
     // An easily identifiable thread pool
@@ -61,11 +60,10 @@ public class FireAsyncCompletionStageTest {
                 .addAsServiceProvider(Service.class, CustomExecutorServices.class);
     }
 
-    @Before
+    @BeforeEach
     public void init() {
-        simpleExecutor = Executors.newSingleThreadExecutor(runnable -> {
-            return new Thread(runnable, FireAsyncCompletionStageTest.class.getName());
-        });
+        simpleExecutor = Executors
+                .newSingleThreadExecutor(runnable -> new Thread(runnable, FireAsyncCompletionStageTest.class.getName()));
     }
 
     public void tearDown() {
@@ -87,13 +85,11 @@ public class FireAsyncCompletionStageTest {
 
     @Test
     public void testDefaultAsyncFacility() throws InterruptedException, ExecutionException {
-        Payload payload = event.fireAsync(new Payload()).whenCompleteAsync((p, e) -> {
-            // Observer must be notified in a thread from CustomExecutorServices
-            assertTrue(p.getThreadName().startsWith(CustomExecutorServices.PREFIX));
-        }).whenCompleteAsync((p, e) -> {
-            // The default async executor comes from CustomExecutorServices
-            p.setThreadName(Thread.currentThread().getName());
-        }).toCompletableFuture().get();
+        Payload payload = event.fireAsync(new Payload()).whenCompleteAsync((p, e) ->
+        // Observer must be notified in a thread from CustomExecutorServices
+        assertTrue(p.getThreadName().startsWith(CustomExecutorServices.PREFIX))).whenCompleteAsync((p, e) ->
+        // The default async executor comes from CustomExecutorServices
+        p.setThreadName(Thread.currentThread().getName())).toCompletableFuture().get();
         assertTrue(payload.getThreadName().startsWith(CustomExecutorServices.PREFIX));
     }
 }

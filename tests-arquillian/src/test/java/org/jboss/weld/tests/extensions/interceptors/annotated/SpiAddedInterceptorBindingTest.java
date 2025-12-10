@@ -23,16 +23,16 @@ import jakarta.enterprise.util.AnnotationLiteral;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SpiAddedInterceptorBindingTest {
 
     @Deployment
@@ -59,8 +59,8 @@ public class SpiAddedInterceptorBindingTest {
     @Test
     public void testAddedInterceptorBindingAnnotatedType() {
         QuickInterceptor.reset();
-        Assert.assertTrue(beanManager.isInterceptorBinding(Quick.class));
-        Assert.assertEquals(1, beanManager.resolveInterceptors(InterceptionType.AROUND_INVOKE, new QuickLiteral() {
+        Assertions.assertTrue(beanManager.isInterceptorBinding(Quick.class));
+        Assertions.assertEquals(1, beanManager.resolveInterceptors(InterceptionType.AROUND_INVOKE, new QuickLiteral() {
 
             @Override
             public String name() {
@@ -72,25 +72,26 @@ public class SpiAddedInterceptorBindingTest {
                 return false;
             }
         }).size());
-        Assert.assertFalse(QuickInterceptor.isIntercepted);
+        Assertions.assertFalse(QuickInterceptor.isIntercepted);
         hack.ping();
-        Assert.assertTrue(QuickInterceptor.isIntercepted);
+        Assertions.assertTrue(QuickInterceptor.isIntercepted);
 
         SlowInterceptor.reset();
-        Assert.assertTrue(beanManager.isInterceptorBinding(Slow.class));
-        Assert.assertEquals(1, beanManager.resolveInterceptors(InterceptionType.AROUND_INVOKE, new AnnotationLiteral<Slow>() {
-        }).size());
-        Assert.assertFalse(SlowInterceptor.isIntercepted);
+        Assertions.assertTrue(beanManager.isInterceptorBinding(Slow.class));
+        Assertions.assertEquals(1,
+                beanManager.resolveInterceptors(InterceptionType.AROUND_INVOKE, new AnnotationLiteral<Slow>() {
+                }).size());
+        Assertions.assertFalse(SlowInterceptor.isIntercepted);
         snail.ping();
-        Assert.assertTrue(SlowInterceptor.isIntercepted);
+        Assertions.assertTrue(SlowInterceptor.isIntercepted);
     }
 
     @Test
     public void testAddedInterceptorBindingAnnotatedTypeWithStereotype() {
         QuickInterceptor.reset();
-        Assert.assertFalse(QuickInterceptor.isIntercepted);
+        Assertions.assertFalse(QuickInterceptor.isIntercepted);
         james.ping();
-        Assert.assertTrue(QuickInterceptor.isIntercepted);
+        Assertions.assertTrue(QuickInterceptor.isIntercepted);
     }
 
 }

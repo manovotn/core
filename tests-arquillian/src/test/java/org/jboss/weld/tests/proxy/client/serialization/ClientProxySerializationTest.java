@@ -16,9 +16,9 @@
  */
 package org.jboss.weld.tests.proxy.client.serialization;
 
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
+import org.junit.platform.suite.api.SuiteDisplayName;
 
 /**
  * @see WELD-1167
@@ -26,7 +26,8 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Suite.class)
-@SuiteClasses({ ClientProxySerializationUnit.class, ClientProxySerializationUnit.class })
+@Suite
+@SelectClasses({ ClientProxySerializationUnit.class, ClientProxySerializationUnit.class })
+@SuiteDisplayName("ClientProxySerializationTest - repeated invocation of ClientProxySerializationUnit")
 public class ClientProxySerializationTest {
 }

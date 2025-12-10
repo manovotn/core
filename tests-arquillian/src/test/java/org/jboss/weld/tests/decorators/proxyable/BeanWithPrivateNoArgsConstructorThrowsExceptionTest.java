@@ -20,7 +20,7 @@ import jakarta.enterprise.inject.spi.DeploymentException;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.ShouldThrowException;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -28,14 +28,14 @@ import org.jboss.weld.bean.proxy.DefaultProxyInstantiator;
 import org.jboss.weld.config.ConfigurationKey;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.util.PropertiesBuilder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that the correct exception is thrown for a decorated bean
  * that has a private default constructor.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanWithPrivateNoArgsConstructorThrowsExceptionTest {
 
     @ShouldThrowException(DeploymentException.class)

@@ -21,20 +21,20 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.spi.CDI;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Starting with CDI 4.0, empty beans.xml should be interpreted as discovery mode {@code annotated}.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class EmptyBeansXmlTest {
 
     @Deployment
@@ -49,8 +49,8 @@ public class EmptyBeansXmlTest {
     public void testDiscoveryMode() {
         Instance<Object> instance = CDI.current().getBeanManager().createInstance();
         // assert Bar is resolvable because it is annotated
-        Assert.assertTrue(instance.select(Bar.class).isResolvable());
+        Assertions.assertTrue(instance.select(Bar.class).isResolvable());
         // assert Foo is not resolvable
-        Assert.assertFalse(instance.select(Foo.class).isResolvable());
+        Assertions.assertFalse(instance.select(Foo.class).isResolvable());
     }
 }

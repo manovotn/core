@@ -24,7 +24,7 @@ import jakarta.enterprise.inject.spi.Bean;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -32,11 +32,11 @@ import org.jboss.weld.bean.RIBean;
 import org.jboss.weld.bean.SessionBean;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BootstrapTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -56,15 +56,15 @@ public class BootstrapTest {
                 classes.put(((RIBean<?>) bean).getType(), bean);
             }
         }
-        Assert.assertTrue(classes.containsKey(Hound.class));
-        Assert.assertTrue(classes.containsKey(Elephant.class));
-        Assert.assertTrue(classes.containsKey(Panther.class));
-        Assert.assertTrue(classes.containsKey(Tiger.class));
+        Assertions.assertTrue(classes.containsKey(Hound.class));
+        Assertions.assertTrue(classes.containsKey(Elephant.class));
+        Assertions.assertTrue(classes.containsKey(Panther.class));
+        Assertions.assertTrue(classes.containsKey(Tiger.class));
 
-        Assert.assertTrue(classes.get(Hound.class) instanceof SessionBean);
-        Assert.assertTrue(classes.get(Elephant.class) instanceof SessionBean);
-        Assert.assertTrue(classes.get(Panther.class) instanceof SessionBean);
-        Assert.assertTrue(classes.get(Tiger.class) instanceof SessionBean);
+        Assertions.assertTrue(classes.get(Hound.class) instanceof SessionBean);
+        Assertions.assertTrue(classes.get(Elephant.class) instanceof SessionBean);
+        Assertions.assertTrue(classes.get(Panther.class) instanceof SessionBean);
+        Assertions.assertTrue(classes.get(Tiger.class) instanceof SessionBean);
     }
 
 }

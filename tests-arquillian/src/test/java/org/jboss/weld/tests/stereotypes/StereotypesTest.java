@@ -19,7 +19,7 @@ package org.jboss.weld.tests.stereotypes;
 import jakarta.enterprise.context.RequestScoped;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -30,11 +30,11 @@ import org.jboss.weld.resources.ClassTransformer;
 import org.jboss.weld.resources.ReflectionCacheFactory;
 import org.jboss.weld.resources.SharedObjectCache;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class StereotypesTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -50,29 +50,29 @@ public class StereotypesTest {
     public void testAnimalStereotype() {
         StereotypeModel<AnimalStereotype> animalStereotype = new StereotypeModel<AnimalStereotype>(
                 transformer.getEnhancedAnnotation(AnimalStereotype.class));
-        Assert.assertEquals(RequestScoped.class, animalStereotype.getDefaultScopeType().annotationType());
-        Assert.assertEquals(0, animalStereotype.getInterceptorBindings().size());
-        Assert.assertFalse(animalStereotype.isBeanNameDefaulted());
-        Assert.assertFalse(animalStereotype.isAlternative());
+        Assertions.assertEquals(RequestScoped.class, animalStereotype.getDefaultScopeType().annotationType());
+        Assertions.assertEquals(0, animalStereotype.getInterceptorBindings().size());
+        Assertions.assertFalse(animalStereotype.isBeanNameDefaulted());
+        Assertions.assertFalse(animalStereotype.isAlternative());
     }
 
     @Test
     public void testAnimalOrderStereotype() {
         StereotypeModel<AnimalOrderStereotype> animalStereotype = new StereotypeModel<AnimalOrderStereotype>(
                 transformer.getEnhancedAnnotation(AnimalOrderStereotype.class));
-        Assert.assertNull(animalStereotype.getDefaultScopeType());
-        Assert.assertEquals(0, animalStereotype.getInterceptorBindings().size());
-        Assert.assertFalse(animalStereotype.isBeanNameDefaulted());
-        Assert.assertFalse(animalStereotype.isAlternative());
+        Assertions.assertNull(animalStereotype.getDefaultScopeType());
+        Assertions.assertEquals(0, animalStereotype.getInterceptorBindings().size());
+        Assertions.assertFalse(animalStereotype.isBeanNameDefaulted());
+        Assertions.assertFalse(animalStereotype.isAlternative());
     }
 
     @Test
     public void testRequestScopedAnimalStereotype() {
         StereotypeModel<RequestScopedAnimalStereotype> animalStereotype = new StereotypeModel<RequestScopedAnimalStereotype>(
                 transformer.getEnhancedAnnotation(RequestScopedAnimalStereotype.class));
-        Assert.assertNull(animalStereotype.getDefaultScopeType());
-        Assert.assertEquals(0, animalStereotype.getInterceptorBindings().size());
-        Assert.assertFalse(animalStereotype.isBeanNameDefaulted());
-        Assert.assertFalse(animalStereotype.isAlternative());
+        Assertions.assertNull(animalStereotype.getDefaultScopeType());
+        Assertions.assertEquals(0, animalStereotype.getInterceptorBindings().size());
+        Assertions.assertFalse(animalStereotype.isBeanNameDefaulted());
+        Assertions.assertFalse(animalStereotype.isAlternative());
     }
 }

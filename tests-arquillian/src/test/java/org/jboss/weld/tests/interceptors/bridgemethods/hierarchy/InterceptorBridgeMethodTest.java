@@ -16,19 +16,19 @@
  */
 package org.jboss.weld.tests.interceptors.bridgemethods.hierarchy;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.test.util.ActionSequence;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  *
@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
  * @see WELD-1672
  * @see WELD-2414
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InterceptorBridgeMethodTest {
 
     @Deployment
@@ -113,7 +113,7 @@ public class InterceptorBridgeMethodTest {
     }
 
     @Test
-    @Ignore("WELD-2424")
+    @Disabled("WELD-2424")
     public void testSpecialBaseInvokeA(SpecialBase special) {
         // SpecialChild gets injected
         reset();

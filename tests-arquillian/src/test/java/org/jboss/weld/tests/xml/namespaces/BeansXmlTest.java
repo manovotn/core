@@ -21,22 +21,22 @@ import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.tests.xml.namespaces.excluded.FooExcluded;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests that parsing beans.xml with weld namespace correctly searches for end tags.
  *
  * See WELD-2591
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeansXmlTest {
 
     @Inject
@@ -67,9 +67,9 @@ public class BeansXmlTest {
     @Test
     public void test() {
         // verify scan exclusion works
-        Assert.assertFalse(instance.select(FooExcluded.class).isResolvable());
+        Assertions.assertFalse(instance.select(FooExcluded.class).isResolvable());
         // verify alternative is enabled
-        Assert.assertTrue(instance.select(SomeAlternative.class).isResolvable());
+        Assertions.assertTrue(instance.select(SomeAlternative.class).isResolvable());
     }
 
 }

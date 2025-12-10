@@ -3,17 +3,17 @@ package org.jboss.weld.tests.producer.weld1368;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.weld.tests.producer.weld1368.SpecializedProducer.TestBean1;
 import org.jboss.weld.tests.producer.weld1368.SpecializedProducer.TestBean3;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class Weld1368Test {
 
     @Inject
@@ -32,7 +32,7 @@ public class Weld1368Test {
     public void testSpecializes() {
         String name1 = TestBean3.class.getName();
         String name2 = this.testBean1.getClass().getName();
-        Assert.assertEquals(name1, name2);
+        Assertions.assertEquals(name1, name2);
     }
 
 }

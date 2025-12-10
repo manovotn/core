@@ -22,7 +22,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * This class tests non-portable behavior and thus should not be included in the TCK.

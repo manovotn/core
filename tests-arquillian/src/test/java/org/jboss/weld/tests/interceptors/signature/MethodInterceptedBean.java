@@ -21,7 +21,7 @@ import jakarta.enterprise.context.Dependent;
 
 import org.jboss.weld.bean.proxy.InterceptionDecorationContext;
 import org.jboss.weld.bean.proxy.InterceptionDecorationContext.Stack;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author <a href="mailto:mluksa@redhat.com">Marko Luksa</a>
@@ -32,8 +32,8 @@ public class MethodInterceptedBean {
 
     public String foo() {
         Stack stack = InterceptionDecorationContext.getStack();
-        Assert.assertNotNull(stack);
-        Assert.assertEquals(1, stack.size());
+        Assertions.assertNotNull(stack);
+        Assertions.assertEquals(1, stack.size());
         return "foo";
     }
 }

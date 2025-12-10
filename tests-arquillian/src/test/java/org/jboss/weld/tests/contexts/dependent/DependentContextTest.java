@@ -8,19 +8,19 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Aims to indirectly verify that interceptors are dependent instances of beans they intercept.
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class DependentContextTest {
 
     @Deployment
@@ -45,7 +45,7 @@ public class DependentContextTest {
         TransactionalInterceptor.intercepted = false;
 
         Set<Bean<?>> beans = bm.getBeans(AccountTransaction.class);
-        Assert.assertTrue(beans.size() == 1);
+        Assertions.assertEquals(1, beans.size());
         Bean<AccountTransaction> bean = (Bean<AccountTransaction>) beans.iterator().next();
         CreationalContext<AccountTransaction> ctx = bm.createCreationalContext(bean);
 
@@ -56,7 +56,7 @@ public class DependentContextTest {
 
         bean.destroy(trans, ctx);
 
-        Assert.assertTrue(AccountTransaction.destroyed);
-        Assert.assertTrue(TransactionalInterceptorDependency.destroyed);
+        Assertions.assertTrue(AccountTransaction.destroyed);
+        Assertions.assertTrue(TransactionalInterceptorDependency.destroyed);
     }
 }

@@ -1,13 +1,13 @@
 package org.jboss.weld.tests.accessibility.bce;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.build.compatible.spi.BuildCompatibleExtension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.BeanDiscoveryMode;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -17,17 +17,16 @@ import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.accessibility.bce.lib.MyBce;
 import org.jboss.weld.tests.accessibility.bce.lib.MyBeanCreator;
 import org.jboss.weld.tests.accessibility.bce.lib.SomeType;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests a scenario in which an application (WAR) has a library (/lib) which isn't a bean archive but has registered BCE.
  * While such BCE creates synth bean, its {@code Instance} should be able to access beans from the application (WAR)
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class BceInLibTest {
 
     @Deployment

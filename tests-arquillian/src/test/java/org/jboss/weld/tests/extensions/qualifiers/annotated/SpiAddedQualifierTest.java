@@ -24,16 +24,16 @@ import jakarta.enterprise.inject.spi.Extension;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class SpiAddedQualifierTest {
 
     @Deployment
@@ -49,8 +49,8 @@ public class SpiAddedQualifierTest {
     @SuppressWarnings("serial")
     @Test
     public void testAddedQualifierAnnotatedType() {
-        Assert.assertTrue(beanManager.isQualifier(Quick.class));
-        Assert.assertTrue(beanManager.isQualifier(Slow.class));
+        Assertions.assertTrue(beanManager.isQualifier(Quick.class));
+        Assertions.assertTrue(beanManager.isQualifier(Slow.class));
         Set<Bean<?>> hackBeans = beanManager.getBeans(Hack.class, new QuickLiteral() {
 
             @Override
@@ -64,7 +64,7 @@ public class SpiAddedQualifierTest {
                 return "man";
             }
         });
-        Assert.assertEquals(1, hackBeans.size());
+        Assertions.assertEquals(1, hackBeans.size());
         hackBeans = beanManager.getBeans(Hack.class, new QuickLiteral() {
 
             @Override
@@ -78,13 +78,13 @@ public class SpiAddedQualifierTest {
                 return "Edgar";
             }
         });
-        Assert.assertEquals(0, hackBeans.size());
+        Assertions.assertEquals(0, hackBeans.size());
 
         Set<Bean<?>> snailBeans = beanManager.getBeans(Snail.class);
-        Assert.assertEquals(0, snailBeans.size());
+        Assertions.assertEquals(0, snailBeans.size());
         snailBeans = beanManager.getBeans("snail");
-        Assert.assertEquals(1, snailBeans.size());
+        Assertions.assertEquals(1, snailBeans.size());
         // Any, Slow, Named
-        Assert.assertEquals(3, snailBeans.iterator().next().getQualifiers().size());
+        Assertions.assertEquals(3, snailBeans.iterator().next().getQualifiers().size());
     }
 }

@@ -26,18 +26,18 @@ import jakarta.enterprise.inject.spi.BeanManager;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
 import org.jboss.weld.test.util.Utils;
 import org.jboss.weld.tests.repeatable.RepeatableQualifier.Literal;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class BeanWithRepeatableQualifierTest {
 
     @Inject
@@ -65,9 +65,9 @@ public class BeanWithRepeatableQualifierTest {
 
     @Test
     public void testInjection() {
-        Assert.assertEquals("yeah", foo);
-        Assert.assertEquals("yeah", bar);
-        Assert.assertEquals("yeah", combined);
+        Assertions.assertEquals("yeah", foo);
+        Assertions.assertEquals("yeah", bar);
+        Assertions.assertEquals("yeah", combined);
     }
 
     @Test
@@ -77,31 +77,31 @@ public class BeanWithRepeatableQualifierTest {
                 .filter((x) -> x instanceof RepeatableQualifier)
                 .map((x) -> ((RepeatableQualifier) x).value())
                 .collect(Collectors.toSet());
-        Assert.assertEquals(3, values.size());
-        Assert.assertTrue(values.contains("foo"));
-        Assert.assertTrue(values.contains("bar"));
-        Assert.assertTrue(values.contains("baz"));
+        Assertions.assertEquals(3, values.size());
+        Assertions.assertTrue(values.contains("foo"));
+        Assertions.assertTrue(values.contains("bar"));
+        Assertions.assertTrue(values.contains("baz"));
     }
 
     @Test
     public void testInstanceLookup() {
         instance = instance.select(new Literal("foo"));
-        Assert.assertFalse(instance.isAmbiguous());
-        Assert.assertFalse(instance.isUnsatisfied());
+        Assertions.assertFalse(instance.isAmbiguous());
+        Assertions.assertFalse(instance.isUnsatisfied());
         instance = instance.select(new Literal("bar"), new Literal("baz"));
-        Assert.assertFalse(instance.isAmbiguous());
-        Assert.assertFalse(instance.isUnsatisfied());
-        Assert.assertEquals("yeah", instance.get());
+        Assertions.assertFalse(instance.isAmbiguous());
+        Assertions.assertFalse(instance.isUnsatisfied());
+        Assertions.assertEquals("yeah", instance.get());
         instance = instance.select(new Literal("qux"));
-        Assert.assertFalse(instance.isAmbiguous());
-        Assert.assertTrue(instance.isUnsatisfied());
+        Assertions.assertFalse(instance.isAmbiguous());
+        Assertions.assertTrue(instance.isUnsatisfied());
     }
 
     @Test
     public void testBeanManagerLookup(BeanManager manager) {
-        Assert.assertNotNull(
+        Assertions.assertNotNull(
                 manager.resolve(manager.getBeans(String.class, new Literal("foo"), new Literal("bar"), new Literal("baz"))));
-        Assert.assertNotNull(manager.resolve(manager.getBeans(String.class, new Literal("foo"), new Literal("bar"))));
-        Assert.assertTrue(manager.getBeans(String.class, new Literal("foo"), new Literal("qux")).isEmpty());
+        Assertions.assertNotNull(manager.resolve(manager.getBeans(String.class, new Literal("foo"), new Literal("bar"))));
+        Assertions.assertTrue(manager.getBeans(String.class, new Literal("foo"), new Literal("qux")).isEmpty());
     }
 }

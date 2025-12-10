@@ -26,14 +26,14 @@ import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /*
  * More complex testcase for {@link ExperimentalEvent#fireAsync(Object)} inspired by Akka's tutorial
@@ -52,7 +52,7 @@ import org.junit.runner.RunWith;
  * 5) Performance of Weld - remove @Vetoed from HighPrecisionCalculation to see some numbers
  *
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 @ApplicationScoped
 public class ComplexAsyncEventTest {
 
@@ -76,7 +76,7 @@ public class ComplexAsyncEventTest {
         event.fireAsync(new CalculationConfiguration()).thenAccept(master::compute);
 
         PiApproximation result = RESULT.poll(15, TimeUnit.SECONDS);
-        Assert.assertTrue(3.140D < result.getPi() && result.getPi() < 3.145D);
+        Assertions.assertTrue(3.140D < result.getPi() && result.getPi() < 3.145D);
     }
 
     public void observeResult(@Observes PiApproximation result) {

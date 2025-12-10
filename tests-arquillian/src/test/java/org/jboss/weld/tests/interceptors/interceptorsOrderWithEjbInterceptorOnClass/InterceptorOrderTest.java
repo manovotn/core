@@ -18,21 +18,20 @@
 package org.jboss.weld.tests.interceptors.interceptorsOrderWithEjbInterceptorOnClass;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @author Marius Bogoevici
  */
-@RunWith(Arquillian.class)
+@ExtendWith(ArquillianExtension.class)
 public class InterceptorOrderTest {
     @Deployment
     public static Archive<?> deploy() {
@@ -42,7 +41,7 @@ public class InterceptorOrderTest {
     }
 
     @Test
-    @Category(Integration.class)
+    @Tag("Integration")
     public void testOrder(Processor processor) {
         Counter.count = 0;
         SimpleProcessor.count = 0;
@@ -51,10 +50,10 @@ public class InterceptorOrderTest {
 
         int sum = processor.add(8, 13);
 
-        Assert.assertEquals(21, sum);
-        Assert.assertEquals(1, EjbInterceptor.count);
-        Assert.assertEquals(2, CdiInterceptor.count);
-        Assert.assertEquals(3, SimpleProcessor.count);
+        Assertions.assertEquals(21, sum);
+        Assertions.assertEquals(1, EjbInterceptor.count);
+        Assertions.assertEquals(2, CdiInterceptor.count);
+        Assertions.assertEquals(3, SimpleProcessor.count);
     }
 
 }

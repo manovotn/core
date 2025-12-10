@@ -16,7 +16,7 @@
  */
 package org.jboss.weld.tests.ejb.stateful.exception;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import jakarta.ejb.EJBException;
 import jakarta.ejb.NoSuchEJBException;
@@ -28,16 +28,15 @@ import jakarta.enterprise.inject.spi.CDI;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.junit5.ArquillianExtension;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.test.util.Utils;
-import org.jboss.weld.tests.category.Integration;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * @see https://community.jboss.org/message/772357#772357
@@ -46,8 +45,8 @@ import org.junit.runner.RunWith;
  * @author Jozef Hartinger
  *
  */
-@RunWith(Arquillian.class)
-@Category(Integration.class)
+@ExtendWith(ArquillianExtension.class)
+@Tag("Integration")
 public class StatefulSessionBeanRecreatedAfterDestroyTest {
 
     @Inject
@@ -70,14 +69,14 @@ public class StatefulSessionBeanRecreatedAfterDestroyTest {
         // cause SFSB to be removed
         try {
             bean.throwException();
-            Assert.fail();
+            Assertions.fail();
         } catch (EJBException expected) {
         }
 
         // verify that every access causes NoSuchEJBException
         try {
             bean.ping();
-            Assert.fail();
+            Assertions.fail();
         } catch (NoSuchEJBException expected) {
         }
 
@@ -96,14 +95,14 @@ public class StatefulSessionBeanRecreatedAfterDestroyTest {
         // cause SFSB to be removed
         try {
             bean.throwException();
-            Assert.fail();
+            Assertions.fail();
         } catch (EJBException expected) {
         }
 
         // verify that every access causes NoSuchEJBException
         try {
             bean.ping();
-            Assert.fail();
+            Assertions.fail();
         } catch (NoSuchEJBException expected) {
         }
 
