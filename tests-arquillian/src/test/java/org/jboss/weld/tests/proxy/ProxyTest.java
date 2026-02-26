@@ -70,7 +70,7 @@ public class ProxyTest {
      * The proxy hashCode should be equal to the class hashCode (see WELD-695)
      */
     @Test
-    public void testHashCodeImplmentation() {
+    public void testHashCodeImplementation() {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("baz"));
         Baz baz = (Baz) beanManager.getReference(bean, Baz.class, beanManager.createCreationalContext(bean));
         Assert.assertTrue(baz.hashCode() == baz.getClass().hashCode());
@@ -81,7 +81,7 @@ public class ProxyTest {
     }
 
     @Test
-    public void testEqualsImplmentation() {
+    public void testEqualsImplementation() {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("baz"));
         Baz baz1 = (Baz) beanManager.getReference(bean, Baz.class, beanManager.createCreationalContext(bean));
         Baz baz2 = (Baz) beanManager.getReference(bean, Baz.class, beanManager.createCreationalContext(bean));
@@ -98,10 +98,27 @@ public class ProxyTest {
         Bean<?> bean = beanManager.resolve(beanManager.getBeans("wobble"));
         Wobble wobble = (Wobble) beanManager.getReference(bean, Wobble.class, beanManager.createCreationalContext(bean));
         Assert.assertSame(wobble, wobble.getThis());
-        // package private classes have a diffent code path
+        // package private classes have a different code path
         // as they do not use direct bytecode invocation
         bean = beanManager.resolve(beanManager.getBeans("wibble"));
         Wibble wibble = (Wibble) beanManager.getReference(bean, Wibble.class, beanManager.createCreationalContext(bean));
         Assert.assertSame(wibble, wibble.getThis());
+    }
+
+    @Test
+    public void testBeanInstanceCanEscapeIfReturnTypeIncompatible() {
+        Bean<?> bean = beanManager.resolve(beanManager.getBeans("bam"));
+        Bam bam = (Bam) beanManager.getReference(bean, Bam.class, beanManager.createCreationalContext(bean));
+        Assert.assertNotNull(bam.asFoo());
+        // no java.lang.ClassCastException is thrown
+    }
+
+    @Test
+    public void testBeanInstanceCanEscapeIfReturnTypeGeneric() {
+        Bean<?> bean = beanManager.resolve(beanManager.getBeans("bam"));
+        Bam bam = (Bam) beanManager.getReference(bean, Bam.class, beanManager.createCreationalContext(bean));
+        Foo bamAsFoo = bam.as(Foo.class);
+        Assert.assertNotNull(bamAsFoo);
+        // no java.lang.ClassCastException is thrown
     }
 }
