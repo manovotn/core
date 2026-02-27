@@ -17,6 +17,7 @@
 package org.jboss.weld.tests.proxy;
 
 import jakarta.enterprise.inject.spi.Bean;
+import jakarta.enterprise.util.TypeLiteral;
 import jakarta.inject.Inject;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -25,6 +26,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.BeanArchive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.weld.manager.BeanManagerImpl;
+import org.jboss.weld.proxy.WeldClientProxy;
 import org.jboss.weld.test.util.Utils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -120,5 +122,11 @@ public class ProxyTest {
         Foo bamAsFoo = bam.as(Foo.class);
         Assert.assertNotNull(bamAsFoo);
         // no java.lang.ClassCastException is thrown
+
+        Alpha<String> alpha = beanManager.createInstance().select(new TypeLiteral<Alpha<String>>() {
+        }).get();
+        Assert.assertTrue(alpha instanceof WeldClientProxy); // this is obviously true
+        Alpha<String> selfReturnedAlpha = alpha.returnSelf();
+        Assert.assertTrue(selfReturnedAlpha instanceof WeldClientProxy); // true in current version, false with changes in this PR
     }
 }

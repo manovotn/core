@@ -18,4 +18,10 @@ public class BamProducer {
     Bam produceBam() {
         return new Foo();
     }
+
+    @Produces
+    @ApplicationScoped
+    Alpha<String> produceAlpha() {
+        return new AlphaImpl();
+    }
 }
