@@ -42,8 +42,11 @@ import jakarta.enterprise.inject.spi.configurator.ObserverMethodConfigurator;
 
 import org.jboss.weld.event.ObserverMethodImpl;
 import org.jboss.weld.event.SyntheticObserverMethod;
+import org.jboss.weld.event.TypeSafeObserverMethod;
 import org.jboss.weld.logging.EventLogger;
+import org.jboss.weld.resolution.AssignabilityRules;
 import org.jboss.weld.resolution.CovariantTypes;
+import org.jboss.weld.resolution.EventTypeAssignabilityRules;
 import org.jboss.weld.util.collections.ImmutableSet;
 import org.jboss.weld.util.reflection.Formats;
 
@@ -56,6 +59,8 @@ public class ObserverMethodConfiguratorImpl<T> implements ObserverMethodConfigur
     private Class<?> beanClass;
 
     private Type observedType;
+
+    private AssignabilityRules eventTypeAssignabilityRules = EventTypeAssignabilityRules.instance();
 
     private final Set<Annotation> observedQualifiers;
 
@@ -93,6 +98,7 @@ public class ObserverMethodConfiguratorImpl<T> implements ObserverMethodConfigur
     @Override
     public ObserverMethodConfigurator<T> read(Method method) {
         checkArgumentNotNull(method);
+        eventTypeAssignabilityRules = EventTypeAssignabilityRules.instance();
         Set<Parameter> eventParameters = Configurators.getAnnotatedParameters(method, Observes.class, ObservesAsync.class);
         checkEventParams(eventParameters, method);
         Parameter eventParameter = eventParameters.iterator().next();
@@ -116,6 +122,7 @@ public class ObserverMethodConfiguratorImpl<T> implements ObserverMethodConfigur
     @Override
     public ObserverMethodConfigurator<T> read(AnnotatedMethod<?> method) {
         checkArgumentNotNull(method);
+        eventTypeAssignabilityRules = EventTypeAssignabilityRules.instance();
         Set<AnnotatedParameter<?>> eventParameters = method.getParameters().stream()
                 .filter((p) -> p.isAnnotationPresent(Observes.class) || p.isAnnotationPresent(ObservesAsync.class))
                 .collect(Collectors.toSet());
@@ -150,6 +157,9 @@ public class ObserverMethodConfiguratorImpl<T> implements ObserverMethodConfigur
         transactionPhase(observerMethod.getTransactionPhase());
         priority(observerMethod.getPriority());
         async(observerMethod.isAsync());
+        eventTypeAssignabilityRules = observerMethod instanceof TypeSafeObserverMethod<?>
+                ? ((TypeSafeObserverMethod<?>) observerMethod).getEventTypeAssignabilityRules()
+                : EventTypeAssignabilityRules.instance();
         return this;
     }
 
@@ -253,11 +263,13 @@ public class ObserverMethodConfiguratorImpl<T> implements ObserverMethodConfigur
      *
      * @param <T>
      */
-    static class ImmutableObserverMethod<T> implements SyntheticObserverMethod<T> {
+    static class ImmutableObserverMethod<T> implements SyntheticObserverMethod<T>, TypeSafeObserverMethod<T> {
 
         private final Class<?> beanClass;
 
         private final Type observedType;
+
+        private final AssignabilityRules eventTypeAssignabilityRules;
 
         private final Set<Annotation> observedQualifiers;
 
@@ -281,6 +293,7 @@ public class ObserverMethodConfiguratorImpl<T> implements ObserverMethodConfigur
             }
             this.beanClass = configurator.beanClass;
             this.observedType = configurator.observedType;
+            this.eventTypeAssignabilityRules = configurator.eventTypeAssignabilityRules;
             this.observedQualifiers = ImmutableSet.copyOf(configurator.observedQualifiers);
             this.reception = configurator.reception;
             this.txPhase = configurator.txPhase;
@@ -297,6 +310,11 @@ public class ObserverMethodConfiguratorImpl<T> implements ObserverMethodConfigur
         @Override
         public Class<?> getBeanClass() {
             return beanClass;
+        }
+
+        @Override
+        public AssignabilityRules getEventTypeAssignabilityRules() {
+            return eventTypeAssignabilityRules;
         }
 
         @Override

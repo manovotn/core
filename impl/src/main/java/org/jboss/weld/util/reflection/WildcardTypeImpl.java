@@ -18,6 +18,7 @@ package org.jboss.weld.util.reflection;
 
 import java.lang.reflect.Type;
 import java.lang.reflect.WildcardType;
+import java.util.Arrays;
 
 /**
  * Implementation of {@link WildcardType}.
@@ -61,5 +62,20 @@ public class WildcardTypeImpl implements WildcardType {
     @Override
     public Type[] getLowerBounds() {
         return lowerBound;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other instanceof WildcardType) {
+            WildcardType wildcard = (WildcardType) other;
+            return Arrays.equals(upperBound, wildcard.getUpperBounds())
+                    && Arrays.equals(lowerBound, wildcard.getLowerBounds());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(upperBound) ^ Arrays.hashCode(lowerBound);
     }
 }

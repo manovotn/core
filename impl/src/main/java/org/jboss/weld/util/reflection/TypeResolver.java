@@ -21,6 +21,7 @@ import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
+import java.lang.reflect.WildcardType;
 import java.util.Map;
 
 public class TypeResolver {
@@ -58,11 +59,8 @@ public class TypeResolver {
         Type[] resolvedTypeArguments = new Type[unresolvedTypeArguments.length];
 
         for (int i = 0; i < unresolvedTypeArguments.length; i++) {
-            Type resolvedType = unresolvedTypeArguments[i];
-            if (resolvedType instanceof TypeVariable<?>) {
-                resolvedType = resolveType((TypeVariable<?>) resolvedType);
-            }
-            if (resolvedType instanceof ParameterizedType) {
+            Type resolvedType = resolveType(unresolvedTypeArguments[i]);
+            if (unresolvedTypeArguments[i] instanceof TypeVariable<?> && resolvedType instanceof ParameterizedType) {
                 resolvedType = resolveType((ParameterizedType) resolvedType);
             }
             resolvedTypeArguments[i] = resolvedType;
@@ -113,6 +111,20 @@ public class TypeResolver {
         }
     }
 
+    /**
+     * Substitutes known type arguments in wildcard bounds, preserving the wildcard's variance.
+     */
+    public Type resolveType(WildcardType type) {
+        Type[] lowerBounds = type.getLowerBounds();
+        if (lowerBounds.length > 0) {
+            Type resolved = resolveType(lowerBounds[0]);
+            return resolved == lowerBounds[0] ? type : WildcardTypeImpl.withLowerBound(resolved);
+        }
+        Type[] upperBounds = type.getUpperBounds();
+        Type resolved = resolveType(upperBounds[0]);
+        return resolved == upperBounds[0] ? type : WildcardTypeImpl.withUpperBound(resolved);
+    }
+
     public Type resolveType(Type type) {
         if (type instanceof ParameterizedType) {
             return resolveType((ParameterizedType) type);
@@ -122,6 +134,9 @@ public class TypeResolver {
         }
         if (type instanceof GenericArrayType) {
             return resolveType((GenericArrayType) type);
+        }
+        if (type instanceof WildcardType) {
+            return resolveType((WildcardType) type);
         }
         return type;
     }

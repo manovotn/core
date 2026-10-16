@@ -55,6 +55,8 @@ import org.jboss.weld.injection.attributes.SpecialParameterInjectionPoint;
 import org.jboss.weld.injection.attributes.WeldInjectionPointAttributes;
 import org.jboss.weld.logging.EventLogger;
 import org.jboss.weld.manager.BeanManagerImpl;
+import org.jboss.weld.resolution.AssignabilityRules;
+import org.jboss.weld.resolution.EventTypeAssignabilityRules;
 import org.jboss.weld.resources.SharedObjectCache;
 import org.jboss.weld.util.Observers;
 import org.jboss.weld.util.collections.ImmutableSet;
@@ -73,7 +75,8 @@ import org.jboss.weld.util.reflection.HierarchyDiscovery;
  * @author Jozef Hartinger
  * @author Marko Luksa
  */
-public class ObserverMethodImpl<T, X> implements ObserverMethod<T>, EventMetadataAwareObserverMethod<T> {
+public class ObserverMethodImpl<T, X>
+        implements ObserverMethod<T>, EventMetadataAwareObserverMethod<T>, TypeSafeObserverMethod<T> {
 
     public static final String ID_PREFIX = ObserverMethodImpl.class.getPackage().getName();
 
@@ -88,6 +91,7 @@ public class ObserverMethodImpl<T, X> implements ObserverMethod<T>, EventMetadat
 
     private final Set<Annotation> bindings;
     private final Type eventType;
+    private final AssignabilityRules eventTypeAssignabilityRules;
     protected final BeanManagerImpl beanManager;
     private final Reception reception;
     protected final RIBean<X> declaringBean;
@@ -133,7 +137,11 @@ public class ObserverMethodImpl<T, X> implements ObserverMethod<T>, EventMetadat
         }
         this.bindings = manager.getServices().get(SharedObjectCache.class)
                 .getSharedSet(eventParameter.getMetaAnnotations(Qualifier.class));
-        this.eventType = new HierarchyDiscovery(declaringBean.getBeanClass()).resolveType(eventParameter.getBaseType());
+        HierarchyDiscovery hierarchy = new HierarchyDiscovery(declaringBean.getBeanClass());
+        this.eventType = hierarchy.resolveType(eventParameter.getBaseType());
+        this.eventTypeAssignabilityRules = observer.getJavaMember().getTypeParameters().length == 0
+                ? EventTypeAssignabilityRules.instance()
+                : new EventTypeAssignabilityRules(hierarchy.getResolver());
 
         ImmutableSet.Builder<WeldInjectionPointAttributes<?, ?>> injectionPoints = ImmutableSet.builder();
         for (ParameterInjectionPoint<?, ?> injectionPoint : observerMethod.getParameterInjectionPoints()) {
@@ -267,6 +275,11 @@ public class ObserverMethodImpl<T, X> implements ObserverMethod<T>, EventMetadat
     @Override
     public Set<Annotation> getObservedQualifiers() {
         return bindings;
+    }
+
+    @Override
+    public AssignabilityRules getEventTypeAssignabilityRules() {
+        return eventTypeAssignabilityRules;
     }
 
     @Override

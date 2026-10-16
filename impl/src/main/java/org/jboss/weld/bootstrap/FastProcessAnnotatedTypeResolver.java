@@ -195,6 +195,10 @@ public class FastProcessAnnotatedTypeResolver extends AbstractBootstrapService {
             }
         } else if (observedType instanceof TypeVariable) {
             final TypeVariable<?> typeVariable = (TypeVariable<?>) observedType;
+            if (typeVariable.getBounds()[0] instanceof TypeVariable<?>) {
+                // The bound may be a class variable whose actual type is known only to contextual observer matching.
+                throw new UnsupportedObserverMethodException(observer);
+            }
             if (Reflections.isUnboundedTypeVariable(observedType)) {
                 // <T> void observe(T event)
                 catchAllObservers.add(observer);

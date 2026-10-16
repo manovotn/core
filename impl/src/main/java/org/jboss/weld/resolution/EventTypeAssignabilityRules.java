@@ -25,6 +25,7 @@ import org.jboss.weld.logging.ReflectionLogger;
 import org.jboss.weld.util.Types;
 import org.jboss.weld.util.reflection.HierarchyDiscovery;
 import org.jboss.weld.util.reflection.Reflections;
+import org.jboss.weld.util.reflection.TypeResolver;
 
 /**
  * This class implements Section 10.3.1 of the CDI specification.
@@ -40,7 +41,52 @@ public class EventTypeAssignabilityRules extends AbstractAssignabilityRules {
         return INSTANCE;
     }
 
+    private final TypeResolver typeResolver;
+
     private EventTypeAssignabilityRules() {
+        this.typeResolver = null;
+    }
+
+    /**
+     * Creates observer matching rules which resolve variable bounds in the declaring bean's class hierarchy.
+     * The resolver substitutes class variables, while method variables retain their upper-bound semantics.
+     */
+    public EventTypeAssignabilityRules(TypeResolver typeResolver) {
+        this.typeResolver = typeResolver;
+    }
+
+    private Type[] getObservedBounds(TypeVariable<?> variable) {
+        if (typeResolver == null) {
+            return getUppermostTypeVariableBounds(variable);
+        }
+        Type resolved = typeResolver.resolveType(variable);
+        if (!(resolved instanceof TypeVariable<?>)) {
+            return new Type[] { resolved };
+        }
+        Type[] bounds = ((TypeVariable<?>) resolved).getBounds();
+        return resolveObservedBounds(bounds);
+    }
+
+    private Type[] resolveObservedBounds(Type[] bounds) {
+        if (bounds.length == 0) {
+            return bounds;
+        }
+        if (bounds[0] instanceof TypeVariable<?>) {
+            return getObservedBounds((TypeVariable<?>) bounds[0]);
+        }
+        Type[] resolvedBounds = new Type[bounds.length];
+        for (int i = 0; i < bounds.length; i++) {
+            resolvedBounds[i] = typeResolver.resolveType(bounds[i]);
+        }
+        return resolvedBounds;
+    }
+
+    @Override
+    protected boolean boundsMatch(Type[] upperBounds, Type[] stricterUpperBounds) {
+        if (typeResolver == null) {
+            return super.boundsMatch(upperBounds, stricterUpperBounds);
+        }
+        return super.boundsMatch(resolveObservedBounds(upperBounds), resolveObservedBounds(stricterUpperBounds));
     }
 
     @Override
@@ -95,7 +141,7 @@ public class EventTypeAssignabilityRules extends AbstractAssignabilityRules {
     }
 
     private boolean matches(TypeVariable<?> observedType, Type eventType) {
-        for (Type bound : getUppermostTypeVariableBounds(observedType)) {
+        for (Type bound : getObservedBounds(observedType)) {
             if (!CovariantTypes.isAssignableFrom(bound, eventType)) {
                 return false;
             }
@@ -158,7 +204,7 @@ public class EventTypeAssignabilityRules extends AbstractAssignabilityRules {
     }
 
     private boolean parametersMatch(TypeVariable<?> observedParameter, Type eventParameter) {
-        for (Type bound : getUppermostTypeVariableBounds(observedParameter)) {
+        for (Type bound : getObservedBounds(observedParameter)) {
             if (!CovariantTypes.isAssignableFrom(bound, eventParameter)) {
                 return false;
             }

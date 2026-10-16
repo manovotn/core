@@ -32,6 +32,7 @@ import org.jboss.weld.bootstrap.events.ProcessAnnotatedTypeEventResolvable;
 import org.jboss.weld.config.WeldConfiguration;
 import org.jboss.weld.event.ContainerLifecycleEventObserverMethod;
 import org.jboss.weld.event.ResolvedObservers;
+import org.jboss.weld.event.TypeSafeObserverMethod;
 import org.jboss.weld.metadata.cache.MetaAnnotationStore;
 import org.jboss.weld.util.Beans;
 import org.jboss.weld.util.Observers;
@@ -69,7 +70,10 @@ public class TypeSafeObserverResolver
 
     @Override
     protected boolean matches(Resolvable resolvable, ObserverMethod<?> observer) {
-        if (!rules.matches(observer.getObservedType(), resolvable.getTypes())) {
+        boolean typeMatches = observer instanceof TypeSafeObserverMethod<?>
+                ? ((TypeSafeObserverMethod<?>) observer).isObservedTypeAssignableFrom(resolvable.getTypes())
+                : rules.matches(observer.getObservedType(), resolvable.getTypes());
+        if (!typeMatches) {
             return false;
         }
         if (!Beans.containsAllQualifiers(QualifierInstance.of(observer.getObservedQualifiers(), metaAnnotationStore),
