@@ -61,7 +61,7 @@
         <arquillian.tomcat.version>1.2.5.Final</arquillian.tomcat.version>
         <atinject.tck.version>2.0.1</atinject.tck.version>
         <!-- Version of the CDI 5.0 TCK release -->
-        <cdi.tck.version>5.0.0</cdi.tck.version>
+        <cdi.tck.version>5.0.1-SNAPSHOT</cdi.tck.version>
         <!-- Version of the Jakarta EE 11 Platform TCK release -->
         <!-- TODO: Upgrade to the Jakarta EE 12 Platform TCK when available. -->
         <platform.tck.version>11.0.3</platform.tck.version>
